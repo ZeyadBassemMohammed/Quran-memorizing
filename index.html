@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>مخطط حفظ القرآن</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#1F4333">
+<meta name="apple-mobile-web-app-title" content="حفظ القرآن">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+:root{--bg:#F6F1E4;--card:#FFFCF4;--ink:#1E2B22;--mut:#66756A;--g:#1F4333;--sage:#DDE5D2;--gold:#A98532;--line:#E4DCC5;--bad:#9B4A3C}
+:root[data-theme=dark]{--bg:#141C17;--card:#1D2822;--ink:#EDEBE0;--mut:#9DAFA2;--g:#8FBF9F;--sage:#2A3A31;--gold:#D2AE5E;--line:#2F3F35;--bad:#D58A7B}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{margin:0;font-family:"Noto Sans Arabic",Tajawal,"SF Arabic","Geeza Pro",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.8;font-size:17px;padding:env(safe-area-inset-top) 0 calc(78px + env(safe-area-inset-bottom))}
+main{max-width:560px;margin:0 auto;padding:14px 16px}
+h1{font-size:24px;margin:6px 0 0;color:var(--g)}
+h2{font-size:18px;margin:22px 0 8px;color:var(--g)}
+small,.mut{color:var(--mut);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:10px 0;box-shadow:0 1px 3px rgba(31,67,51,.07)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.bar{height:10px;border-radius:6px;background:var(--sage);overflow:hidden;margin:8px 0}
+.bar i{display:block;height:100%;background:var(--g);border-radius:6px}
+.task{display:flex;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin:10px 0}
+.task.new{border:2px solid var(--gold)}
+.task.new .tt{font-size:20px}
+.task.done{opacity:.72;background:var(--sage)}
+.chk{flex:none;width:48px;height:48px;border-radius:50%;border:2px solid var(--g);background:transparent;color:transparent;font-size:24px;cursor:pointer}
+.task.done .chk{background:var(--g);color:var(--bg)}
+.tb{flex:1;min-width:0}
+.tc{font-size:14px;color:var(--gold);font-weight:700}
+.tc i{color:var(--mut);font-style:normal;font-weight:400;margin-inline-start:6px}
+.tt{font-weight:700}
+.ts{color:var(--mut);font-size:14px}
+details{margin-top:6px}summary{color:var(--g);font-size:14px;cursor:pointer;min-height:32px}
+textarea,input,select{width:100%;font:inherit;font-size:16px;padding:10px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);margin:4px 0}
+label{display:block;margin-top:10px;font-size:15px}
+label.ck{display:flex;gap:10px;align-items:center}label.ck input{width:24px;height:24px;margin:0}
+button.b{font:inherit;font-size:16px;min-height:46px;padding:8px 16px;border-radius:14px;border:1px solid var(--g);background:var(--g);color:var(--bg);cursor:pointer;margin:4px 0}
+button.b.o{background:transparent;color:var(--g)}button.b.d{background:transparent;color:var(--bad);border-color:var(--bad)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.stat b{display:block;font-size:22px;color:var(--g)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center}
+.cal span{font-size:13px;color:var(--mut)}
+.cal button{font:inherit;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.cal .full{background:var(--g);color:var(--bg)}.cal .part{background:var(--sage);border-color:var(--gold)}.cal .miss{border-color:var(--bad);color:var(--bad)}.cal .sel{outline:2px solid var(--gold)}
+.warn{border-color:var(--gold);background:var(--sage)}
+nav{position:fixed;bottom:0;inset-inline:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
+nav button{flex:1;font:inherit;font-size:12px;background:none;border:0;color:var(--mut);min-height:48px;cursor:pointer}
+nav button.on{color:var(--g);font-weight:700}nav button b{display:block;font-size:20px;line-height:1.2}
+#toast{position:fixed;inset-inline:16px;bottom:calc(92px + env(safe-area-inset-bottom));background:var(--g);color:var(--bg);padding:12px 16px;border-radius:14px;display:none;z-index:9;text-align:center}
+#print{display:none}
+@media print{body>*:not(#print){display:none!important}#print{display:block;padding:20px;color:#000}#print td,#print th{border:1px solid #999;padding:4px}}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+</style>
+</head>
+<body>
+<div id="app"><main><h1>مخطط حفظ القرآن</h1><p>إذا بقيت هذه الرسالة ظاهرة فالتطبيق لا يعمل في هذا العارض: لأن JavaScript متوقف، كما في معاينة «الملفات». افتح الملف في متصفح يشغّل الشيفرة (سفاري بعد رفعه على استضافة مجانية، أو تطبيق Documents من Readdle).</p></main></div><div id="toast" role="status"></div><div id="print"></div>
+<script>
+window.onerror=function(m,s,l){var a=document.getElementById('app');if(a)a.innerHTML='<main><h1>حدث خطأ في التطبيق</h1><p dir="ltr" style="text-align:left">'+String(m)+' (line '+l+')</p><p>أرسل لي هذا النص لأصلحه.</p></main>'};
+</script>
+<script>
+'use strict';
+/* ===== Quran structure: Madinah Mushaf (604 pages), Hafs. Surah START pages are a constant table;
+   verify against your own mushaf and correct here if any differs. No verse text is included. ===== */
+const SN='الفاتحة|البقرة|آل عمران|النساء|المائدة|الأنعام|الأعراف|الأنفال|التوبة|يونس|هود|يوسف|الرعد|إبراهيم|الحجر|النحل|الإسراء|الكهف|مريم|طه|الأنبياء|الحج|المؤمنون|النور|الفرقان|الشعراء|النمل|القصص|العنكبوت|الروم|لقمان|السجدة|الأحزاب|سبأ|فاطر|يس|الصافات|ص|الزمر|غافر|فصلت|الشورى|الزخرف|الدخان|الجاثية|الأحقاف|محمد|الفتح|الحجرات|ق|الذاريات|الطور|النجم|القمر|الرحمن|الواقعة|الحديد|المجادلة|الحشر|الممتحنة|الصف|الجمعة|المنافقون|التغابن|الطلاق|التحريم|الملك|القلم|الحاقة|المعارج|نوح|الجن|المزمل|المدثر|القيامة|الإنسان|المرسلات|النبأ|النازعات|عبس|التكوير|الانفطار|المطففين|الانشقاق|البروج|الطارق|الأعلى|الغاشية|الفجر|البلد|الشمس|الليل|الضحى|الشرح|التين|العلق|القدر|البينة|الزلزلة|العاديات|القارعة|التكاثر|العصر|الهمزة|الفيل|قريش|الماعون|الكوثر|الكافرون|النصر|المسد|الإخلاص|الفلق|الناس'.split('|');
+const SP=[1,2,50,77,106,128,151,177,187,208,221,235,249,255,262,267,282,293,305,312,322,332,342,350,359,367,377,385,396,404,411,415,418,428,434,440,446,453,458,467,477,483,489,496,499,502,507,511,515,518,520,523,526,528,531,534,537,542,545,549,551,553,554,556,558,560,562,564,566,568,570,572,574,575,577,578,580,582,583,585,586,587,587,589,590,591,591,592,593,594,595,595,596,596,597,597,598,598,599,599,600,600,601,601,601,602,602,602,603,603,603,604,604,604];
+
+const KEY='quranPlannerV1',APP='quran-planner',VER=1;
+const DEF={startPage:1,prior:'',timeMin:60,revCap:8,friMax:20,digits:'ar',theme:'light',motiv:true,friRecent:true,totalPages:604,lastBackup:0};
+const CATS={new:'حفظ جديد',rec:'مراجعة الحفظ القريب',cur:'مراجعة السورة الحالية',f:'مراجعة طويلة المدى',w:'مراجعة اختيارية لحفظ الأسبوع'};
+const ORD=['new','rec','cur','f','w'];
+const WD=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+let S={v:VER,settings:{...DEF},tasks:{},plans:{}},tab='home',selDate='',calM=null,storageOK=true;
+
+/* ---------- dates ---------- */
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const pd=s=>{const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c)};
+const dn=s=>{const[a,b,c]=s.split('-').map(Number);return Math.floor(Date.UTC(a,b-1,c)/864e5)};
+const addD=(s,n)=>{const d=pd(s);d.setDate(d.getDate()+n);return iso(d)};
+const today=()=>iso(new Date());
+const N=x=>{x=String(x);return S.settings.digits==='ar'?x.replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]):x};
+const nu=()=>S.settings.digits==='ar'?'arab':'latn';
+function gdate(D){try{return new Intl.DateTimeFormat('ar-EG-u-nu-'+nu(),{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(pd(D))}catch(e){return D}}
+function hij(D){try{return new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura-nu-'+nu(),{day:'numeric',month:'long',year:'numeric'}).format(pd(D))}catch(e){return''}}
+
+/* ---------- storage ---------- */
+const valid=o=>o&&typeof o==='object'&&o.settings&&typeof o.settings==='object'&&o.tasks&&typeof o.tasks==='object'&&!Array.isArray(o.tasks);
+function fixS(){const s=S.settings,c=(v,a,b,d)=>{v=Math.round(+v);return isNaN(v)?d:Math.min(b,Math.max(a,v))};
+ s.totalPages=c(s.totalPages,100,700,604);s.startPage=c(s.startPage,1,s.totalPages,1);s.timeMin=c(s.timeMin,15,600,60);s.revCap=c(s.revCap,2,60,8);s.friMax=c(s.friMax,2,200,20);
+ s.digits=s.digits==='en'?'en':'ar';s.theme=s.theme==='dark'?'dark':'light';s.prior=String(s.prior||'')}
+function load(){let r=null;try{r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);if(valid(o))S={v:VER,settings:{...DEF,...o.settings},tasks:o.tasks,plans:o.plans&&typeof o.plans==='object'?o.plans:{}}}}
+ catch(e){try{if(r)localStorage.setItem(KEY+'_corrupt',r)}catch(x){}storageOK=false}fixS()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));storageOK=true}catch(e){storageOK=false}}
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',4500)}
+
+/* ---------- model: unit = half page h (0-based); page = floor(h/2)+1 ---------- */
+const TP=()=>S.settings.totalPages,TH=()=>2*TP(),pgOf=h=>Math.floor(h/2)+1;
+function priorHalves(){const s=new Set(),tp=TP();
+ S.settings.prior.replace(/[٠-٩]/g,d=>d.charCodeAt(0)-1632).split(/[,،\n]+/).forEach(t=>{const m=t.trim().match(/^(\d+)(?:\s*[-–]\s*(\d+))?$/);if(!m)return;let a=+m[1],b=+(m[2]||m[1]);if(a>b)[a,b]=[b,a];a=Math.max(a,1);b=Math.min(b,tp);for(let h=2*(a-1);h<=2*b-1;h++)s.add(h)});return s}
+function memSet(ex){const s=priorHalves();for(const d in S.tasks){if(d===ex)continue;const t=S.tasks[d].new;if(t&&t.done&&t.r)for(let h=t.r[0];h<=t.r[1];h++)s.add(h)}return s}
+const ptr=ms=>{let h=2*(S.settings.startPage-1);while(ms.has(h))h++;return h};
+const fullPage=(ms,p)=>ms.has(2*p-2)&&ms.has(2*p-1);
+const pagesMem=ms=>{let n=0;for(let p=1;p<=TP();p++)if(fullPage(ms,p))n++;return n};
+const surIdx=p=>{let k=0;SP.forEach((s,i)=>{if(s<=p)k=i});return k};
+function sur(p){if(TP()!==604)return'';const L=[];SP.forEach((s,i)=>{if(s===p)L.push(SN[i])});return L.length?L.join(' و')+' (بداية السورة)':SN[surIdx(p)]}
+const hn=h=>h%2?'النصف الأسفل':'النصف الأعلى';
+function rl(a,b){const pa=pgOf(a),pb=pgOf(b);let t,s=sur(pa);
+ if(a===b)t=`صفحة ${N(pa)} — ${hn(a)}`;else if(pa===pb)t=`صفحة ${N(pa)} كاملة`;else{t=`من صفحة ${N(pa)} (${hn(a)}) إلى صفحة ${N(pb)} (${hn(b)})`;const s2=sur(pb);if(s2&&s2!==s)s+=' ← '+s2}
+ return{t,s}}
+const rlp=(a,b)=>({t:a===b?`صفحة ${N(a)}`:`من صفحة ${N(a)} إلى صفحة ${N(b)}`,s:sur(a)+(b!==a&&sur(b)!==sur(a)&&sur(b)?' ← '+sur(b):'')});
+
+/* Friday long-term info (pages): oldest-reviewed 5-page blocks first, weak first */
+function frInfo(D,ms){const P=[],RP=new Set(),LR={},WK=new Set();
+ for(let p=1;p<=TP();p++)if(fullPage(ms,p))P.push(p);
+ for(const d in S.tasks){const rec=S.tasks[d];for(const k in rec){const o=rec[k];if(!o.r)continue;
+  if(k==='new'&&o.done&&d<=D&&dn(D)-dn(d)<7)for(let h=o.r[0];h<=o.r[1];h++)RP.add(pgOf(h));
+  if(k[0]==='f'&&o.done)for(let p=o.r[0];p<=o.r[1];p++)if(!LR[p]||LR[p]<d)LR[p]=d;
+  if(o.weak){const pg=(k[0]==='f'||k==='w')?o.r:[pgOf(o.r[0]),pgOf(o.r[1])];for(let p=pg[0];p<=pg[1];p++)WK.add(p)}}}
+ const B={};P.filter(p=>!RP.has(p)).forEach(p=>{const b=Math.floor((p-1)/5)*5+1;(B[b]=B[b]||[]).push(p)});
+ const blocks=Object.keys(B).map(b=>{const ps=B[b],wk=ps.some(p=>WK.has(p)),old=ps.reduce((m,p)=>(LR[p]||'0')<m?(LR[p]||'0'):m,'9');return{b:+b,ps,wk,old,key:wk?'':old}})
+  .sort((x,y)=>x.key<y.key?-1:x.key>y.key?1:x.b-y.b);
+ const target=Math.min(S.settings.friMax,Math.max(2,Math.ceil(P.length/8)));
+ return{P,RP,LR,WK,blocks,target}}
+
+function dayTasks(D){const rec=S.tasks[D]||{},L=[],fri=pd(D).getDay()===5,ms=memSet(D),p=ptr(ms),cap=S.settings.revCap;
+ const ck=k=>k[0]==='f'?'f':k;
+ for(const k in rec)if(rec[k].done&&rec[k].r)L.push({key:k,cat:ck(k),mand:k!=='w',r:rec[k].r,pg:k[0]==='f'||k==='w',done:true});
+ const has=k=>L.some(t=>t.key===k),add=(key,mand,r,pg)=>L.push({key,cat:ck(key),mand,r,pg,done:false});
+ if(!fri){
+  if(!has('new')&&p<TH())add('new',true,[p,p],false);
+  let a=p;while(a>0&&ms.has(a-1)&&p-a<4)a--;
+  if(a<p&&!has('rec'))add('rec',true,[a,p-1],false);
+  const ss=TP()===604?2*(SP[surIdx(pgOf(Math.min(p,TH()-1)))]-1):Math.max(0,p-3*cap);
+  let c=a-1;if(c>=ss&&ms.has(c)){let c0=c;while(c0-1>=ss&&ms.has(c0-1))c0--;const n=Math.ceil((c-c0+1)/cap),i=dn(D)%n;
+   if(!has('cur'))add('cur',true,[c0+i*cap,Math.min(c,c0+(i+1)*cap-1)],false)}
+ }else{
+  const F=frInfo(D,ms);let rem=F.target-L.filter(t=>t.cat==='f').reduce((s,t)=>s+t.r[1]-t.r[0]+1,0);
+  for(const bk of F.blocks){if(rem<=0)break;if(has('f'+bk.b))continue;add('f'+bk.b,true,[bk.ps[0],bk.ps[bk.ps.length-1]],true);rem-=bk.ps.length}
+  const rp=F.P.filter(x=>F.RP.has(x));
+  if(S.settings.friRecent&&rp.length&&!has('w'))add('w',false,[rp[0],rp[rp.length-1]],true)}
+ return L.sort((x,y)=>ORD.indexOf(x.cat)-ORD.indexOf(y.cat)||x.r[0]-y.r[0])}
+
+function tog(D,k){const L=dayTasks(D),t=L.find(x=>x.key===k);if(!t)return;
+ if(!S.plans[D])S.plans[D]=L.filter(x=>x.mand).map(x=>x.key);
+ const rec=S.tasks[D]=S.tasks[D]||{},o=rec[k]=rec[k]||{};
+ if(t.done)o.done=false;else{o.done=true;o.r=t.r}save();render()}
+function setDetail(D,k,f,v){const t=dayTasks(D).find(x=>x.key===k);const rec=S.tasks[D]=S.tasks[D]||{},o=rec[k]=rec[k]||{};if(t&&!o.r)o.r=t.r;o[f]=v;save()}
+
+/* ---------- statuses & stats ---------- */
+const firstDate=()=>Object.keys(S.tasks).sort()[0]||today();
+function st(D){const rec=S.tasks[D]||{},pl=S.plans[D];const dn_=Object.keys(rec).filter(k=>rec[k].done);
+ if(!dn_.length)return D<today()&&D>=firstDate()?'miss':'';
+ return pl&&pl.length&&pl.every(k=>rec[k]&&rec[k].done)?'full':'part'}
+function pct(D){const m=dayTasks(D).filter(t=>t.mand);if(!m.length)return 0;return Math.round(m.filter(t=>t.done).length/m.length*100)}
+function weekPct(D){const ws=addD(D,-((pd(D).getDay()+1)%7));let s=0,n=0;for(let i=0;i<7;i++){const d=addD(ws,i);if(d>today())break;n++;s+=pct(d)}return n?Math.round(s/n):0}
+function streak(){let d=today(),n=0;if(st(d)!=='full')d=addD(d,-1);while(st(d)==='full'){n++;d=addD(d,-1)}return n}
+function surahStats(ms){let started=0,done=0;SP.forEach((s,i)=>{const e=Math.max(s,(SP[i+1]||605)-1);let any=false,all=true;for(let p=s;p<=e;p++){if(ms.has(2*p-2)||ms.has(2*p-1))any=true;if(!fullPage(ms,p))all=false}if(all)done++;else if(any)started++});return{started,done}}
+function counts(){let nw=0,rv=0,first='';for(const d in S.tasks)for(const k in S.tasks[d])if(S.tasks[d][k].done){if(k==='new'){nw++;if(!first||d<first)first=d}else rv++}return{nw,rv,first}}
+
+/* ---------- views ---------- */
+function banner(){let h='';
+ if(!storageOK)h+=`<div class="card warn"><b>تحذير:</b> تعذّر الحفظ في ذاكرة المتصفح (قد تكون في وضع التصفح الخاص). صدِّر نسخة احتياطية الآن.</div>`;
+ const lb=S.settings.lastBackup,has=Object.keys(S.tasks).length>0;
+ if(has&&(!lb||Date.now()-lb>7*864e5))h+=`<div class="card warn">تذكير أسبوعي: لم تأخذ نسخة احتياطية منذ أكثر من أسبوع.<br><button class="b" data-a="exp">تصدير نسخة احتياطية</button></div>`;
+ return h}
+function taskH(D,t){const o=(S.tasks[D]||{})[t.key]||{},x=t.pg?rlp(t.r[0],t.r[1]):rl(t.r[0],t.r[1]);
+ return `<div class="task ${t.cat==='new'?'new':''} ${t.done?'done':''}"><button class="chk" data-a="tog" data-d="${D}" data-k="${t.key}" aria-pressed="${t.done}" aria-label="تعليم المهمة كمكتملة">✓</button>
+ <div class="tb"><div class="tc">${CATS[t.cat]}${t.mand?'':'<i>اختيارية</i>'}</div><div class="tt">${x.t}</div><div class="ts">${x.s}</div>
+ <details><summary>ملاحظات وصعوبة</summary><textarea rows="2" placeholder="ملاحظات أو أخطاء" data-a="f" data-d="${D}" data-k="${t.key}" data-f="note">${(o.note||'').replace(/</g,'&lt;')}</textarea>
+ <select data-a="f" data-d="${D}" data-k="${t.key}" data-f="diff" aria-label="الصعوبة">${['','سهل','متوسط','صعب'].map((v,i)=>`<option value="${v}" ${o.diff===v?'selected':''}>${i?'الصعوبة: '+v:'الصعوبة: غير محددة'}</option>`).join('')}</select>
+ <label class="ck"><input type="checkbox" data-a="f" data-d="${D}" data-k="${t.key}" data-f="weak" ${o.weak?'checked':''}> موضع ضعيف يحتاج عناية</label></details></div></div>`}
+function tasksBlock(D){const L=dayTasks(D),m=L.filter(t=>t.mand),p=m.length?Math.round(m.filter(t=>t.done).length/m.length*100):0,fri=pd(D).getDay()===5;
+ let h=`<div class="card"><div class="row"><b>إنجاز اليوم</b><span>${N(p)}٪</span></div><div class="bar"><i style="width:${p}%"></i></div><small>${fri?'الجمعة: مراجعة طويلة المدى، بلا حفظ جديد.':'السبت–الخميس: حفظ نصف صفحة جديد مع المراجعة.'}</small></div>`;
+ if(D<today()&&st(D)==='miss')h+=`<div class="card warn">يوم فائت: لم يُسجَّل فيه إنجاز. الحفظ يستمر من آخر موضع أتممتَه، ولا يُعلَّم شيء تلقائيًا. إتمام مهمة هنا يسجّلها في هذا اليوم.</div>`;
+ if(!L.length)h+=`<div class="card">${fri?'لا يوجد حفظ قديم بعد؛ ستظهر هنا المراجعة الطويلة عند تراكم الحفظ.':'اكتملت صفحات المصحف في الخطة. بارك الله فيك!'}</div>`;
+ return h+L.map(t=>taskH(D,t)).join('')}
+const MOT=['القليل كل يوم مع الاستمرار خير من جهد كبير ثم انقطاع.','اقرأ على معلّم أو شخص موثوق ليصحّح لك التلاوة والتجويد.','ثبّت وقتًا ثابتًا للحفظ كل يوم.'];
+function home(){const D=today(),ms=memSet(),pg=pagesMem(ms),tp=TP(),pc=Math.round(pg/tp*1000)/10;
+ return `<h1>مخطط حفظ القرآن</h1><div>${gdate(D)}</div><small>${hij(D)?hij(D)+' (تقويم أم القرى — يحسبه المتصفح وقد يختلف يومًا)':''}</small>`+banner()+
+ `<div class="card"><div class="row"><b>التقدم نحو ختم القرآن</b><span>${N(pc)}٪</span></div><div class="bar"><i style="width:${pc}%"></i></div><small>${N(pg)} من ${N(tp)} صفحة محفوظة (لا تُحتسب المراجعة)</small></div>`+
+ `<h2>مهام اليوم</h2>`+tasksBlock(D)+(S.settings.motiv?`<p class="mut">${MOT[dn(D)%MOT.length]}</p>`:'')+
+ `<p class="mut">علامة الإنجاز تعني إتمام المهمة فقط، ولا تثبت جودة الحفظ. التطبيق لا يقيّم التجويد.</p>`}
+function dayView(){const D=selDate;
+ return `<div class="row"><button class="b o" data-a="day" data-n="1" aria-label="اليوم السابق">→</button><div style="text-align:center"><b>${gdate(D)}</b><br><small>${hij(D)}</small></div><button class="b o" data-a="day" data-n="-1" aria-label="اليوم التالي">←</button></div>
+ <div class="row"><small>${D===today()?'اليوم':''}</small><button class="b o" data-a="day" data-n="0">العودة إلى اليوم</button></div>`+tasksBlock(D)+
+ `<p class="mut">اسم السورة يُحدَّد من جدول بدايات السور؛ قد تشترك صفحة بداية السورة مع آخر السورة السابقة. نصف الصفحة قد ينتهي وسط آية.</p>`}
+function calView(){const t=new Date();if(!calM)calM={y:t.getFullYear(),m:t.getMonth()};const f=new Date(calM.y,calM.m,1),off=(f.getDay()+1)%7,dim=new Date(calM.y,calM.m+1,0).getDate();
+ let g=['س','ح','ن','ث','ر','خ','ج'].map(x=>`<span>${x}</span>`).join('');for(let i=0;i<off;i++)g+='<span></span>';
+ for(let d=1;d<=dim;d++){const D=iso(new Date(calM.y,calM.m,d));g+=`<button class="${st(D)} ${D===today()?'sel':''}" data-a="goto" data-d="${D}" aria-label="${gdate(D)}">${N(d)}</button>`}
+ const mn=new Intl.DateTimeFormat('ar-EG-u-nu-'+nu(),{month:'long',year:'numeric'}).format(f);
+ return `<h1>التقويم</h1><div class="row"><button class="b o" data-a="cal" data-n="1">→</button><b>${mn}</b><button class="b o" data-a="cal" data-n="-1">←</button></div><div class="card"><div class="cal">${g}</div></div>
+ <small>■ أخضر: يوم مكتمل — ▨ فاتح: جزئي — إطار أحمر: فائت — التاريخ الملوّن بإطار ذهبي: اليوم</small>`}
+function reviewView(){const D=today(),ms=memSet(),F=frInfo(D,ms),c=S.settings.revCap;
+ const due=F.blocks.slice(0,10).map(b=>{const r=rlp(b.ps[0],b.ps[b.ps.length-1]);return`<div class="card"><b>${r.t}</b>${b.wk?' ⚑':''}<br><small>${r.s} — ${b.old==='0'||b.old==='9'?'لم تُراجع بعد':'آخر مراجعة: '+gdate(b.old)}</small></div>`}).join('');
+ const weak=[];for(const d in S.tasks)for(const k in S.tasks[d]){const o=S.tasks[d][k];if(o.weak&&o.r){const x=(k[0]==='f'||k==='w')?rlp(o.r[0],o.r[1]):rl(o.r[0],o.r[1]);weak.push(`<div class="card"><b>${x.t}</b><br><small>${x.s} — ${gdate(d)}${o.note?' — '+o.note.replace(/</g,'&lt;'):''}</small></div>`)}}
+ return `<h1>المراجعة</h1><div class="card"><b>كيف تُحسب المراجعة؟</b><p class="mut">اليومية (السبت–الخميس): آخر ٤ أنصاف صفحات محفوظة تُراجع كل يوم. وبقية السورة الحالية تُقسَّم إلى أقسام بحجم ${N(c)} نصف صفحة وتدور بينها يوميًا (إن كانت أقصر من ذلك تُراجع كاملة).<br>الجمعة: الهدف = الأصغر بين (الحد الأقصى ${N(S.settings.friMax)} صفحة) و(مجموع المحفوظ ÷ ٨ مقرَّبًا لأعلى، بحد أدنى ٢) = <b>${N(F.target)} صفحة</b> الآن. تُختار كتل من ٥ صفحات: الأقدم مراجعةً أولًا، والمعلَّمة ضعيفة قبلها، ويُستثنى حفظ آخر ٧ أيام (يظهر في مراجعة اختيارية). ما لم تُنجزه يبقى الأقدم فيُعرض في الجمعة التالية دون تكديس. هذه قاعدة بسيطة وشفافة، وليست «مثالية علميًا».</p></div>
+ <h2>المستحقة للمراجعة طويلة المدى</h2>${due||'<div class="card">لا يوجد حفظ قديم بعد.</div>'}<h2>مواضع ضعيفة</h2>${weak.join('')||'<div class="card">لم تعلّم مواضع ضعيفة بعد. استخدم «ملاحظات وصعوبة» داخل أي مهمة.</div>'}`}
+function statsView(){const ms=memSet(),pg=pagesMem(ms),sv=surahStats(ms),c=counts(),tp=TP(),D=today();let est='لا تكفي البيانات بعد (تحتاج ٧ أيام على الأقل).';
+ if(c.first&&dn(D)-dn(c.first)>=6&&c.nw){const rate=c.nw/2/(dn(D)-dn(c.first)+1),left=tp-pg;if(left<=0)est='اكتمل المصحف.';else est='حوالي '+gdate(addD(D,Math.ceil(left/rate)))+' (تقدير على وتيرتك الفعلية، وقد يتغيّر)'}
+ const hist=[];Object.keys(S.tasks).sort().reverse().forEach(d=>{for(const k in S.tasks[d]){const o=S.tasks[d][k];if(o.done&&o.r&&hist.length<25){const pgm=k[0]==='f'||k==='w';hist.push(`<div class="card"><b>${CATS[k[0]==='f'?'f':k]}</b> — ${(pgm?rlp(o.r[0],o.r[1]):rl(o.r[0],o.r[1])).t}<br><small>${gdate(d)}</small></div>`)}}});
+ return `<h1>الإحصائيات</h1><div class="grid">
+ <div class="stat"><b>${N(pg)}</b>صفحة محفوظة</div><div class="stat"><b>${N(c.nw)}</b>مهمة حفظ (نصف صفحة)</div>
+ <div class="stat"><b>${N(sv.started)}</b>سور بدأتُها</div><div class="stat"><b>${N(sv.done)}</b>سور أكملتُها (تقريبي بحدود الصفحات)</div>
+ <div class="stat"><b>${N(c.rv)}</b>مهمة مراجعة مكتملة</div><div class="stat"><b>${N(weekPct(D))}٪</b>إنجاز هذا الأسبوع</div>
+ <div class="stat"><b>${N(streak())}</b>أيام متتالية مكتملة</div><div class="stat"><b>${N(Math.round(pg/tp*1000)/10)}٪</b>من المصحف</div></div>
+ <div class="card"><b>الختم المتوقع:</b> ${est}</div><h2>سجل الإنجاز الأخير</h2>${hist.join('')||'<div class="card">لا يوجد سجل بعد.</div>'}`}
+function settingsView(){const s=S.settings,i=(k,l,t='number',x='')=>`<label>${l}<input data-s="${k}" type="${t}" ${x} value="${String(s[k]).replace(/"/g,'&quot;')}" ${t==='number'?'inputmode="numeric"':''}></label>`;
+ return `<h1>الإعدادات</h1><div class="card"><b>نقطة البداية</b>${i('startPage','صفحة بدء الحفظ الجديد (الافتراضي ١: الفاتحة ثم البقرة)')}
+ <label>صفحات محفوظة سابقًا (مثال: ١-٢٠، ٥٨٢-٦٠٤)<input data-s="prior" type="text" value="${s.prior.replace(/"/g,'&quot;')}"></label>
+ <small>تُحتسب في إجمالي المحفوظ وفي المراجعة الطويلة. التعديل لا يمسّ سجل المهام المكتملة.</small>${i('totalPages','عدد صفحات المصحف (٦٠٤ لمصحف المدينة؛ أسماء السور تُعرض فقط مع ٦٠٤)')}</div>
+ <div class="card"><b>الوقت والمراجعة</b>${i('timeMin','وقت الدراسة اليومي المتاح (دقيقة، للتنظيم الشخصي)')}${i('revCap','حجم قسم مراجعة السورة الحالية (أنصاف صفحات)')}${i('friMax','الحد الأقصى لمراجعة الجمعة (صفحات)')}
+ <label class="ck"><input type="checkbox" data-s="friRecent" ${s.friRecent?'checked':''}> مراجعة اختيارية لحفظ الأسبوع يوم الجمعة</label>
+ <label class="ck"><input type="checkbox" data-s="motiv" ${s.motiv?'checked':''}> إظهار تذكيرات تحفيزية</label></div>
+ <div class="card"><b>المظهر</b><label>الأرقام<select data-s="digits"><option value="ar" ${s.digits==='ar'?'selected':''}>هندية (١٢٣)</option><option value="en" ${s.digits==='en'?'selected':''}>غربية (123)</option></select></label>
+ <label>السمة<select data-s="theme"><option value="light" ${s.theme==='light'?'selected':''}>فاتحة</option><option value="dark" ${s.theme==='dark'?'selected':''}>داكنة</option></select></label></div>
+ <div class="card"><b>النسخ الاحتياطي</b><br><button class="b" data-a="exp">تصدير نسخة احتياطية (JSON)</button><br><label class="b o" style="display:inline-block;text-align:center;border:1px solid var(--g);border-radius:14px;padding:10px 16px;cursor:pointer;color:var(--g)">استيراد نسخة احتياطية<input type="file" accept=".json,application/json" data-a="imp" style="display:none"></label>
+ <br><button class="b o" data-a="csv">تصدير السجل (CSV)</button> <button class="b o" data-a="prt">طباعة تقرير التقدم</button>
+ <p class="mut">آخر نسخة: ${s.lastBackup?gdate(iso(new Date(s.lastBackup))):'لا توجد'}. ذاكرة المتصفح ليست بديلًا عن نسخة خارجية؛ احفظ الملف في «الملفات» أو iCloud.</p></div>
+ <div class="card"><b>منطقة حذف</b><br><button class="b d" data-a="reset">حذف كل التقدم</button></div>
+ <div class="card mut"><b>ملاحظات مهمة</b><br>• تقدّمك محفوظ في هذا المتصفح وعلى هذا الجهاز فقط، ولا يُرسَل إلى أي خادم ولا يراه أحد. تغيير المتصفح أو الجهاز أو النطاق يعني بدء بيانات جديدة، فاستخدم النسخ الاحتياطي للنقل.<br>• جدول بدايات السور (ثابت في أعلى الشيفرة) لمصحف المدينة؛ تحقق منه من مصحفك. لا يتضمن التطبيق نص القرآن.<br>• فتح الملف مباشرة من «الملفات» قد لا يحفظ التقدم بين الجلسات في بعض إصدارات iOS؛ ويفضَّل الفتح من سفاري ثم «إضافة إلى الشاشة الرئيسية». لا نضمن بقاء البيانات في كل الحالات، فصدِّر نسخة أسبوعيًا.<br>• لا يقيّم التطبيق التجويد؛ اقرأ على معلّم أو شخص موثوق.</div>`}
+
+function render(){document.documentElement.dataset.theme=S.settings.theme;if(!selDate)selDate=today();
+ const V={home,today:dayView,cal:calView,rev:reviewView,stats:statsView,set:settingsView}[tab]();
+ const T=[['home','⌂','الرئيسية'],['today','☑','خطة اليوم'],['cal','▦','التقويم'],['rev','↺','المراجعة'],['stats','▥','الإحصائيات'],['set','⚙','الإعدادات']];
+ document.getElementById('app').innerHTML=`<main>${V}</main><nav>${T.map(x=>`<button class="${tab===x[0]?'on':''}" data-a="tab" data-t="${x[0]}"><b>${x[1]}</b>${x[2]}</button>`).join('')}</nav>`}
+
+/* ---------- backup / export ---------- */
+async function exp(){const txt=JSON.stringify({app:APP,version:VER,exported:new Date().toISOString(),settings:S.settings,tasks:S.tasks,plans:S.plans},null,1),name='quran-planner-backup-'+today()+'.json';
+ try{const f=new File([txt],name,{type:'application/json'});
+  if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f]});
+  else{const u=URL.createObjectURL(new Blob([txt],{type:'application/json'})),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),5000)}
+  S.settings.lastBackup=Date.now();save();render();toast('تم تجهيز ملف النسخة الاحتياطية. تأكد أنه حُفظ في «الملفات» أو iCloud.')}
+ catch(e){toast(e&&e.name==='AbortError'?'أُلغيت المشاركة ولم تُنشأ نسخة.':'تعذّر إنشاء النسخة الاحتياطية.')}}
+function imp(f){if(!f)return;const r=new FileReader();r.onerror=()=>toast('تعذّرت قراءة الملف.');
+ r.onload=()=>{let o;try{o=JSON.parse(r.result);if(o.app!==APP||typeof o.version!=='number'||o.version>VER||!valid(o))throw 0;
+  for(const d in o.tasks)if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||!o.tasks[d]||typeof o.tasks[d]!=='object')throw 0}
+  catch(e){toast('الملف غير صالح أو من إصدار غير متوافق. اختر ملف نسخة احتياطية صدّرته من هذا التطبيق.');return}
+  if(!confirm('سيتم استبدال تقدّمك الحالي بالنسخة المستوردة. هل تريد المتابعة؟'))return;
+  S={v:VER,settings:{...DEF,...o.settings},tasks:o.tasks,plans:o.plans&&typeof o.plans==='object'?o.plans:{}};fixS();save();render();toast('تم استيراد النسخة الاحتياطية بنجاح.')};r.readAsText(f)}
+function csv(){const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"',R=[['التاريخ','اليوم','الفئة','النطاق','الحالة','ملاحظات','الصعوبة','ضعيف']];
+ Object.keys(S.tasks).sort().forEach(d=>{for(const k in S.tasks[d]){const o=S.tasks[d][k];if(!o.r)continue;const pgm=k[0]==='f'||k==='w';R.push([d,WD[pd(d).getDay()],CATS[k[0]==='f'?'f':k],(pgm?rlp(o.r[0],o.r[1]):rl(o.r[0],o.r[1])).t,o.done?'مكتملة':'غير مكتملة',o.note,o.diff,o.weak?'نعم':''])}});
+ const u=URL.createObjectURL(new Blob(['\ufeff'+R.map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=u;a.download='quran-planner-history-'+today()+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),5000);toast('تم تجهيز ملف السجل (CSV).')}
+function prt(){const ms=memSet(),pg=pagesMem(ms),sv=surahStats(ms),c=counts();
+ document.getElementById('print').innerHTML=`<h1>تقرير تقدّم حفظ القرآن</h1><p>${gdate(today())}</p><table><tr><th>الصفحات المحفوظة</th><td>${N(pg)} من ${N(TP())}</td></tr><tr><th>مهام الحفظ المكتملة</th><td>${N(c.nw)}</td></tr><tr><th>مهام المراجعة المكتملة</th><td>${N(c.rv)}</td></tr><tr><th>سور بدأتها / أكملتها</th><td>${N(sv.started)} / ${N(sv.done)}</td></tr><tr><th>أيام متتالية</th><td>${N(streak())}</td></tr></table>`;window.print()}
+
+/* ---------- events ---------- */
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;
+ if(a==='tab'){tab=b.dataset.t;if(tab==='today')selDate=selDate||today();window.scrollTo(0,0);render()}
+ else if(a==='tog')tog(b.dataset.d,b.dataset.k);
+ else if(a==='day'){const n=+b.dataset.n;selDate=n?addD(selDate,-n):today();render()}
+ else if(a==='goto'){selDate=b.dataset.d;tab='today';window.scrollTo(0,0);render()}
+ else if(a==='cal'){const d=new Date(calM.y,calM.m-(+b.dataset.n),1);calM={y:d.getFullYear(),m:d.getMonth()};render()}
+ else if(a==='exp')exp();else if(a==='csv')csv();else if(a==='prt')prt();
+ else if(a==='reset'){if(confirm('سيتم حذف كل التقدم والسجل نهائيًا. هل أنت متأكد؟')&&confirm('تأكيد أخير: هل صدّرتَ نسخة احتياطية وتريد الحذف؟')){S={v:VER,settings:{...DEF},tasks:{},plans:{}};save();render();toast('تم حذف كل التقدم.')}}});
+document.addEventListener('change',e=>{const t=e.target;
+ if(t.dataset.a==='imp'){imp(t.files[0]);t.value='';return}
+ if(t.dataset.a==='f'){setDetail(t.dataset.d,t.dataset.k,t.dataset.f,t.type==='checkbox'?t.checked:t.value);return}
+ if(t.dataset.s){const k=t.dataset.s;S.settings[k]=t.type==='checkbox'?t.checked:t.type==='number'?+t.value:t.value;fixS();save();render()}});
+load();selDate=today();render();
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
+try{if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js')}catch(e){}
+</script>
+</body>
+</html>
