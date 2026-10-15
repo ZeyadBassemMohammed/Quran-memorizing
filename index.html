@@ -154,7 +154,7 @@ function dayTasks(D){const s=S.settings,rec=S.tasks[D]||{},L=[],dow=pd(D).getDay
    add('cur',true,[c0+bi*cap,Math.min(c,c0+(bi+1)*cap-1)],false)}
  }
  if(isR){const F=frInfo(D,ms);let rem=F.target-L.filter(t=>t.cat==='f').reduce((x,t)=>x+t.r[1]-t.r[0]+1,0);
-  for(const bk of F.blocks){if(rem<=0)break;if(has('f'+bk.b))continue;add('f'+bk.b,true,[bk.ps[0],bk.ps[bk.ps.length-1]],true);rem-=bk.ps.length}
+  for(const bk of F.blocks){if(rem<=0)break;const lr=x=>F.LR[x]||'0',ps=bk.ps.slice().sort((a,b)=>lr(a)<lr(b)?-1:lr(a)>lr(b)?1:a-b).filter((x,i,a)=>lr(x)===lr(a[0])).slice(0,rem).sort((a,b)=>a-b),runs=[];let s0=ps[0];for(let i=1;i<=ps.length;i++)if(i===ps.length||ps[i]!==ps[i-1]+1){runs.push([s0,ps[i-1]]);s0=ps[i]}runs.forEach(q=>{if(!has('f'+q[0]))add('f'+q[0],true,q,true)});rem-=ps.length}
   const rp=F.P.filter(x=>F.RP.has(x));
   if(s.friRecent&&rp.length&&!has('w'))add('w',false,[rp[0],rp[rp.length-1]],true)}
  return L.sort((x,y)=>ORD.indexOf(x.cat)-ORD.indexOf(y.cat)||x.r[0]-y.r[0])}
