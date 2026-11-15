@@ -13,80 +13,73 @@
 <style>
 :root{--bg:#F6F1E4;--card:#FFFCF4;--ink:#1E2B22;--mut:#66756A;--g:#1F4333;--sage:#DDE5D2;--gold:#A98532;--line:#E4DCC5;--bad:#9B4A3C}
 :root[data-theme=dark]{--bg:#141C17;--card:#1D2822;--ink:#EDEBE0;--mut:#9DAFA2;--g:#8FBF9F;--sage:#2A3A31;--gold:#D2AE5E;--line:#2F3F35;--bad:#D58A7B}
+:root[data-pal=ocean]:not([data-theme=dark]){--bg:#EEF3F6;--card:#FAFCFD;--ink:#1B2A33;--mut:#5F7380;--g:#1F4A63;--sage:#D5E3EA;--line:#D9E3E9}
+:root[data-pal=rose]:not([data-theme=dark]){--bg:#F8F0EE;--card:#FFFBFA;--ink:#2E2222;--mut:#7A6664;--g:#7A3B45;--sage:#EBD8D6;--line:#EADBD8}
+:root[data-pal=sand]:not([data-theme=dark]){--bg:#F3EBDD;--card:#FBF6EA;--ink:#2B2418;--mut:#74694F;--g:#5C4A1F;--sage:#E4D9BC;--line:#E2D6B8}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{background:var(--bg)}
-body{margin:0;font-family:"Noto Sans Arabic",Tajawal,"SF Arabic","Geeza Pro",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.8;font-size:17px;padding:env(safe-area-inset-top) 0 calc(78px + env(safe-area-inset-bottom))}
+html{background:var(--bg);overflow-x:hidden;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:"Noto Sans Arabic",Tajawal,"SF Arabic","Geeza Pro",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.8;font-size:17px;overflow-wrap:anywhere;padding:env(safe-area-inset-top) 0 calc(78px + env(safe-area-inset-bottom))}
 main{max-width:560px;margin:0 auto;padding:14px 16px}
-h1{font-size:24px;margin:6px 0 0;color:var(--g)}
-h2{font-size:18px;margin:22px 0 8px;color:var(--g)}
+h1{font-size:24px;margin:6px 0 0;color:var(--g)}h2{font-size:18px;margin:22px 0 8px;color:var(--g)}
 small,.mut{color:var(--mut);font-size:14px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:10px 0;box-shadow:0 1px 3px rgba(31,67,51,.07)}
 .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.bar{height:10px;border-radius:6px;background:var(--sage);overflow:hidden;margin:8px 0}
-.bar i{display:block;height:100%;background:var(--g);border-radius:6px}
+.bar{height:10px;border-radius:6px;background:var(--sage);overflow:hidden;margin:8px 0}.bar i{display:block;height:100%;background:var(--g);border-radius:6px}
 .task{display:flex;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin:10px 0}
-.task.new{border:2px solid var(--gold)}
-.task.new .tt{font-size:20px}
-.task.done{opacity:.72;background:var(--sage)}
+.task.new{border:2px solid var(--gold)}.task.new .tt{font-size:20px}.task.done{opacity:.72;background:var(--sage)}
 .chk{flex:none;width:48px;height:48px;border-radius:50%;border:2px solid var(--g);background:transparent;color:transparent;font-size:24px;cursor:pointer}
 .task.done .chk{background:var(--g);color:var(--bg)}
-.tb{flex:1;min-width:0}
-.tc{font-size:14px;color:var(--gold);font-weight:700}
-.tc i{color:var(--mut);font-style:normal;font-weight:400;margin-inline-start:6px}
-.tt{font-weight:700}
-.ts{color:var(--mut);font-size:14px}
+.tb{flex:1;min-width:0}.tc{font-size:14px;color:var(--gold);font-weight:700}.tc i{color:var(--mut);font-style:normal;font-weight:400;margin-inline-start:6px}
+.tt{font-weight:700}.ts{color:var(--mut);font-size:14px}
 details{margin-top:6px}summary{color:var(--g);font-size:14px;cursor:pointer;min-height:32px}
 textarea,input,select{width:100%;font:inherit;font-size:16px;padding:10px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink);margin:4px 0}
 label{display:block;margin-top:10px;font-size:15px}
 label.ck{display:flex;gap:10px;align-items:center}label.ck input{width:24px;height:24px;margin:0}
 button.b{font:inherit;font-size:16px;min-height:46px;padding:8px 16px;border-radius:14px;border:1px solid var(--g);background:var(--g);color:var(--bg);cursor:pointer;margin:4px 0}
 button.b.o{background:transparent;color:var(--g)}button.b.d{background:transparent;color:var(--bad);border-color:var(--bad)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
-.stat b{display:block;font-size:22px;color:var(--g)}
-.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center}
-.cal span{font-size:13px;color:var(--mut)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid>*{min-width:0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px}.stat b{display:block;font-size:22px;color:var(--g)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center}.cal span{font-size:13px;color:var(--mut)}
 .cal button{font:inherit;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
-.cal .full{background:var(--g);color:var(--bg)}.cal .part{background:var(--sage);border-color:var(--gold)}.cal .miss{border-color:var(--bad);color:var(--bad)}.cal .sel{outline:2px solid var(--gold)}
+.cal .full{background:var(--g);color:var(--bg)}.cal .part{background:var(--sage);border-color:var(--gold)}.cal .miss{border-color:var(--bad);color:var(--bad)}.cal .sel{outline:2px solid var(--gold)}.cal .rest{border-style:dashed;border-color:var(--gold)}
 .warn{border-color:var(--gold);background:var(--sage)}
-nav{position:fixed;bottom:0;inset-inline:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}
-nav button{flex:0 0 auto;min-width:74px;font:inherit;font-size:12px;background:none;border:0;color:var(--mut);min-height:48px;cursor:pointer}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}.chip{font:inherit;min-height:42px;padding:6px 14px;border-radius:20px;border:1px solid var(--g);background:transparent;color:var(--g);cursor:pointer}.chip.on{background:var(--g);color:var(--bg)}
+nav{position:fixed;bottom:0;inset-inline:0;display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;background:var(--card);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom))}nav::-webkit-scrollbar{display:none}
+nav button{flex:0 0 auto;min-width:74px;padding:0 6px;font:inherit;font-size:12px;background:none;border:0;color:var(--mut);min-height:48px;cursor:pointer}
 nav button.on{color:var(--g);font-weight:700}nav button b{display:block;font-size:20px;line-height:1.2}
 #toast{position:fixed;inset-inline:16px;bottom:calc(92px + env(safe-area-inset-bottom));background:var(--g);color:var(--bg);padding:12px 16px;border-radius:14px;display:none;z-index:9;text-align:center}
 #print{display:none}
 @media print{body>*:not(#print){display:none!important}#print{display:block;padding:20px;color:#000}#print td,#print th{border:1px solid #999;padding:4px}}
-:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
-nav{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}nav::-webkit-scrollbar{display:none}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}.chip{font:inherit;min-height:42px;padding:6px 14px;border-radius:20px;border:1px solid var(--g);background:transparent;color:var(--g);cursor:pointer}.chip.on{background:var(--g);color:var(--bg)}
-html{overflow-x:hidden;-webkit-text-size-adjust:100%}body{overflow-wrap:anywhere}.grid>*{min-width:0}
 @media(max-width:380px){body{font-size:15px}main{padding:10px}h1{font-size:20px}.task{padding:8px;gap:8px}.chk{width:42px;height:42px}.stat b{font-size:19px}.card{padding:10px 12px}}
 @media(max-width:340px){.grid{grid-template-columns:1fr}.cal{gap:3px}}
-.cal .rest{border-style:dashed;border-color:var(--gold)}
-:root[data-pal=ocean]:not([data-theme=dark]){--bg:#EEF3F6;--card:#FAFCFD;--ink:#1B2A33;--mut:#5F7380;--g:#1F4A63;--sage:#D5E3EA;--line:#D9E3E9}
-:root[data-pal=rose]:not([data-theme=dark]){--bg:#F8F0EE;--card:#FFFBFA;--ink:#2E2222;--mut:#7A6664;--g:#7A3B45;--sage:#EBD8D6;--line:#EADBD8}
-:root[data-pal=sand]:not([data-theme=dark]){--bg:#F3EBDD;--card:#FBF6EA;--ink:#2B2418;--mut:#74694F;--g:#5C4A1F;--sage:#E4D9BC;--line:#E2D6B8}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 </style>
 </head>
 <body>
-<div id="app"><main><h1>مخطط حفظ القرآن</h1><p>إذا بقيت هذه الرسالة ظاهرة فالتطبيق لا يعمل في هذا العارض: لأن JavaScript متوقف، كما في معاينة «الملفات». افتح الملف في متصفح يشغّل الشيفرة (سفاري بعد رفعه على استضافة مجانية، أو تطبيق Documents من Readdle).</p></main></div><div id="toast" role="status"></div><div id="print"></div>
+<div id="app"><main><h1>حفظ القرآن</h1><p>إذا بقيت هذه الرسالة ظاهرة فالتطبيق لا يعمل في هذا العارض: لأن JavaScript متوقف، كما في معاينة «الملفات». افتح الملف في متصفح يشغّل الشيفرة (سفاري بعد رفعه على استضافة مجانية، أو تطبيق Documents من Readdle).</p></main></div><div id="toast" role="status"></div><div id="print"></div>
 <script>
-window.onerror=function(m,s,l){var a=document.getElementById('app');if(a)a.innerHTML='<main><h1>حدث خطأ في التطبيق</h1><p dir="ltr" style="text-align:left">'+String(m)+' (line '+l+')</p><p>أرسل لي هذا النص لأصلحه.</p></main>'};
+window.onerror=function(m,s,l){var a=document.getElementById('app');if(a)a.innerHTML='<main><h1>حدث خطأ في التطبيق</h1><p dir="ltr" style="text-align:left">'+String(m)+' (line '+l+')</p><p>أرسل لي هذا النص لأصلحه. بياناتك لم تُحذف.</p></main>'};
 </script>
 <script>
 'use strict';
-/* ===== Quran structure: Madinah Mushaf (604 pages), Hafs. Surah START pages are a constant table;
-   verify against your own mushaf and correct here if any differs. No verse text is included. ===== */
+/* ===== Quran structure: Madinah Mushaf (604 pages), Hafs. Surah START pages = constant table; verify against your mushaf.
+   No verse text and no verse (ayah) boundaries are included: the finest planning unit is a quarter of a page. ===== */
 const SN='الفاتحة|البقرة|آل عمران|النساء|المائدة|الأنعام|الأعراف|الأنفال|التوبة|يونس|هود|يوسف|الرعد|إبراهيم|الحجر|النحل|الإسراء|الكهف|مريم|طه|الأنبياء|الحج|المؤمنون|النور|الفرقان|الشعراء|النمل|القصص|العنكبوت|الروم|لقمان|السجدة|الأحزاب|سبأ|فاطر|يس|الصافات|ص|الزمر|غافر|فصلت|الشورى|الزخرف|الدخان|الجاثية|الأحقاف|محمد|الفتح|الحجرات|ق|الذاريات|الطور|النجم|القمر|الرحمن|الواقعة|الحديد|المجادلة|الحشر|الممتحنة|الصف|الجمعة|المنافقون|التغابن|الطلاق|التحريم|الملك|القلم|الحاقة|المعارج|نوح|الجن|المزمل|المدثر|القيامة|الإنسان|المرسلات|النبأ|النازعات|عبس|التكوير|الانفطار|المطففين|الانشقاق|البروج|الطارق|الأعلى|الغاشية|الفجر|البلد|الشمس|الليل|الضحى|الشرح|التين|العلق|القدر|البينة|الزلزلة|العاديات|القارعة|التكاثر|العصر|الهمزة|الفيل|قريش|الماعون|الكوثر|الكافرون|النصر|المسد|الإخلاص|الفلق|الناس'.split('|');
 const SP=[1,2,50,77,106,128,151,177,187,208,221,235,249,255,262,267,282,293,305,312,322,332,342,350,359,367,377,385,396,404,411,415,418,428,434,440,446,453,458,467,477,483,489,496,499,502,507,511,515,518,520,523,526,528,531,534,537,542,545,549,551,553,554,556,558,560,562,564,566,568,570,572,574,575,577,578,580,582,583,585,586,587,587,589,590,591,591,592,593,594,595,595,596,596,597,597,598,598,599,599,600,600,601,601,601,602,602,602,603,603,603,604,604,604];
 
-const KEY='quranPlannerV1',APP='quran-planner',VER=2;
-const DEF={startPage:1,prior:'',timeMin:60,revCap:8,friMax:20,digits:'ar',theme:'light',motiv:true,friRecent:true,totalPages:604,lastBackup:0,name:'',memDays:[6,0,1,2,3,4],revDays:[5],amt:1,endPage:604,recentN:4,cycleWeeks:8,extraMax:2,weekStart:6,zoom:'md',hijri:true,pin:''};
-const CATS={new:'حفظ جديد',rec:'مراجعة الحفظ القريب',cur:'مراجعة السورة الحالية',f:'مراجعة طويلة المدى',w:'مراجعة اختيارية لحفظ الأسبوع'};
-const catOf=k=>/^new/.test(k)?'new':k[0]==='f'?'f':k;
-const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const ORD=['new','rec','cur','f','w'];
+const KEY='quranPlannerV1',APP='quran-planner',VER=3,U=4; /* U = planning units per page (quarter pages) */
+const DEF={startPage:1,prior:'',timeMin:60,revCap:16,friMax:20,digits:'ar',theme:'light',motiv:true,friRecent:true,totalPages:604,lastBackup:0,name:'',memDays:[6,0,1,2,3,4],revDays:[5],amt:2,endPage:604,recentN:8,cycleWeeks:8,extraMax:2,weekStart:6,zoom:'md',hijri:true,pin:'',gapDays:14,gapPauseNew:true,autoOld:true,sessOnly:false,tol:2};
+const CATS={new:'حفظ جديد',rec:'مراجعة الحفظ القريب',cur:'مراجعة السورة الحالية',g:'استدراك بعد الانقطاع',f:'مراجعة طويلة المدى',o:'مراجعة من القديم',w:'مراجعة اختيارية لحفظ الأسبوع',z:'جلسة مراجعة',c:'جلسة'};
+const ORD=['new','rec','cur','g','f','o','w','z','c'];
 const WD=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
-let S={v:VER,settings:{...DEF},tasks:{},plans:{},ch:{},owned:[],x:{}},tab='home',selDate='',calM=null,storageOK=true,unlocked=false;
+const PF=[1,.6,1.6,2.5]; /* revision-priority factor by rating: none, easy, medium, hard */
+const RL=['بدون تقييم','سهل','متوسط','صعب'];
+const catOf=k=>/^new/.test(k)?'new':/^[fgo]\d/.test(k)?k[0]:k.startsWith('z_')?'z':k.startsWith('c_')?'c':k;
+const isPg=k=>/^[fgo]\d/.test(k)||k==='w';
+const sidOf=k=>k.startsWith('new_')?k.slice(4):(k.startsWith('c_')||k.startsWith('z_'))?k.slice(2):'';
+const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+let S=null,tab='home',selDate='',calM=null,storageOK=true,unlocked=false,migrated=false;const OP=new Set();
 
 /* ---------- dates ---------- */
 const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
@@ -94,69 +87,114 @@ const pd=s=>{const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c)};
 const dn=s=>{const[a,b,c]=s.split('-').map(Number);return Math.floor(Date.UTC(a,b-1,c)/864e5)};
 const addD=(s,n)=>{const d=pd(s);d.setDate(d.getDate()+n);return iso(d)};
 const today=()=>iso(new Date());
-const N=x=>{x=String(x);return S.settings.digits==='ar'?x.replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]):x};
+const N=x=>{x=String(x);return S.settings.digits==='ar'?x.replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]).replace(/\./g,'٫'):x};
 const nu=()=>S.settings.digits==='ar'?'arab':'latn';
 function gdate(D){try{return new Intl.DateTimeFormat('ar-EG-u-nu-'+nu(),{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(pd(D))}catch(e){return D}}
 function hij(D){if(S.settings.hijri===false)return'';try{return new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura-nu-'+nu(),{day:'numeric',month:'long',year:'numeric'}).format(pd(D))}catch(e){return''}}
+const wsOf=D=>addD(D,-((pd(D).getDay()-S.settings.weekStart+7)%7));
 
-/* ---------- storage ---------- */
+/* ---------- state, migration, storage ---------- */
 const valid=o=>o&&typeof o==='object'&&o.settings&&typeof o.settings==='object'&&o.tasks&&typeof o.tasks==='object'&&!Array.isArray(o.tasks);
-function fixS(){S.x=S.x&&typeof S.x==='object'?S.x:{};S.x.pd=Array.isArray(S.x.pd)?S.x.pd:[];S.x.sd=Array.isArray(S.x.sd)?S.x.sd:[];S.x.pb=Math.max(0,+S.x.pb||0);const s=S.settings,c=(v,a,b,d)=>{v=Math.round(+v);return isNaN(v)?d:Math.min(b,Math.max(a,v))};
- s.totalPages=c(s.totalPages,100,700,604);s.startPage=c(s.startPage,1,s.totalPages,1);s.timeMin=c(s.timeMin,15,600,60);s.revCap=c(s.revCap,2,60,8);s.friMax=c(s.friMax,2,200,20);
- const dl=(a,d)=>Array.isArray(a)?[...new Set(a.map(Number).filter(x=>x>=0&&x<=6))]:d;s.memDays=dl(s.memDays,[6,0,1,2,3,4]);s.revDays=dl(s.revDays,[5]);s.amt=c(s.amt,1,20,1);s.endPage=c(s.endPage,s.startPage,s.totalPages,s.totalPages);s.recentN=c(s.recentN,0,20,4);s.cycleWeeks=c(s.cycleWeeks,1,52,8);s.extraMax=c(s.extraMax,0,10,2);s.weekStart=[6,0,1].includes(+s.weekStart)?+s.weekStart:6;s.zoom=['sm','md','lg'].includes(s.zoom)?s.zoom:'md';s.name=String(s.name||'').slice(0,30);s.pin=typeof s.pin==='string'?s.pin:'';
- s.digits=s.digits==='en'?'en':'ar';s.theme=s.theme==='dark'?'dark':'light';s.prior=String(s.prior||'')}
-function load(){let r=null;try{r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);if(valid(o))S={v:VER,settings:{...DEF,...o.settings},tasks:o.tasks,plans:o.plans&&typeof o.plans==='object'?o.plans:{},ch:o.ch&&typeof o.ch==='object'?o.ch:{},owned:Array.isArray(o.owned)?o.owned:[],x:o.x&&typeof o.x==='object'?o.x:{}}}}
- catch(e){try{if(r)localStorage.setItem(KEY+'_corrupt',r)}catch(x){}storageOK=false}fixS()}
+function mk(o){o=o||{};const rs=o.settings||{},old=!o.u&&Object.keys(o).length>0;
+ const t={v:VER,u:U,settings:{...DEF,...rs},tasks:o.tasks&&typeof o.tasks==='object'?o.tasks:{},plans:o.plans&&typeof o.plans==='object'?o.plans:{},ch:o.ch&&typeof o.ch==='object'?o.ch:{},owned:Array.isArray(o.owned)?o.owned:[],x:o.x&&typeof o.x==='object'?o.x:{},pri:o.pri&&typeof o.pri==='object'?o.pri:{},ss:Array.isArray(o.ss)?o.ss:[]};
+ if(old){migrated=true;migrate(t,rs)}return t}
+/* old data used half-page units: convert ranges to quarter units, turn weak/difficulty marks into the priority map */
+function migrate(t,rs){t.pri={};const oldPg=k=>k[0]==='f'||k==='w';
+ Object.keys(t.tasks).sort().forEach(d=>{const rec=t.tasks[d];if(!rec||typeof rec!=='object')return;for(const k in rec){const o=rec[k];if(!o||!Array.isArray(o.r))continue;const pg=oldPg(k);
+  if(!pg)o.r=[o.r[0]*2,o.r[1]*2+1];
+  const v=(o.weak||o.diff==='صعب')?3:o.diff==='متوسط'?2:o.diff==='سهل'?1:0;
+  if(v){const a=pg?U*(o.r[0]-1):o.r[0],b=pg?U*o.r[1]-1:o.r[1];for(let u=a;u<=b;u++)t.pri[u]=v}}});
+ t.settings.amt=(+rs.amt||1)*2;t.settings.revCap=(+rs.revCap||8)*2;t.settings.recentN=(rs.recentN!=null?+rs.recentN:4)*2}
+function fixS(){S.x=S.x&&typeof S.x==='object'?S.x:{};S.x.pd=Array.isArray(S.x.pd)?S.x.pd:[];S.x.sd=Array.isArray(S.x.sd)?S.x.sd:[];S.x.pb=Math.max(0,+S.x.pb||0);
+ if(!S.pri||typeof S.pri!=='object')S.pri={};S.ss=(Array.isArray(S.ss)?S.ss:[]).filter(x=>x&&typeof x.id==='string');
+ S.ss.forEach(x=>{x.name=String(x.name||'جلسة').slice(0,40);x.kind=['mem','rev','cus'].includes(x.kind)?x.kind:'mem';x.goal=Math.max(1,Math.min(400,Math.round(+x.goal||4)));x.days=Array.isArray(x.days)?[...new Set(x.days.map(Number).filter(d=>d>=0&&d<=6))]:[6];x.range=Array.isArray(x.range)?[Math.max(0,Math.round(+x.range[0]||0)),Math.max(0,Math.round(+x.range[1]||0))]:[0,0];x.text=String(x.text||'').slice(0,100);x.active=x.active!==false});
+ const s=S.settings,c=(v,a,b,d)=>{v=Math.round(+v);return isNaN(v)?d:Math.min(b,Math.max(a,v))},dl=(a,d)=>Array.isArray(a)?[...new Set(a.map(Number).filter(x=>x>=0&&x<=6))]:d;
+ s.totalPages=c(s.totalPages,100,700,604);s.startPage=c(s.startPage,1,s.totalPages,1);s.timeMin=c(s.timeMin,15,600,60);s.friMax=c(s.friMax,2,200,20);
+ s.memDays=dl(s.memDays,[6,0,1,2,3,4]);s.revDays=dl(s.revDays,[5]);s.amt=c(s.amt,1,80,2);s.revCap=c(s.revCap,1,80,16);s.recentN=c(s.recentN,0,80,8);
+ s.endPage=c(s.endPage,s.startPage,s.totalPages,s.totalPages);s.cycleWeeks=c(s.cycleWeeks,1,52,8);s.extraMax=c(s.extraMax,0,10,2);s.gapDays=c(s.gapDays,0,365,14);s.tol=c(s.tol,0,5,2);
+ s.weekStart=[6,0,1].includes(+s.weekStart)?+s.weekStart:6;s.zoom=['sm','md','lg'].includes(s.zoom)?s.zoom:'md';s.name=String(s.name||'').slice(0,30);s.pin=typeof s.pin==='string'?s.pin:'';
+ s.digits=s.digits==='en'?'en':'ar';s.theme=s.theme==='dark'?'dark':'light';s.prior=String(s.prior||'');s.gapPauseNew=s.gapPauseNew!==false;s.autoOld=s.autoOld!==false;s.sessOnly=!!s.sessOnly}
+function load(){let r=null;S=mk({});try{r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);if(valid(o)){if(!o.u)try{localStorage.setItem(KEY+'_pre4',r)}catch(e){}S=mk(o)}}}
+ catch(e){try{if(r)localStorage.setItem(KEY+'_corrupt',r)}catch(x){}storageOK=false}fixS();if(migrated)save()}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));storageOK=true}catch(e){storageOK=false}}
 function toast(t){const e=document.getElementById('toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',4500)}
 
-/* ---------- model: unit = half page h (0-based); page = floor(h/2)+1 ---------- */
-const TP=()=>S.settings.totalPages,TH=()=>2*TP(),LIM=()=>2*S.settings.endPage,pgOf=h=>Math.floor(h/2)+1;
-function priorHalves(){const s=new Set(),tp=TP();
- S.settings.prior.replace(/[٠-٩]/g,d=>d.charCodeAt(0)-1632).split(/[,،\n]+/).forEach(t=>{const m=t.trim().match(/^(\d+)(?:\s*[-–]\s*(\d+))?$/);if(!m)return;let a=+m[1],b=+(m[2]||m[1]);if(a>b)[a,b]=[b,a];a=Math.max(a,1);b=Math.min(b,tp);for(let h=2*(a-1);h<=2*b-1;h++)s.add(h)});return s}
-function memSet(ex){const s=priorHalves();for(const d in S.tasks){if(d===ex)continue;for(const k in S.tasks[d]){const t=S.tasks[d][k];if(/^new/.test(k)&&t.done&&t.r)for(let h=t.r[0];h<=t.r[1];h++)s.add(h)}}return s}
-const ptr=ms=>{let h=2*(S.settings.startPage-1);while(ms.has(h))h++;return h};
-const fullPage=(ms,p)=>ms.has(2*p-2)&&ms.has(2*p-1);
-const pagesMem=ms=>{let n=0;for(let p=1;p<=TP();p++)if(fullPage(ms,p))n++;return n};
+/* ---------- model: unit u = quarter page (0-based); page = floor(u/U)+1 ---------- */
+const TP=()=>S.settings.totalPages,TH=()=>U*TP(),LIM=()=>U*S.settings.endPage,pgOf=u=>Math.floor(u/U)+1,pu=(a,b)=>[U*(a-1),U*b-1];
+function priorUnits(){const s=new Set(),tp=TP();S.settings.prior.replace(/[٠-٩]/g,d=>d.charCodeAt(0)-1632).split(/[,،\n]+/).forEach(t=>{const m=t.trim().match(/^(\d+)(?:\s*[-–]\s*(\d+))?$/);if(!m)return;let a=+m[1],b=+(m[2]||m[1]);if(a>b)[a,b]=[b,a];a=Math.max(a,1);b=Math.min(b,tp);for(let u=U*(a-1);u<=U*b-1;u++)s.add(u)});return s}
+function memSet(ex){const s=priorUnits();for(const d in S.tasks){if(d===ex)continue;for(const k in S.tasks[d]){const t=S.tasks[d][k];if(/^new/.test(k)&&t.done&&t.r)for(let u=t.r[0];u<=t.r[1];u++)s.add(u)}}return s}
+const ptr=ms=>{let u=U*(S.settings.startPage-1);while(ms.has(u))u++;return u};
+const fullPage=(ms,p)=>{for(let u=U*(p-1);u<U*p;u++)if(!ms.has(u))return false;return true};
+const pagesMem=ms=>{let n=0;ms.forEach(u=>{if(u>=0&&u<TH())n++});return Math.round(n/U*100)/100};
 const surIdx=p=>{let k=0;SP.forEach((s,i)=>{if(s<=p)k=i});return k};
 function sur(p){if(TP()!==604)return'';const L=[];SP.forEach((s,i)=>{if(s===p)L.push(SN[i])});return L.length?L.join(' و')+' (بداية السورة)':SN[surIdx(p)]}
-const hn=h=>h%2?'النصف الأسفل':'النصف الأعلى';
-function rl(a,b){const pa=pgOf(a),pb=pgOf(b);let t,s=sur(pa);
- if(a===b)t=`صفحة ${N(pa)} — ${hn(a)}`;else if(pa===pb)t=`صفحة ${N(pa)} كاملة`;else{t=`من صفحة ${N(pa)} (${hn(a)}) إلى صفحة ${N(pb)} (${hn(b)})`;const s2=sur(pb);if(s2&&s2!==s)s+=' ← '+s2}
- return{t,s}}
+const QN=['الربع الأول','الربع الثاني','الربع الثالث','الربع الرابع'];
+function ul(u){const p=Math.floor(u/U),q=u%U,qt=['','ربع صفحة','نصف صفحة','ثلاثة أرباع صفحة'][q],pt=p===1?'صفحة':p===2?'صفحتان':N(p)+' '+(p<=10?'صفحات':'صفحة');
+ return q===0?pt:p===0?qt:`${pt} و${qt}`}
+function rl(a,b){const pa=pgOf(a),pb=pgOf(b),qa=a%U,qb=b%U;let t;
+ if(qa===0&&qb===U-1)t=pa===pb?`صفحة ${N(pa)} كاملة`:`من صفحة ${N(pa)} إلى صفحة ${N(pb)}`;
+ else if(pa===pb)t=a===b?`صفحة ${N(pa)} — ${QN[qa]}`:qa===0&&qb===1?`صفحة ${N(pa)} — النصف الأعلى`:qa===2&&qb===3?`صفحة ${N(pa)} — النصف الأسفل`:`صفحة ${N(pa)} — من ${QN[qa]} إلى ${QN[qb]}`;
+ else t=`من صفحة ${N(pa)} (${QN[qa]}) إلى صفحة ${N(pb)} (${QN[qb]})`;
+ let s=sur(pa);const s2=sur(pb);if(pb!==pa&&s2&&s2!==s)s+=' ← '+s2;return{t,s}}
 const rlp=(a,b)=>({t:a===b?`صفحة ${N(a)}`:`من صفحة ${N(a)} إلى صفحة ${N(b)}`,s:sur(a)+(b!==a&&sur(b)!==sur(a)&&sur(b)?' ← '+sur(b):'')});
+const urange=t=>t.pg?pu(t.r[0],t.r[1]):t.r;
+const rateOf=t=>{const[a,b]=urange(t);let mx=0,mn=3;for(let u=a;u<=b;u++){const v=S.pri[u]||0;if(v>mx)mx=v;if(v<mn)mn=v}return{mx,mixed:mx!==mn}};
 
-/* Friday long-term info (pages): oldest-reviewed 5-page blocks first, weak first */
-function frInfo(D,ms){const P=[],RP=new Set(),LR={},WK=new Set();
+/* last review date per unit, from completed tasks dated before D */
+function lastRev(D){const last={};for(const d in S.tasks){if(d>=D)continue;const rec=S.tasks[d];for(const k in rec){const o=rec[k];if(!o.done||!o.r||catOf(k)==='c')continue;const a=isPg(k)?U*(o.r[0]-1):o.r[0],b=isPg(k)?U*o.r[1]-1:o.r[1];for(let u=a;u<=b;u++)if(!last[u]||last[u]<d)last[u]=d}}return last}
+function frInfo(D,ms){const last=lastRev(D),P=[],RP=new Set();
  for(let p=1;p<=TP();p++)if(fullPage(ms,p))P.push(p);
- for(const d in S.tasks){const rec=S.tasks[d];for(const k in rec){const o=rec[k];if(!o.r)continue;
-  if(/^new/.test(k)&&o.done&&d<=D&&dn(D)-dn(d)<7)for(let h=o.r[0];h<=o.r[1];h++)RP.add(pgOf(h));
-  if(k[0]==='f'&&o.done)for(let p=o.r[0];p<=o.r[1];p++)if(!LR[p]||LR[p]<d)LR[p]=d;
-  if(o.weak||o.diff==='صعب'){const pg=(k[0]==='f'||k==='w')?o.r:[pgOf(o.r[0]),pgOf(o.r[1])];for(let p=pg[0];p<=pg[1];p++)WK.add(p)}}}
- const B={};P.filter(p=>!RP.has(p)).forEach(p=>{const b=Math.floor((p-1)/5)*5+1;(B[b]=B[b]||[]).push(p)});
- const blocks=Object.keys(B).map(b=>{const ps=B[b],wk=ps.some(p=>WK.has(p)),old=ps.reduce((m,p)=>(LR[p]||'0')<m?(LR[p]||'0'):m,'9');return{b:+b,ps,wk,old,key:wk?'':old}})
-  .sort((x,y)=>x.key<y.key?-1:x.key>y.key?1:x.b-y.b);
- const target=Math.min(S.settings.friMax,Math.max(2,Math.ceil(P.length/(S.settings.cycleWeeks*Math.max(1,S.settings.revDays.length)))));
- return{P,RP,LR,WK,blocks,target}}
+ for(const d in S.tasks)for(const k in S.tasks[d]){const o=S.tasks[d][k];if(/^new/.test(k)&&o.done&&o.r&&d<=D&&dn(D)-dn(d)<7)for(let u=o.r[0];u<=o.r[1];u++)RP.add(pgOf(u))}
+ const stl=p=>{let m=null;for(let u=U*(p-1);u<U*p;u++)if(last[u]&&(!m||last[u]>m))m=last[u];return m?Math.min(120,dn(D)-dn(m)):60};
+ const pri_=p=>{let m=0;for(let u=U*(p-1);u<U*p;u++)m=Math.max(m,S.pri[u]||0);return m};
+ const sc=p=>stl(p)*PF[pri_(p)],hard=P.filter(p=>pri_(p)===3).length;
+ const base=Math.ceil(P.length/(S.settings.cycleWeeks*Math.max(1,S.settings.revDays.length)));
+ return{P,RP,last,stl,pri_,sc,hard,base,target:Math.min(S.settings.friMax,Math.max(2,base+Math.floor(hard/8)))}}
+/* pick up to `rem` pages: best 5-page blocks first (staleness x priority), returned as runs of consecutive pages */
+function pickRuns(F,pool,rem){const B={};pool.filter(p=>F.sc(p)>=1.5).forEach(p=>{(B[Math.floor((p-1)/5)]=B[Math.floor((p-1)/5)]||[]).push(p)});
+ const bl=Object.values(B).map(ps=>({ps,s:Math.max(...ps.map(F.sc))})).sort((x,y)=>y.s-x.s||x.ps[0]-y.ps[0]),out=[];let left=rem;
+ for(const b of bl){if(left<=0)break;const ps=b.ps.slice().sort((x,y)=>F.sc(y)-F.sc(x)||x-y).slice(0,left).sort((x,y)=>x-y);let s0=ps[0];
+  for(let i=1;i<=ps.length;i++)if(i===ps.length||ps[i]!==ps[i-1]+1){out.push([s0,ps[i-1]]);s0=ps[i]}left-=ps.length}
+ return out}
+function bestWin(x,sh,ms,D,F){const lo=U*((+x.range[0]||1)-1),hi=Math.min(U*(+x.range[1]||TP())-1,TH()-1);let best=null,bs=-1;
+ for(let a=lo;a+sh-1<=hi;a+=sh>8?4:1){let ok=true,sc=0;for(let u=a;u<a+sh;u++){if(!ms.has(u)){ok=false;break}sc+=(F.last[u]?Math.min(120,dn(D)-dn(F.last[u])):60)*PF[S.pri[u]||0]}if(ok&&sc/sh>bs){bs=sc/sh;best=[a,a+sh-1]}}return best}
+const shareOf=(x,dow)=>{const ord=[...x.days].sort((a,b)=>((a-S.settings.weekStart+7)%7)-((b-S.settings.weekStart+7)%7)),i=ord.indexOf(dow),n=ord.length;if(i<0||!n)return 0;if(x.kind==='cus')return 1;const g=+x.goal||0;return Math.floor(g/n)+(i<g%n?1:0)};
 
+/* ---------- recovery after a long break ---------- */
+const recActive=()=>!!(S.x.rv&&S.x.rv.s&&!S.x.rv.e);
+function gapTick(){const T=today();let ld='';for(const d in S.tasks)for(const k in S.tasks[d])if(S.tasks[d][k].done&&d<=T&&d>ld)ld=d;
+ const F=frInfo('9999-12-31',memSet());
+ if(!recActive()){if(S.settings.gapDays>0&&ld&&dn(T)-dn(ld)>=S.settings.gapDays&&F.P.length){S.x.rv={s:T};save()}}
+ else{const s0=S.x.rv.s;if(!F.P.length||F.P.every(p=>{for(let u=U*(p-1);u<U*p;u++)if(F.last[u]&&F.last[u]>=s0)return true;return false})){S.x.rv.e=T;save()}}}
+
+/* ---------- daily tasks ---------- */
 function dayTasks(D){const s=S.settings,rec=S.tasks[D]||{},L=[],dow=pd(D).getDay(),isM=s.memDays.includes(dow),isR=s.revDays.includes(dow),ms=memSet(D),p=ptr(ms),cap=s.revCap,amt=s.amt;
- for(const k in rec)if(rec[k].done&&rec[k].r)L.push({key:k,cat:catOf(k),mand:k!=='w'&&!/^new\d/.test(k),r:rec[k].r,pg:k[0]==='f'||k==='w',done:true});
- const has=k=>L.some(t=>t.key===k),add=(key,mand,r,pg)=>L.push({key,cat:catOf(key),mand,r,pg,done:false}),rg=q=>[q,Math.min(q+amt-1,LIM()-1)];
- if(isM){
-  if(!has('new')&&p<LIM())add('new',true,rg(p),false);
-  if(L.some(t=>t.key==='new'&&t.done)){const nd=Object.keys(rec).filter(k=>/^new/.test(k)&&rec[k].done).length,q=ptr(memSet());if(nd<=s.extraMax&&q<LIM())add('new'+(nd+1),false,rg(q),false)}
+ for(const k in rec){const o=rec[k];if(o.done&&o.r)L.push({key:k,cat:catOf(k),mand:k!=='w'&&!/^new\d/.test(k),r:o.r,pg:isPg(k),done:true})}
+ const has=k=>L.some(t=>t.key===k),add=(key,mand,r,pg)=>L.push({key,cat:catOf(key),mand,r,pg,done:false}),F=frInfo(D,ms),ex=new Set(),rv=recActive()&&D>=S.x.rv.s&&(isM||isR);
+ L.forEach(t=>{if(t.done&&t.pg&&'fgo'.includes(t.cat))for(let q=t.r[0];q<=t.r[1];q++)ex.add(q)});
+ const surEnd=e=>{if(TP()!==604)return e;const k=surIdx(e);return Math.max(SP[k],(SP[k+1]||605)-1)};
+ const fill=(c,pool,n,tol)=>{const rem=n-L.filter(t=>t.cat===c).reduce((a,t)=>a+t.r[1]-t.r[0]+1,0);if(rem<=0)return;const runs=pickRuns(F,pool.filter(q=>!ex.has(q)),rem);
+  if(tol){const pp=new Set(pool);let left=tol;runs.forEach(r=>{if(left<=0)return;const se=surEnd(r[1]),add_=[];let q=r[1]+1;while(q<=se&&pp.has(q)&&!ex.has(q)&&!runs.some(o=>o!==r&&q>=o[0]&&q<=o[1])){add_.push(q);q++}if(q>se&&add_.length&&add_.length<=left){r[1]=add_[add_.length-1];left-=add_.length}})}
+  runs.forEach(q=>{if(!has(c+q[0]))add(c+q[0],true,q,true)})};
+ const msAll=memSet();let np=ptr(msAll);const nn=len=>{while(msAll.has(np))np++;if(np>=LIM())return null;const r=[np,Math.min(np+len-1,LIM()-1)];np=r[1]+1;return r};
+ const sessMem=s.sessOnly&&S.ss.some(x=>x.active&&x.kind==='mem');
+ if(isM&&(!rv||!s.gapPauseNew)&&!sessMem){
+  if(!has('new')){const r=nn(amt);if(r)add('new',true,r,false)}
+  else if(L.some(t=>t.key==='new'&&t.done)){const nd=L.filter(t=>t.cat==='new'&&t.done).length;let i=nd+1;while(has('new'+i))i++;if(nd<=s.extraMax){const r=nn(amt);if(r)add('new'+i,false,r,false)}}}
+ if(isM&&!rv){
   let a=p;while(a>0&&ms.has(a-1)&&p-a<s.recentN)a--;
   if(a<p&&!has('rec'))add('rec',true,[a,p-1],false);
-  const ss=TP()===604?2*(SP[surIdx(pgOf(Math.min(p,TH()-1)))]-1):Math.max(0,p-3*cap),c=a-1;
-  if(c>=ss&&ms.has(c)&&!has('cur')){let c0=c;while(c0-1>=ss&&ms.has(c0-1))c0--;
-   const n=Math.ceil((c-c0+1)/cap),P=pers(D);let bi=0,bs=-1;
-   for(let i=0;i<n;i++){const x=c0+i*cap,y=Math.min(c,x+cap-1);let sc=0,w=0;for(let h=x;h<=y;h++){sc+=P.last[h]?dn(D)-dn(P.last[h]):60;if(P.weak.has(h))w++}sc=sc/(y-x+1)+w*10;if(sc>bs){bs=sc;bi=i}}
-   add('cur',true,[c0+bi*cap,Math.min(c,c0+(bi+1)*cap-1)],false)}
- }
- if(isR){const F=frInfo(D,ms);let rem=F.target-L.filter(t=>t.cat==='f').reduce((x,t)=>x+t.r[1]-t.r[0]+1,0);
-  for(const bk of F.blocks){if(rem<=0)break;const lr=x=>F.LR[x]||'0',ps=bk.ps.slice().sort((a,b)=>lr(a)<lr(b)?-1:lr(a)>lr(b)?1:a-b).filter((x,i,a)=>lr(x)===lr(a[0])).slice(0,rem).sort((a,b)=>a-b),runs=[];let s0=ps[0];for(let i=1;i<=ps.length;i++)if(i===ps.length||ps[i]!==ps[i-1]+1){runs.push([s0,ps[i-1]]);s0=ps[i]}runs.forEach(q=>{if(!has('f'+q[0]))add('f'+q[0],true,q,true)});rem-=ps.length}
-  const rp=F.P.filter(x=>F.RP.has(x));
-  if(s.friRecent&&rp.length&&!has('w'))add('w',false,[rp[0],rp[rp.length-1]],true)}
+  const ssu=TP()===604?U*(SP[surIdx(pgOf(Math.min(p,TH()-1)))]-1):Math.max(0,p-3*cap),c=a-1;
+  if(c>=ssu&&ms.has(c)&&!has('cur')){let c0=c;while(c0-1>=ssu&&ms.has(c0-1))c0--;let n=Math.ceil((c-c0+1)/cap);if(n>1&&(c-c0+1)-(n-1)*cap<=s.tol*U)n--;let bi=0,bs=-1;
+   for(let i=0;i<n;i++){const x=c0+i*cap,y=i===n-1?c:Math.min(c,x+cap-1);let sc=0;for(let u=x;u<=y;u++)sc+=(F.last[u]?Math.min(120,dn(D)-dn(F.last[u])):60)*PF[S.pri[u]||0];sc/=(y-x+1);if(sc>bs){bs=sc;bi=i}}
+   add('cur',true,[c0+bi*cap,bi===n-1?c:Math.min(c,c0+(bi+1)*cap-1)],false)}
+  if(s.autoOld&&!isR){const n=Math.min(s.friMax,Math.floor(F.P.length/40),4);if(n>0)fill('o',F.P.filter(q=>!F.RP.has(q)),n)}}
+ if(rv)fill('g',F.P,Math.min(s.friMax,Math.max(3,Math.ceil(F.target*1.5))),s.tol);
+ else if(isR){fill('f',F.P.filter(q=>!F.RP.has(q)),F.target,s.tol);const rp=F.P.filter(x=>F.RP.has(x));if(s.friRecent&&rp.length&&!has('w'))add('w',false,[rp[0],rp[rp.length-1]],true)}
+ S.ss.forEach(x=>{if(!x.active||!x.days.includes(dow))return;const sh=shareOf(x,dow);if(sh<=0)return;
+  if(x.kind==='mem'){const k='new_'+x.id;if(!has(k)){const r=nn(sh);if(r)add(k,true,r,false)}}
+  else if(x.kind==='rev'){const k='z_'+x.id;if(!has(k)){const r=bestWin(x,sh,msAll,D,F);if(r)add(k,true,r,false)}}
+  else{const k='c_'+x.id;if(!has(k))add(k,true,[0,0],false)}});
  return L.sort((x,y)=>ORD.indexOf(x.cat)-ORD.indexOf(y.cat)||x.r[0]-y.r[0])}
 
 function tog(D,k){const L=dayTasks(D),t=L.find(x=>x.key===k);if(!t)return;
@@ -164,6 +202,8 @@ function tog(D,k){const L=dayTasks(D),t=L.find(x=>x.key===k);if(!t)return;
  const rec=S.tasks[D]=S.tasks[D]||{},o=rec[k]=rec[k]||{};
  if(t.done)o.done=false;else{o.done=true;o.r=t.r}save();render()}
 function setDetail(D,k,f,v){const t=dayTasks(D).find(x=>x.key===k);const rec=S.tasks[D]=S.tasks[D]||{},o=rec[k]=rec[k]||{};if(t&&!o.r)o.r=t.r;o[f]=v;save()}
+function setPri(D,k,v){const t=dayTasks(D).find(x=>x.key===k);if(!t||t.cat==='c')return;const[a,b]=urange(t);for(let u=a;u<=b;u++){if(v)S.pri[u]=v;else delete S.pri[u]}
+ const rec=S.tasks[D]=S.tasks[D]||{},o=rec[k]=rec[k]||{};if(!o.r)o.r=t.r;o.rv=v;save();render()}
 
 /* ---------- statuses & stats ---------- */
 const firstDate=()=>Object.keys(S.tasks).sort()[0]||today();
@@ -172,27 +212,30 @@ function st(D){const rec=S.tasks[D]||{},pl=S.plans[D];const dn_=Object.keys(rec)
  if(!dn_.length)return S.x.pd.includes(D)?'rest':D<today()&&D>=firstDate()&&sched(D)?'miss':'';
  return pl&&pl.length&&pl.every(k=>rec[k]&&rec[k].done)?'full':'part'}
 function pct(D){const m=dayTasks(D).filter(t=>t.mand);if(!m.length)return 0;return Math.round(m.filter(t=>t.done).length/m.length*100)}
-function weekPct(D){const ws=addD(D,-((pd(D).getDay()-S.settings.weekStart+7)%7));let s=0,n=0;for(let i=0;i<7;i++){const d=addD(ws,i);if(d>today())break;if(!sched(d))continue;n++;s+=pct(d)}return n?Math.round(s/n):0}
+function weekPct(D){const ws=wsOf(D);let s=0,n=0;for(let i=0;i<7;i++){const d=addD(ws,i);if(d>today())break;if(!sched(d))continue;n++;s+=pct(d)}return n?Math.round(s/n):0}
 function streak(){let d=today(),n=0,g=0;if(sched(d)&&st(d)!=='full')d=addD(d,-1);while(g++<4000){if(!sched(d)){d=addD(d,-1);continue}if(st(d)!=='full')break;n++;d=addD(d,-1)}return n}
-function surahStats(ms){let started=0,done=0;SP.forEach((s,i)=>{const e=Math.max(s,(SP[i+1]||605)-1);let any=false,all=true;for(let p=s;p<=e;p++){if(ms.has(2*p-2)||ms.has(2*p-1))any=true;if(!fullPage(ms,p))all=false}if(all)done++;else if(any)started++});return{started,done}}
+function surahStats(ms){let started=0,done=0;SP.forEach((s,i)=>{const e=Math.max(s,(SP[i+1]||605)-1);let any=false,all=true;for(let p=s;p<=e;p++){for(let u=U*(p-1);u<U*p;u++)if(ms.has(u))any=true;if(!fullPage(ms,p))all=false}if(all)done++;else if(any)started++});return{started,done}}
 function counts(){let nw=0,rv=0,first='';for(const d in S.tasks)for(const k in S.tasks[d])if(S.tasks[d][k].done){if(/^new/.test(k)){nw++;if(!first||d<first)first=d}else rv++}return{nw,rv,first}}
 
 /* ---------- views ---------- */
+function ttl(k){const x=S.ss.find(y=>y.id===sidOf(k)),c=catOf(k);if(/^new_|^z_|^c_/.test(k))return(x?x.name:'جلسة محذوفة')+(c==='new'?' (حفظ)':c==='z'?' (مراجعة)':'');return CATS[c]}
 function banner(){let h='';
  if(!storageOK)h+=`<div class="card warn"><b>تحذير:</b> تعذّر الحفظ في ذاكرة المتصفح (قد تكون في وضع التصفح الخاص). صدِّر نسخة احتياطية الآن.</div>`;
  const lb=S.settings.lastBackup,has=Object.keys(S.tasks).length>0;
  if(has&&(!lb||Date.now()-lb>7*864e5))h+=`<div class="card warn">تذكير أسبوعي: لم تأخذ نسخة احتياطية منذ أكثر من أسبوع.<br><button class="b" data-a="exp">تصدير نسخة احتياطية</button></div>`;
  return h}
-function taskH(D,t){const o=(S.tasks[D]||{})[t.key]||{},x=t.pg?rlp(t.r[0],t.r[1]):rl(t.r[0],t.r[1]);
+function taskH(D,t){const o=(S.tasks[D]||{})[t.key]||{},cus=t.cat==='c',x=cus?{t:esc((S.ss.find(y=>y.id===sidOf(t.key))||{}).text||'هدف حر'),s:''}:t.pg?rlp(t.r[0],t.r[1]):rl(t.r[0],t.r[1]),rt=cus?null:rateOf(t),dk=D+t.key,
+ lab=/^new\d/.test(t.key)?'حفظ إضافي (تقديم مهام الأيام القادمة)':ttl(t.key),
+ rb=rt?[1,2,3].map(v=>`<button class="chip ${rt.mx===v?'on':''}" data-a="pri" data-d="${D}" data-k="${t.key}" data-v="${rt.mx===v?0:v}" aria-pressed="${rt.mx===v}">${RL[v]}</button>`).join(''):'';
  return `<div class="task ${t.cat==='new'?'new':''} ${t.done?'done':''}"><button class="chk" data-a="tog" data-d="${D}" data-k="${t.key}" aria-pressed="${t.done}" aria-label="تعليم المهمة كمكتملة">✓</button>
- <div class="tb"><div class="tc">${/^new\d/.test(t.key)?'حفظ إضافي (تقديم مهام الأيام القادمة)':CATS[t.cat]}${t.mand?'':'<i>اختيارية</i>'}</div><div class="tt">${x.t}</div><div class="ts">${x.s}</div>
- <details><summary>ملاحظات وصعوبة</summary><textarea rows="2" placeholder="ملاحظات أو أخطاء" data-a="f" data-d="${D}" data-k="${t.key}" data-f="note">${(o.note||'').replace(/</g,'&lt;')}</textarea>
- <select data-a="f" data-d="${D}" data-k="${t.key}" data-f="diff" aria-label="الصعوبة">${['','سهل','متوسط','صعب'].map((v,i)=>`<option value="${v}" ${o.diff===v?'selected':''}>${i?'الصعوبة: '+v:'الصعوبة: غير محددة'}</option>`).join('')}</select>
- <label class="ck"><input type="checkbox" data-a="f" data-d="${D}" data-k="${t.key}" data-f="weak" ${o.weak?'checked':''}> موضع ضعيف يحتاج عناية</label></details></div></div>`}
-function tasksBlock(D){const L=dayTasks(D),m=L.filter(t=>t.mand),p=m.length?Math.round(m.filter(t=>t.done).length/m.length*100):0,dw=pd(D).getDay(),isM=S.settings.memDays.includes(dw),isR=S.settings.revDays.includes(dw);
+ <div class="tb"><div class="tc">${esc(lab)}${t.mand?'':'<i>اختيارية</i>'}</div><div class="tt">${x.t}</div><div class="ts">${x.s}</div>
+ <details data-dk="${esc(dk)}" ${OP.has(dk)?'open':''}><summary>التقييم والملاحظات</summary>${rt?`<small>صعوبة هذا الجزء تحدّد أولوية مراجعته: «صعب» يعود أسرع، «متوسط» أقل، «سهل» أبطأ. اضغط التقييم الحالي مرة أخرى لإزالته.${rt.mixed?' (أجزاؤه مختلفة التقييم؛ التغيير يشمل الكل)':''}</small><div class="chips">${rb}</div>`:''}
+ <textarea rows="2" placeholder="ملاحظات أو أخطاء" data-a="f" data-d="${D}" data-k="${t.key}" data-f="note">${esc(o.note||'')}</textarea></details></div></div>`}
+function tasksBlock(D){const L=dayTasks(D),m=L.filter(t=>t.mand),p=m.length?Math.round(m.filter(t=>t.done).length/m.length*100):0,dw=pd(D).getDay(),isM=S.settings.memDays.includes(dw),isR=S.settings.revDays.includes(dw),rvOn=recActive()&&D>=S.x.rv.s&&(isM||isR);
  let h=`<div class="card"><div class="row"><b>إنجاز اليوم</b><span>${N(p)}٪</span></div><div class="bar"><i style="width:${p}%"></i></div><small>${(isM?'يوم حفظ ومراجعة. ':'')+(isR?'يوم مراجعة طويلة المدى. ':'')+(!isM&&!isR?'يوم راحة حسب إعداداتك.':'')}</small></div>`;
+ if(rvOn)h+=`<div class="card warn"><b>وضع الاستدراك</b><br><small>انقطعتَ فترة، فاستبدل التطبيق مهام اليوم بمراجعة ما لم تراجعه منذ زمن، ويبدأ بالأقدم ثم الأصعب. ${S.settings.gapPauseNew?'الحفظ الجديد متوقف مؤقتًا. ':''}ينتهي الاستدراك تلقائيًا بعد مراجعة كل محفوظك.</small><br><button class="b o" data-a="endrv">إنهاء الاستدراك والعودة للخطة</button></div>`;
  if(D<today()&&st(D)==='miss')h+=`<div class="card warn">يوم فائت: لم يُسجَّل فيه إنجاز. الحفظ يستمر من آخر موضع أتممتَه، ولا يُعلَّم شيء تلقائيًا. إتمام مهمة هنا يسجّلها في هذا اليوم.</div>`;
- if(!L.length)h+=`<div class="card">${!isM&&!isR?'لا مهام اليوم: يوم راحة.':!isM?'لا يوجد حفظ قديم بعد؛ ستظهر هنا المراجعة الطويلة عند تراكم الحفظ.':'اكتملت صفحات خطتك. بارك الله فيك!'}</div>`;
+ if(!L.length)h+=`<div class="card">${!isM&&!isR?'لا مهام اليوم: يوم راحة.':isM&&ptr(memSet())>=LIM()?'اكتملت صفحات خطتك. بارك الله فيك!':'لا توجد مهام لهذا اليوم الآن؛ ستظهر مراجعة القديم عند تراكم الحفظ.'}</div>`;
  return h+L.map(t=>taskH(D,t)).join('')}
 const MOT=['القليل كل يوم مع الاستمرار خير من جهد كبير ثم انقطاع.','اقرأ على معلّم أو شخص موثوق ليصحّح لك التلاوة والتجويد.','ثبّت وقتًا ثابتًا للحفظ كل يوم.'];
 function home(){const D=today(),ms=memSet(),pg=pagesMem(ms),tp=TP(),pc=Math.round(pg/tp*1000)/10;
@@ -203,67 +246,125 @@ function home(){const D=today(),ms=memSet(),pg=pagesMem(ms),tp=TP(),pc=Math.roun
 function dayView(){const D=selDate;
  return `<div class="row"><button class="b o" data-a="day" data-n="1" aria-label="اليوم السابق">→</button><div style="text-align:center"><b>${gdate(D)}</b><br><small>${hij(D)}</small></div><button class="b o" data-a="day" data-n="-1" aria-label="اليوم التالي">←</button></div>
  <div class="row"><small>${D===today()?'اليوم':''}</small><button class="b o" data-a="day" data-n="0">العودة إلى اليوم</button></div>`+passBar(D)+tasksBlock(D)+
- `<p class="mut">اسم السورة يُحدَّد من جدول بدايات السور؛ قد تشترك صفحة بداية السورة مع آخر السورة السابقة. نصف الصفحة قد ينتهي وسط آية.</p>`}
+ `<p class="mut">اسم السورة يُحدَّد من جدول بدايات السور؛ قد تشترك صفحة بداية السورة مع آخر السورة السابقة. أصغر وحدة في التطبيق ربع صفحة، ولا يحدّد التطبيق حدود الآيات.</p>`}
 function calView(){const t=new Date();if(!calM)calM={y:t.getFullYear(),m:t.getMonth()};const f=new Date(calM.y,calM.m,1),off=(f.getDay()-S.settings.weekStart+7)%7,dim=new Date(calM.y,calM.m+1,0).getDate();
  let g=[0,1,2,3,4,5,6].map(i=>`<span>${['ح','ن','ث','ر','خ','ج','س'][(S.settings.weekStart+i)%7]}</span>`).join('');for(let i=0;i<off;i++)g+='<span></span>';
  for(let d=1;d<=dim;d++){const D=iso(new Date(calM.y,calM.m,d));g+=`<button class="${st(D)} ${D===today()?'sel':''}" data-a="goto" data-d="${D}" aria-label="${gdate(D)}">${N(d)}</button>`}
  const mn=new Intl.DateTimeFormat('ar-EG-u-nu-'+nu(),{month:'long',year:'numeric'}).format(f);
  return `<h1>التقويم</h1><div class="row"><button class="b o" data-a="cal" data-n="1">→</button><b>${mn}</b><button class="b o" data-a="cal" data-n="-1">←</button></div><div class="card"><div class="cal">${g}</div></div>
- <small>■ أخضر: يوم مكتمل — ▨ فاتح: جزئي — إطار أحمر: فائت — التاريخ الملوّن بإطار ذهبي: اليوم — إطار متقطع: يوم بتصريح راحة</small>`}
+ <small>■ أخضر: يوم مكتمل — ▨ فاتح: جزئي — إطار أحمر: فائت — إطار ذهبي ممتلئ: اليوم — إطار متقطع: يوم بتصريح راحة</small>`}
 function reviewView(){const D=today(),ms=memSet(),F=frInfo(D,ms),c=S.settings.revCap;
- const due=F.blocks.slice(0,10).map(b=>{const r=rlp(b.ps[0],b.ps[b.ps.length-1]);return`<div class="card"><b>${r.t}</b>${b.wk?' ⚑':''}<br><small>${r.s} — ${b.old==='0'||b.old==='9'?'لم تُراجع بعد':'آخر مراجعة: '+gdate(b.old)}</small></div>`}).join('');
- const weak=[];for(const d in S.tasks)for(const k in S.tasks[d]){const o=S.tasks[d][k];if(o.weak&&o.r){const x=(k[0]==='f'||k==='w')?rlp(o.r[0],o.r[1]):rl(o.r[0],o.r[1]);weak.push(`<div class="card"><b>${x.t}</b><br><small>${x.s} — ${gdate(d)}${o.note?' — '+o.note.replace(/</g,'&lt;'):''}</small></div>`)}}
- return `<h1>المراجعة</h1><div class="card"><b>كيف تُحسب المراجعة؟</b><p class="mut">اليومية (أيام الحفظ): آخر ${N(S.settings.recentN)} أنصاف محفوظة تُراجع كل يوم. وبقية السورة الحالية تُقسَّم إلى أقسام بحجم ${N(c)} نصف صفحة، ويُختار كل يوم القسم الأقدم مراجعةً والأكثر ضعفًا (ما علّمتَه ضعيفًا أو صعبًا)، وبهذا تصبح المراجعة مخصّصة لك.<br>أيام المراجعة الطويلة: الهدف = الأصغر بين (الحد الأقصى ${N(S.settings.friMax)} صفحة) و(مجموع المحفوظ ÷ (${N(S.settings.cycleWeeks)} أسابيع × عدد أيام المراجعة) مقرَّبًا لأعلى، بحد أدنى ٢) = <b>${N(F.target)} صفحة</b> الآن. تُختار كتل من ٥ صفحات: الأقدم مراجعةً أولًا، والمعلَّمة ضعيفة قبلها، ويُستثنى حفظ آخر ٧ أيام (يظهر في مراجعة اختيارية). ما لم تُنجزه يبقى الأقدم فيُعرض في الجمعة التالية دون تكديس. هذه قاعدة بسيطة وشفافة، وليست «مثالية علميًا».</p></div>
- <h2>المستحقة للمراجعة طويلة المدى</h2>${due||'<div class="card">لا يوجد حفظ قديم بعد.</div>'}<h2>مواضع ضعيفة</h2>${weak.join('')||'<div class="card">لم تعلّم مواضع ضعيفة بعد. استخدم «ملاحظات وصعوبة» داخل أي مهمة.</div>'}`}
+ const due=pickRuns(F,F.P,Math.min(S.settings.friMax,12)).map(q=>{const r=rlp(q[0],q[1]),d=F.stl(q[0]),v=F.pri_(q[0]);return `<div class="card"><b>${r.t}</b><br><small>${r.s} — ${d>=60?'لم تُراجع منذ زمن طويل أو لا يوجد لها سجل':'آخر مراجعة قبل '+N(d)+' يومًا'}${v?' — '+RL[v]:''}</small></div>`}).join('');
+ const us=Object.keys(S.pri).map(Number).filter(u=>S.pri[u]>=2&&u>=0&&u<TH()).sort((a,b)=>a-b),rs=[];
+ us.forEach(u=>{const l=rs[rs.length-1];if(l&&l.v===S.pri[u]&&l.b===u-1)l.b=u;else rs.push({a:u,b:u,v:S.pri[u]})});rs.sort((x,y)=>y.v-x.v||x.a-y.a);
+ const pri=rs.map(r=>{const x=rl(r.a,r.b);return `<div class="card"><b>${x.t}</b> — ${RL[r.v]}<br><small>${x.s}</small><br><button class="b o" data-a="clrpri" data-x="${r.a}" data-y="${r.b}">إزالة التقييم</button></div>`}).join('');
+ return `<h1>المراجعة</h1><div class="card"><b>كيف تُحسب المراجعة؟</b><p class="mut">اليومية (أيام الحفظ): آخر ${ul(S.settings.recentN)} من محفوظك تُراجع كل يوم، وبقية السورة الحالية تُقسَّم إلى أقسام بحجم ${ul(c)}، ويُختار كل يوم القسم الأقدم مراجعةً مع مراعاة تقييمك (صعب ×٢٫٥، متوسط ×١٫٦، سهل ×٠٫٦).<br>الطويلة: عدد الصفحات = الأصغر بين حدّك الأقصى (${N(S.settings.friMax)}) و(محفوظك ÷ (${N(S.settings.cycleWeeks)} أسابيع × عدد أيام المراجعة) مقرَّبًا لأعلى، بحد أدنى ٢، مع زيادة عند كثرة الصفحات الصعبة؛ ويجوز تجاوز الحدّ بما لا يزيد على ${N(S.settings.tol)} صفحة لإكمال سورة، فلا تُترك سورة ناقصة بصفحة أو صفحتين) = <b>${N(F.target)} صفحة</b> الآن. وكلما حفظتَ أكثر زاد المطلوب تلقائيًا دون تجاوز حدّك، ${S.settings.autoOld?'وتُضاف مراجعة صغيرة من القديم في أيام الحفظ.':''}<br>بعد انقطاع ${N(S.settings.gapDays)} يومًا فأكثر يدخل وضع الاستدراك. هذه قواعد بسيطة وشفافة، وليست «مثالية علميًا».</p></div>
+ <h2>الأولى بالمراجعة الآن</h2>${due||'<div class="card">لا يوجد حفظ قديم يحتاج مراجعة الآن.</div>'}<h2>مواضع ذات أولوية (متوسط/صعب)</h2>${pri||'<div class="card">لم تقيّم مواضع بعد. افتح «التقييم والملاحظات» داخل أي مهمة.</div>'}`}
 function statsView(){const ms=memSet(),pg=pagesMem(ms),sv=surahStats(ms),c=counts(),tp=TP(),D=today();let est='لا تكفي البيانات بعد (تحتاج ٧ أيام على الأقل).';
- if(c.first&&dn(D)-dn(c.first)>=6&&c.nw){const rate=c.nw/2/(dn(D)-dn(c.first)+1),left=tp-pg;if(left<=0)est='اكتمل المصحف.';else est='حوالي '+gdate(addD(D,Math.ceil(left/rate)))+' (تقدير على وتيرتك الفعلية، وقد يتغيّر)'}
- const hist=[];Object.keys(S.tasks).sort().reverse().forEach(d=>{for(const k in S.tasks[d]){const o=S.tasks[d][k];if(o.done&&o.r&&hist.length<25){const pgm=k[0]==='f'||k==='w';hist.push(`<div class="card"><b>${CATS[catOf(k)]}</b> — ${(pgm?rlp(o.r[0],o.r[1]):rl(o.r[0],o.r[1])).t}<br><small>${gdate(d)}</small></div>`)}}});
+ if(c.first&&dn(D)-dn(c.first)>=6){let u=0;for(const d in S.tasks)for(const k in S.tasks[d]){const o=S.tasks[d][k];if(/^new/.test(k)&&o.done&&o.r)u+=o.r[1]-o.r[0]+1}const rate=u/U/(dn(D)-dn(c.first)+1),left=tp-pg;
+  if(left<=0)est='اكتمل المصحف.';else if(rate>0)est='حوالي '+gdate(addD(D,Math.ceil(left/rate)))+' (تقدير على وتيرتك الفعلية، وقد يتغيّر)'}
+ const hist=[];Object.keys(S.tasks).sort().reverse().forEach(d=>{for(const k in S.tasks[d]){const o=S.tasks[d][k];if(o.done&&o.r&&hist.length<25){const c_=catOf(k),x=c_==='c'?{t:''}:isPg(k)?rlp(o.r[0],o.r[1]):rl(o.r[0],o.r[1]);hist.push(`<div class="card"><b>${esc(ttl(k))}</b> — ${x.t}<br><small>${gdate(d)}</small></div>`)}}});
  return `<h1>الإحصائيات</h1><div class="grid">
- <div class="stat"><b>${N(pg)}</b>صفحة محفوظة</div><div class="stat"><b>${N(c.nw)}</b>مهمة حفظ (نصف صفحة)</div>
+ <div class="stat"><b>${N(pg)}</b>صفحة محفوظة</div><div class="stat"><b>${N(c.nw)}</b>مهمة حفظ مكتملة</div>
  <div class="stat"><b>${N(sv.started)}</b>سور بدأتُها</div><div class="stat"><b>${N(sv.done)}</b>سور أكملتُها (تقريبي بحدود الصفحات)</div>
  <div class="stat"><b>${N(c.rv)}</b>مهمة مراجعة مكتملة</div><div class="stat"><b>${N(weekPct(D))}٪</b>إنجاز هذا الأسبوع</div>
  <div class="stat"><b>${N(streak())}</b>أيام متتالية مكتملة</div><div class="stat"><b>${N(Math.round(pg/tp*1000)/10)}٪</b>من المصحف</div></div>
  <div class="card"><b>الختم المتوقع:</b> ${est}</div><h2>سجل الإنجاز الأخير</h2>${hist.join('')||'<div class="card">لا يوجد سجل بعد.</div>'}`}
+
+/* ---------- settings ---------- */
+const selH=(k,l,o)=>`<label>${l}<select data-s="${k}">${o.map(([v,t])=>`<option value="${v}" ${String(S.settings[k])===String(v)?'selected':''}>${t}</option>`).join('')}</select></label>`;
+const UO=[1,2,3,4,6,8,12,16,20,24];
+const unitSel=(k,l,z)=>{const v=S.settings[k],o=[...(z?[0]:[]),...UO];if(!o.includes(v)){o.push(v);o.sort((a,b)=>a-b)}return selH(k,l,o.map(x=>[x,x===0?'بدون':ul(x)]))};
+const dayChips=(k,f)=>`<div class="chips">${[6,0,1,2,3,4,5].map(d=>`<button class="chip ${f(d)?'on':''}" data-a="dayT" data-k="${k}" data-d="${d}" aria-pressed="${f(d)}">${WD[d]}</button>`).join('')}</div>`;
 function settingsView(){const s=S.settings,
  i=(k,l,t='number',x='')=>`<label>${l}<input data-s="${k}" type="${t}" ${t==='number'?'inputmode="numeric"':''} ${x} value="${esc(s[k])}"></label>`,
- ck=(k,l)=>`<label class="ck"><input type="checkbox" data-s="${k}" ${s[k]!==false?'checked':''}> ${l}</label>`,
- sel=(k,l,o)=>`<label>${l}<select data-s="${k}">${o.map(([v,t])=>`<option value="${v}" ${String(s[k])===String(v)?'selected':''}>${t}</option>`).join('')}</select></label>`,
- days=k=>`<div class="chips">${[6,0,1,2,3,4,5].map(d=>`<button class="chip ${s[k].includes(d)?'on':''}" data-a="dayT" data-k="${k}" data-d="${d}" aria-pressed="${s[k].includes(d)}">${WD[d]}</button>`).join('')}</div>`;
- return `<h1>الإعدادات</h1>
+ ck=(k,l)=>`<label class="ck"><input type="checkbox" data-s="${k}" ${s[k]!==false&&s[k]?'checked':''}> ${l}</label>`;
+ return `<h1>الإعدادات</h1><div class="card mut">تُطبَّق كل تغييراتك فورًا على بقية الصفحات، ولا تمسّ سجلّك ولا المهام التي أتممتَها.</div>
  <div class="card"><b>الشخصية</b>${i('name','اسمك (للترحيب فقط، يبقى على جهازك)','text','maxlength="30"')}</div>
- <div class="card"><b>جدول الأسبوع</b><p class="mut">أيام الحفظ الجديد (مع مراجعة السورة الحالية والحفظ القريب):</p>${days('memDays')}<p class="mut">أيام المراجعة الطويلة (يمكن اختيار يوم أو أكثر، ويجوز أن تكون يوم حفظ أيضًا):</p>${days('revDays')}<small>الأيام غير المختارة أيام راحة، ولا تقطع تتابعك.</small>
- ${sel('amt','مقدار الحفظ الجديد يوميًا',[[1,'نصف صفحة'],[2,'صفحة'],[3,'صفحة ونصف'],[4,'صفحتان'],[6,'ثلاث صفحات'],[10,'خمس صفحات']])}${i('extraMax','عدد المهام الإضافية المسموحة لتقديم حفظ الأيام القادمة (٠ للإلغاء)')}
- ${sel('weekStart','بداية الأسبوع',[[6,'السبت'],[0,'الأحد'],[1,'الاثنين']])}</div>
+ <div class="card"><b>جدول الأسبوع</b><p class="mut">أيام الحفظ الجديد (مع مراجعة السورة الحالية والحفظ القريب):</p>${dayChips('memDays',d=>s.memDays.includes(d))}<p class="mut">أيام المراجعة الطويلة (يوم أو أكثر، ويجوز أن تكون يوم حفظ أيضًا):</p>${dayChips('revDays',d=>s.revDays.includes(d))}<small>الأيام غير المختارة أيام راحة ولا تقطع تتابعك.</small>
+ ${unitSel('amt','مقدار الحفظ الجديد يوميًا')}<small>أصغر وحدة ربع صفحة (نحو ٣–٤ أسطر). لا يحوي التطبيق بيانات موثّقة لحدود الآيات، فحدّد الآيات داخل الربع من مصحفك.</small>
+ ${i('extraMax','عدد المهام الإضافية المسموحة لتقديم حفظ الأيام القادمة (٠ للإلغاء)')}${selH('weekStart','بداية الأسبوع',[[6,'السبت'],[0,'الأحد'],[1,'الاثنين']])}</div>
  <div class="card"><b>نقطة البداية والنطاق</b><label>اختر سورة البداية<select data-a="pickSur"><option value="">—</option>${SN.map((n,k)=>`<option value="${k}">${n}</option>`).join('')}</select></label>
  ${i('startPage','صفحة بدء الحفظ الجديد')}${i('endPage','آخر صفحة في الخطة (للحفظ على مراحل، مثل جزء عمّ ٥٨٢–٦٠٤)')}
- <label>صفحات محفوظة سابقًا (مثال: ١-٢٠، ٥٨٢-٦٠٤)<input data-s="prior" type="text" value="${esc(s.prior)}"></label><small>تُحتسب في المحفوظ وفي المراجعة. تعديلها لا يمسّ سجلك.</small>${i('totalPages','عدد صفحات المصحف (٦٠٤ لمصحف المدينة؛ أسماء السور تظهر مع ٦٠٤ فقط)')}</div>
- <div class="card"><b>المراجعة</b>${i('timeMin','وقتك اليومي المتاح (دقيقة، للتنظيم الشخصي)')}${i('recentN','عدد أنصاف الصفحات القريبة التي تُراجع يوميًا')}${i('revCap','حجم قسم مراجعة السورة الحالية (أنصاف صفحات)')}${i('friMax','الحد الأقصى لمراجعة اليوم الطويل (صفحات)')}${i('cycleWeeks','عدد أسابيع دورة المراجعة الطويلة')}${ck('friRecent','مراجعة اختيارية لحفظ آخر ٧ أيام في يوم المراجعة')}</div>
- <div class="card"><b>المظهر</b>${sel('digits','الأرقام',[['ar','هندية (١٢٣)'],['en','غربية (123)']])}${sel('theme','السمة',[['light','فاتحة'],['dark','داكنة']])}${sel('zoom','حجم الواجهة',[['sm','صغير'],['md','متوسط'],['lg','كبير']])}${ck('motiv','تذكيرات تحفيزية')}${ck('hijri','إظهار التاريخ الهجري')}</div>
+ <label>صفحات محفوظة سابقًا (مثال: ١-٢٠، ٥٨٢-٦٠٤)<input data-s="prior" type="text" value="${esc(s.prior)}"></label><small>تُحتسب في المحفوظ وفي المراجعة.</small>${i('totalPages','عدد صفحات المصحف (٦٠٤ لمصحف المدينة؛ أسماء السور تظهر مع ٦٠٤ فقط)')}</div>
+ <div class="card"><b>المراجعة</b>${i('timeMin','وقتك اليومي المتاح (دقيقة، للتنظيم الشخصي)')}${unitSel('recentN','الحفظ القريب الذي يُراجع يوميًا',1)}${unitSel('revCap','حجم قسم مراجعة السورة الحالية')}${i('friMax','الحد الأقصى لمراجعة اليوم الطويل (صفحات)')}${i('cycleWeeks','عدد أسابيع دورة المراجعة الطويلة')}${i('tol','تسامح إكمال السورة: إن بقي من السورة هذا العدد من الصفحات أو أقل بعد بلوغ الحد الأقصى، تُضاف إلى مراجعة اليوم (صفحات؛ ٠ للإلغاء)')}
+ ${ck('autoOld','مراجعة صغيرة تلقائية من القديم في أيام الحفظ (تزداد مع حفظك، ضمن حدّك الأقصى)')}${ck('friRecent','مراجعة اختيارية لحفظ آخر ٧ أيام في يوم المراجعة')}</div>
+ <div class="card"><b>الانقطاع والاستدراك</b>${i('gapDays','عدد أيام الانقطاع التي تُفعّل وضع الاستدراك (٠ للإيقاف)')}${ck('gapPauseNew','إيقاف الحفظ الجديد مؤقتًا أثناء الاستدراك')}<small>أثناء الاستدراك يعرض التطبيق ما لم تراجعه منذ زمن بحسب القِدم وتقييمك، ثم يعود لخطتك تلقائيًا.</small></div>
+ <div class="card"><b>المظهر</b>${selH('digits','الأرقام',[['ar','هندية (١٢٣)'],['en','غربية (123)']])}${selH('theme','السمة',[['light','فاتحة'],['dark','داكنة']])}${selH('zoom','حجم الواجهة',[['sm','صغير'],['md','متوسط'],['lg','كبير']])}${ck('motiv','تذكيرات تحفيزية')}${ck('hijri','إظهار التاريخ الهجري')}</div>
  <div class="card"><b>الخصوصية</b><p class="mut">بياناتك على جهازك فقط. ${s.pin?'القفل مفعّل.':''}</p><label>كلمة سر للتطبيق (٤ خانات فأكثر)<input id="npw" type="password" inputmode="numeric" autocomplete="off"></label><button class="b" data-a="setpin">${s.pin?'تغيير':'تعيين'} كلمة السر</button> ${s.pin?'<button class="b o" data-a="clrpin">إزالة القفل</button>':''}<small>القفل يمنع الفتح العارض فقط ولا يشفّر بيانات المتصفح.</small></div>
  <div class="card"><b>النسخ الاحتياطي</b><br><button class="b" data-a="exp">تصدير نسخة احتياطية (JSON)</button><br><label class="b o" style="display:inline-block;text-align:center;border:1px solid var(--g);border-radius:14px;padding:10px 16px;cursor:pointer;color:var(--g)">استيراد نسخة احتياطية<input type="file" accept=".json,application/json" data-a="imp" style="display:none"></label>
  <br><button class="b o" data-a="csv">تصدير السجل (CSV)</button> <button class="b o" data-a="prt">طباعة تقرير التقدم</button>
- <p class="mut">آخر نسخة: ${s.lastBackup?gdate(iso(new Date(s.lastBackup))):'لا توجد'}. ذاكرة المتصفح ليست بديلًا عن نسخة خارجية.</p></div>
+ <p class="mut">آخر نسخة: ${s.lastBackup?gdate(iso(new Date(s.lastBackup))):'لا توجد'}. تقبل الاستيراد نسخ الإصدارات السابقة وتحوّلها تلقائيًا. ذاكرة المتصفح ليست بديلًا عن نسخة خارجية.</p></div>
  <div class="card"><b>منطقة حذف</b><br><button class="b d" data-a="reset">حذف كل التقدم</button></div>
  <div class="card mut"><b>ملاحظات مهمة</b><br>• تقدّمك محفوظ في هذا المتصفح وعلى هذا الجهاز فقط ولا يُرسَل إلى أي خادم. تغيير المتصفح أو الجهاز أو النطاق يعني بيانات جديدة، فاستخدم النسخ الاحتياطي.<br>• جدول بدايات السور لمصحف المدينة، فتحقق منه من مصحفك. لا يتضمن التطبيق نص القرآن.<br>• لا يقيّم التطبيق التجويد؛ اقرأ على معلّم أو شخص موثوق.</div>`}
 
-/* ---------- personalization, XP, challenges, shop, lock ---------- */
-function pers(D){const last={},weak=new Set();for(const d in S.tasks)for(const k in S.tasks[d]){const o=S.tasks[d][k];if(!o.r)continue;const pg=k[0]==='f'||k==='w',a=pg?2*(o.r[0]-1):o.r[0],b=pg?2*o.r[1]-1:o.r[1];
- if(o.done&&d<D&&(/^new/.test(k)||k==='rec'||k==='cur'||pg))for(let h=a;h<=b;h++)if(!last[h]||last[h]<d)last[h]=d;
- if(o.weak||o.diff==='صعب')for(let h=a;h<=b;h++)weak.add(h)}return{last,weak}}
-const XPV={new:10,rec:4,cur:6,f:6,w:3};
+/* ---------- sessions page ---------- */
+const GO=[1,2,3,4,6,8,12,16,20,28,40,60,80];
+function ssCard(x){const g=[...GO];if(!g.includes(x.goal)){g.push(x.goal);g.sort((a,b)=>a-b)}
+ const ord=[...x.days].sort((a,b)=>((a-S.settings.weekStart+7)%7)-((b-S.settings.weekStart+7)%7)),prev=x.kind==='cus'?'':ord.map(d=>`${WD[d]}: ${shareOf(x,d)?ul(shareOf(x,d)):'—'}`).join(' • '),a=`data-ss="${x.id}"`;
+ return `<div class="card"><label>اسم الجلسة<input ${a} data-f="name" type="text" maxlength="40" value="${esc(x.name)}"></label>
+ <label>النوع<select ${a} data-f="kind"><option value="mem" ${x.kind==='mem'?'selected':''}>حفظ جديد</option><option value="rev" ${x.kind==='rev'?'selected':''}>مراجعة</option><option value="cus" ${x.kind==='cus'?'selected':''}>هدف حر (تعليم فقط)</option></select></label>
+ ${x.kind==='cus'?`<label>وصف الهدف<input ${a} data-f="text" type="text" maxlength="100" value="${esc(x.text)}"></label>`:`<label>الهدف الأسبوعي<select ${a} data-f="goal">${g.map(v=>`<option value="${v}" ${x.goal===v?'selected':''}>${ul(v)}</option>`).join('')}</select></label>`}
+ ${x.kind==='rev'?`<div class="grid"><label>من صفحة (٠ = كل المحفوظ)<input ${a} data-f="r0" type="number" inputmode="numeric" value="${x.range[0]}"></label><label>إلى صفحة<input ${a} data-f="r1" type="number" inputmode="numeric" value="${x.range[1]}"></label></div>`:''}
+ <p class="mut">أيام الجلسة: يُقسَّم الهدف بين الأيام المختارة فقط، فاختر يومًا واحدًا لإنجازه كله فيه.</p><div class="chips">${[6,0,1,2,3,4,5].map(d=>`<button class="chip ${x.days.includes(d)?'on':''}" data-a="ssday" data-i="${x.id}" data-d="${d}" aria-pressed="${x.days.includes(d)}">${WD[d]}</button>`).join('')}</div>
+ ${prev?`<small>التوزيع الأسبوعي: ${prev}</small><br>`:''}<label class="ck"><input type="checkbox" ${a} data-f="active" ${x.active?'checked':''}> مفعّلة</label><button class="b d" data-a="ssdel" data-i="${x.id}">حذف الجلسة</button></div>`}
+function ssView(){return `<h1>الجلسات</h1><div class="card mut">الجلسة هدف أسبوعي تحدّد أنت أيامه وطريقة توزيعه: مثلًا «صفحة أسبوعيًا» في يوم واحد أو يومين أو أكثر. تظهر مهام الجلسة في «خطة اليوم» بجانب خطتك. جلسة الحفظ تتقدّم بمحفوظك. جلسة المراجعة تختار من محفوظك الأقدم مراجعةً (ضمن نطاق صفحات إن حدّدته). الهدف الحر مجرد تعليم لمهمة تضعها بنفسك.</div>
+ <label class="ck card"><input type="checkbox" data-s="sessOnly" ${S.settings.sessOnly?'checked':''}> استبدال الحفظ اليومي الافتراضي بجلسات الحفظ المفعّلة</label>`+
+ (S.ss.map(ssCard).join('')||'<div class="card mut">لا توجد جلسات بعد.</div>')+`<button class="b" data-a="ssadd">+ إضافة جلسة</button>`}
+
+/* ---------- XP, challenges ---------- */
+const XPV={new:10,rec:4,cur:6,f:6,w:3,g:6,o:5,z:5,c:3};
 function xpEarned(){let x=0;for(const d in S.tasks){for(const k in S.tasks[d]){const o=S.tasks[d][k];if(o.done&&o.r)x+=XPV[catOf(k)]||0}if(st(d)==='full')x+=15}for(const c of chList())if(c.done)x+=c.xp;return x}
 const xpSpent=()=>S.owned.reduce((a,id)=>a+((ITEMS.find(i=>i.id===id)||{p:0}).p),0)+S.x.pb*PASSP,xpBal=()=>xpEarned()-xpSpent();
-const wsOf=D=>addD(D,-((pd(D).getDay()-S.settings.weekStart+7)%7));
-function chDefs(){const D=today(),w=wsOf(D),we=addD(w,6),t=pd(D),ms_=iso(new Date(t.getFullYear(),t.getMonth(),1)),me=iso(new Date(t.getFullYear(),t.getMonth()+1,0)),mn=new Intl.DateTimeFormat('ar-EG-u-nu-'+nu(),{month:'long'}).format(t);
- return[{id:'w'+w,t:'تحدي هذا الأسبوع',d:`أتمّ ${N(5)} أيام كاملة`,s:w,e:we,m:'days',n:5,xp:60},{id:'p'+w,t:'تحدي صفحات الأسبوع',d:`احفظ ${N(3)} صفحات جديدة هذا الأسبوع`,s:w,e:we,m:'pages',n:3,xp:50},
- {id:'m'+ms_,t:'تحدي '+mn,d:`أتمّ ${N(18)} يومًا كاملًا هذا الشهر`,s:ms_,e:me,m:'days',n:18,xp:200},{id:'r'+ms_,t:'تحدي المراجعة — '+mn,d:`أنجز ${N(40)} مهمة مراجعة هذا الشهر`,s:ms_,e:me,m:'rev',n:40,xp:150},
- {id:'g'+ms_,t:'تحدي الحفظ — '+mn,d:`احفظ ${N(10)} صفحات جديدة هذا الشهر`,s:ms_,e:me,m:'pages',n:10,xp:180}]}
-function chProg(c,from){let n=0;const a=from>c.s?from:c.s;for(const d in S.tasks){if(d<a||d>c.e)continue;const r=S.tasks[d];if(c.m==='days'){if(st(d)==='full')n++}else for(const k in r){if(!r[k].done||!r[k].r)continue;if(c.m==='pages'&&/^new/.test(k))n+=(r[k].r[1]-r[k].r[0]+1)/2;if(c.m==='rev'&&catOf(k)!=='new')n++}}return n}
+const memOn=()=>S.settings.memDays.length>0,revOn=()=>S.settings.revDays.length>0,extOn=()=>memOn()&&S.settings.extraMax>0,sdOn=()=>S.owned.includes('sd1'),hasP=()=>pagesMem(memSet())>0;
+const CW=[
+{id:'w1',t:'أسبوع الإتقان',m:'days',b:3,x:50,d:n=>`أتمّ ${N(n)} أيام كاملة`},
+{id:'w2',t:'حصاد الأسبوع',m:'pages',b:2,x:50,d:n=>`احفظ ${N(n)} صفحات جديدة`,ap:memOn},
+{id:'w3',t:'أسبوع المراجعة',m:'rev',b:8,x:50,d:n=>`أنجز ${N(n)} مهمة مراجعة`,ap:hasP},
+{id:'w4',t:'سلسلة الأسبوع',m:'streak',b:3,x:50,d:n=>`حقّق ${N(n)} أيام كاملة متتالية`},
+{id:'w5',t:'رحلة إلى القديم',m:'fpages',b:5,x:60,d:n=>`راجع ${N(n)} صفحات من المحفوظ القديم`,ap:()=>revOn()&&hasP()},
+{id:'w6',t:'السبّاق',m:'ext',b:1,x:40,d:n=>`أنجز ${N(n)} مهمة حفظ إضافية تقدّم بها أيامًا قادمة`,ap:extOn},
+{id:'w7',t:'المقيِّم الأمين',m:'rated',b:5,x:40,d:n=>`قيّم صعوبة ${N(n)} مهام (سهل/متوسط/صعب)`,ap:hasP},
+{id:'w8',t:'ثبات السورة',m:'cur',b:3,x:40,d:n=>`أتمّ ${N(n)} مراجعات للسورة الحالية`,ap:()=>memOn()&&hasP()},
+{id:'w9',t:'تثبيت القريب',m:'rec',b:3,x:30,d:n=>`أتمّ ${N(n)} مراجعات للحفظ القريب`,ap:()=>memOn()&&hasP()},
+{id:'w10',t:'أيام الحفظ',m:'ntasks',b:4,x:50,d:n=>`أتمّ مهمة الحفظ الجديد في ${N(n)} أيام`,ap:memOn},
+{id:'w11',t:'صدقة الأسبوع',m:'sdq',b:4,x:40,d:n=>`تصدّق في ${N(n)} أيام`,ap:sdOn},
+{id:'w12',t:'أسبوع كامل',m:'days',b:5,x:80,d:n=>`أتمّ ${N(n)} أيام كاملة`}];
+const CM=[
+{id:'m1',t:'الشهر المنتظم',m:'days',b:12,x:150,d:n=>`أتمّ ${N(n)} يومًا كاملًا`},
+{id:'m2',t:'حصاد الشهر',m:'pages',b:6,x:160,d:n=>`احفظ ${N(n)} صفحات جديدة`,ap:memOn},
+{id:'m3',t:'شهر المراجعة',m:'rev',b:25,x:150,d:n=>`أنجز ${N(n)} مهمة مراجعة`,ap:hasP},
+{id:'m4',t:'سلسلة طويلة',m:'streak',b:6,x:140,d:n=>`حقّق ${N(n)} أيام كاملة متتالية`},
+{id:'m5',t:'عودة إلى الأقدم',m:'fpages',b:25,x:170,d:n=>`راجع ${N(n)} صفحة من المحفوظ القديم`,ap:()=>revOn()&&hasP()},
+{id:'m6',t:'شهر السبّاقين',m:'ext',b:4,x:120,d:n=>`أنجز ${N(n)} مهام حفظ إضافية`,ap:extOn},
+{id:'m7',t:'شهر التقييم',m:'rated',b:20,x:120,d:n=>`قيّم صعوبة ${N(n)} مهمة`,ap:hasP},
+{id:'m8',t:'إتقان السور',m:'cur',b:12,x:120,d:n=>`أتمّ ${N(n)} مراجعة للسورة الحالية`,ap:()=>memOn()&&hasP()},
+{id:'m9',t:'شهر الحفظ',m:'ntasks',b:14,x:150,d:n=>`أتمّ مهمة الحفظ الجديد في ${N(n)} يومًا`,ap:memOn},
+{id:'m10',t:'صدقة الشهر',m:'sdq',b:15,x:100,d:n=>`تصدّق في ${N(n)} يومًا`,ap:sdOn},
+{id:'m11',t:'شهر كامل',m:'days',b:18,x:220,d:n=>`أتمّ ${N(n)} يومًا كاملًا`},
+{id:'m12',t:'الحفظ المكثّف',m:'pages',b:10,x:200,d:n=>`احفظ ${N(n)} صفحات جديدة`,ap:memOn}];
+const hash=s=>{let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
+const rng=a=>()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+function pickT(arr,key,k){const R=rng(hash(key)),a=arr.map((x,i)=>i).filter(i=>!arr[i].ap||arr[i].ap());for(let i=a.length-1;i>0;i--){const j=Math.floor(R()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a.slice(0,k).map(i=>arr[i])}
+const lvl=()=>Math.min(3,Math.round((1+Math.floor(pagesMem(memSet())/40)*0.2)*10)/10);
+function schedCount(s,e,m){let n=0;const memOnly=['ntasks','cur','rec'].includes(m);for(let d=s;d<=e;d=addD(d,1)){const w=pd(d).getDay();if(S.settings.memDays.includes(w)||(!memOnly&&S.settings.revDays.includes(w)))n++}return n}
+function chDefs(){const D=today(),w=wsOf(D),we=addD(w,6),t=pd(D),ms_=iso(new Date(t.getFullYear(),t.getMonth(),1)),me=iso(new Date(t.getFullYear(),t.getMonth()+1,0)),mn=new Intl.DateTimeFormat('ar-EG-u-nu-'+nu(),{month:'long'}).format(t),lf=lvl();
+ const mk_=(T,s,e)=>{let n=Math.max(1,Math.round(T.b*lf));if(['days','streak','ntasks','cur','rec'].includes(T.m))n=Math.min(n,Math.max(1,schedCount(s,e,T.m)));return{id:T.id+'@'+s,t:T.t,d:T.d(n),s,e,m:T.m,n,xp:Math.round(T.x*lf)}};
+ return[...pickT(CW,'w'+w,4).map(T=>mk_(T,w,we)),...pickT(CM,'m'+ms_,3).map(T=>{const c=mk_(T,ms_,me);c.t+=' — '+mn;return c})]}
+function chProg(c,from){const a=from>c.s?from:c.s,T=today(),e=c.e<T?c.e:T;let n=0;
+ if(c.m==='streak'){let run=0,best=0;for(let d=a;d<=e;d=addD(d,1)){if(!sched(d))continue;if(st(d)==='full'){run++;if(run>best)best=run}else run=0}return best}
+ if(c.m==='days'){for(let d=a;d<=e;d=addD(d,1))if(st(d)==='full')n++;return n}
+ if(c.m==='sdq')return S.x.sd.filter(d=>d>=a&&d<=c.e).length;
+ for(const d in S.tasks){if(d<a||d>c.e)continue;const r=S.tasks[d];for(const k in r){const o=r[k];if(c.m==='rated'){if(o.rv>0)n++;continue}if(!o.done||!o.r)continue;const ct=catOf(k);
+  if(c.m==='pages'&&ct==='new')n+=(o.r[1]-o.r[0]+1)/U;else if(c.m==='rev'&&['rec','cur','f','g','o','w','z'].includes(ct))n++;else if(c.m==='fpages'&&['f','g','o'].includes(ct))n+=o.r[1]-o.r[0]+1;
+  else if(c.m==='ext'&&/^new\d/.test(k))n++;else if(c.m==='cur'&&ct==='cur')n++;else if(c.m==='rec'&&ct==='rec')n++;else if(c.m==='ntasks'&&ct==='new'&&!/^new\d/.test(k))n++}}return n}
 function chList(){const L=[],seen={};for(const id in S.ch){const c=S.ch[id];seen[id]=1;if(c.st==='acc'){const p=chProg(c,c.from);L.push({...c,p,acc:true,done:p>=c.n,exp:c.e<today()&&p<c.n})}else if(c.e>=today())L.push({...c,p:0,dec:true})}
  chDefs().forEach(c=>{if(!seen[c.id])L.push({...c,p:0})});return L}
-function chView(){const L=chList(),row=c=>`<div class="card"><b>${c.t}</b> <small>+${N(c.xp)} نقطة</small><br><small>${c.d}</small>${c.acc?`<div class="bar"><i style="width:${Math.min(100,c.p/c.n*100)}%"></i></div><small>${N(Math.floor(c.p))} / ${N(c.n)}${c.done?' — اكتمل ✓':c.exp?' — انتهى الوقت':''}</small>`:`<br>${c.dec?'':`<button class="b o" data-a="chdec" data-i="${c.id}">رفض</button> `}<button class="b" data-a="chacc" data-i="${c.id}">قبول التحدي</button>`}</div>`,sec=(t,a,m)=>`<h2>${t}</h2>${a.map(row).join('')||`<div class="card mut">${m}</div>`}`;
- return `<h1>التحديات</h1><div class="card">رصيدك: <b>${N(xpBal())} ✦</b><br><small>إجمالي ما كسبتَه ${N(xpEarned())}</small></div>`+sec('تحدياتي',L.filter(c=>c.acc),'لم تقبل تحديًا بعد.')+sec('متاحة',L.filter(c=>!c.acc&&!c.dec),'لا تحديات متاحة.')+(L.some(c=>c.dec)?sec('مرفوضة',L.filter(c=>c.dec),''):'')+
- `<div class="card mut">النقاط: حفظ جديد ${N(10)}، مراجعة قريبة ${N(4)}، سورة حالية ${N(6)}، مراجعة طويلة ${N(6)}، مراجعة اختيارية ${N(3)}، ويوم مكتمل +${N(15)}، وجائزة كل تحدٍّ. يُحتسب التحدي من لحظة قبوله. إلغاء تعليم مهمة ينقص نقاطها.</div>`}
+function chView(){const L=chList(),row=c=>`<div class="card"><b>${esc(c.t)}</b> <small>+${N(c.xp)} نقطة</small><br><small>${esc(c.d)}</small>${c.acc?`<div class="bar"><i style="width:${Math.min(100,c.p/c.n*100)}%"></i></div><small>${N(Math.floor(c.p*10)/10)} / ${N(c.n)}${c.done?' — اكتمل ✓':c.exp?' — انتهى الوقت':''}</small>`:`<br>${c.dec?'':`<button class="b o" data-a="chdec" data-i="${esc(c.id)}">رفض</button> `}<button class="b" data-a="chacc" data-i="${esc(c.id)}">قبول التحدي</button>`}</div>`,sec=(t,a,m)=>`<h2>${t}</h2>${a.map(row).join('')||`<div class="card mut">${m}</div>`}`;
+ return `<h1>التحديات</h1><div class="card">رصيدك: <b>${N(xpBal())} ✦</b><br><small>إجمالي ما كسبتَه ${N(xpEarned())} — مستوى الصعوبة الحالي ×${N(lvl())} ويرتفع كلما حفظتَ أكثر</small></div>`+sec('تحدياتي',L.filter(c=>c.acc),'لم تقبل تحديًا بعد.')+sec('متاحة',L.filter(c=>!c.acc&&!c.dec),'لا تحديات متاحة الآن؛ تتجدد مع بداية الأسبوع والشهر.')+(L.some(c=>c.dec)?sec('مرفوضة',L.filter(c=>c.dec),''):'')+
+ `<div class="card mut">تتغيّر التحديات كل أسبوع وكل شهر، من مجموعة تضم أكثر من ${N(CW.length+CM.length)} تحديًا بأنواع مختلفة، وتكبر أهدافها وجوائزها مع حفظك. النقاط: حفظ جديد ${N(10)}، مراجعة قريبة ${N(4)}، سورة حالية ${N(6)}، مراجعة طويلة أو استدراك ${N(6)}، مراجعة قديمة ${N(5)}، ويوم مكتمل +${N(15)}، وجائزة كل تحدٍّ. يُحتسب التحدي من لحظة قبوله. إلغاء تعليم مهمة ينقص نقاطها.</div>`}
+
+/* ---------- store ---------- */
 const ITEMS=[
 {id:'h7',p:120,c:'حديث — الحياة',x:'«إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى»',s:'متفق عليه'},
 {id:'h1',p:100,c:'حديث — القرآن',x:'«خيركم من تعلّم القرآن وعلّمه»',s:'رواه البخاري'},
@@ -323,40 +424,53 @@ function passBar(D){const X=S.x,avail=X.pb-X.pd.length;if(X.pd.includes(D))retur
 async function hp(x){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('qp:'+x));return[...new Uint8Array(b)].map(c=>c.toString(16).padStart(2,'0')).join('')}
 const lockView=()=>`<main><h1>التطبيق مقفل</h1><div class="card"><label>كلمة السر<input id="pw" type="password" inputmode="numeric" autocomplete="off"></label><button class="b" data-a="unlock">فتح</button><p class="mut" id="lm"></p><button class="b d" data-a="forgot">نسيت كلمة السر (يحذف بيانات هذا الجهاز)</button></div></main>`;
 
+/* ---------- render ---------- */
 function render(){const app=document.getElementById('app');document.documentElement.dataset.theme=S.settings.theme;document.documentElement.dataset.pal=(S.owned.includes(S.x.pal)&&PAL[S.x.pal])?PAL[S.x.pal]:'';if(!selDate)selDate=today();
  if(S.settings.pin&&!unlocked){app.innerHTML=lockView();return}
- const V={home,today:dayView,cal:calView,rev:reviewView,ch:chView,shop:shopView,stats:statsView,set:settingsView}[tab]();
- const T=[['home','⌂','الرئيسية'],['today','☑','خطة اليوم'],['cal','▦','التقويم'],['rev','↺','المراجعة'],['ch','★','التحديات'],['shop','✦','المتجر'],['stats','▥','الإحصائيات'],['set','⚙','الإعدادات']],o=document.querySelector('nav'),sl=o?o.scrollLeft:0;
+ gapTick();
+ const V={home,today:dayView,cal:calView,rev:reviewView,ss:ssView,ch:chView,shop:shopView,stats:statsView,set:settingsView}[tab]();
+ const T=[['home','⌂','الرئيسية'],['today','☑','خطة اليوم'],['cal','▦','التقويم'],['rev','↺','المراجعة'],['ss','☰','الجلسات'],['ch','★','التحديات'],['shop','✦','المتجر'],['stats','▥','الإحصائيات'],['set','⚙','الإعدادات']],o=document.querySelector('nav'),sl=o?o.scrollLeft:0;
  app.innerHTML=`<main style="zoom:${{sm:.88,md:1,lg:1.12}[S.settings.zoom]}">${V}</main><nav>${T.map(x=>`<button class="${tab===x[0]?'on':''}" data-a="tab" data-t="${x[0]}"><b>${x[1]}</b>${x[2]}</button>`).join('')}</nav>`;
  const n=document.querySelector('nav');if(n)n.scrollLeft=sl}
 
 /* ---------- backup / export ---------- */
-async function exp(){const txt=JSON.stringify({app:APP,version:VER,exported:new Date().toISOString(),settings:S.settings,tasks:S.tasks,plans:S.plans,ch:S.ch,owned:S.owned,x:S.x},null,1),name='quran-planner-backup-'+today()+'.json';
+async function exp(){const txt=JSON.stringify({app:APP,version:VER,u:U,exported:new Date().toISOString(),settings:S.settings,tasks:S.tasks,plans:S.plans,ch:S.ch,owned:S.owned,x:S.x,pri:S.pri,ss:S.ss},null,1),name='quran-planner-backup-'+today()+'.json';
  try{const f=new File([txt],name,{type:'application/json'});
   if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f]});
   else{const u=URL.createObjectURL(new Blob([txt],{type:'application/json'})),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),5000)}
   S.settings.lastBackup=Date.now();save();render();toast('تم تجهيز ملف النسخة الاحتياطية. تأكد أنه حُفظ في «الملفات» أو iCloud.')}
  catch(e){toast(e&&e.name==='AbortError'?'أُلغيت المشاركة ولم تُنشأ نسخة.':'تعذّر إنشاء النسخة الاحتياطية.')}}
+function parseBackup(txt){let o;try{o=JSON.parse(txt)}catch(e){return null}
+ if(!o||o.app!==APP||typeof o.version!=='number'||o.version>VER||!valid(o)||(o.u&&o.u!==U))return null;
+ for(const d in o.tasks)if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||!o.tasks[d]||typeof o.tasks[d]!=='object')return null;
+ if(o.pri&&typeof o.pri!=='object'||o.ss&&!Array.isArray(o.ss))return null;return o}
 function imp(f){if(!f)return;const r=new FileReader();r.onerror=()=>toast('تعذّرت قراءة الملف.');
- r.onload=()=>{let o;try{o=JSON.parse(r.result);if(o.app!==APP||typeof o.version!=='number'||o.version>VER||!valid(o))throw 0;
-  for(const d in o.tasks)if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||!o.tasks[d]||typeof o.tasks[d]!=='object')throw 0}
-  catch(e){toast('الملف غير صالح أو من إصدار غير متوافق. اختر ملف نسخة احتياطية صدّرته من هذا التطبيق.');return}
+ r.onload=()=>{const o=parseBackup(r.result);if(!o){toast('الملف غير صالح أو من إصدار غير متوافق. اختر ملف نسخة احتياطية صدّرته من هذا التطبيق.');return}
   if(!confirm('سيتم استبدال تقدّمك الحالي بالنسخة المستوردة. هل تريد المتابعة؟'))return;
-  S={v:VER,settings:{...DEF,...o.settings},tasks:o.tasks,plans:o.plans&&typeof o.plans==='object'?o.plans:{},ch:o.ch&&typeof o.ch==='object'?o.ch:{},owned:Array.isArray(o.owned)?o.owned:[],x:o.x&&typeof o.x==='object'?o.x:{}};fixS();save();render();toast('تم استيراد النسخة الاحتياطية بنجاح.')};r.readAsText(f)}
-function csv(){const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"',R=[['التاريخ','اليوم','الفئة','النطاق','الحالة','ملاحظات','الصعوبة','ضعيف']];
- Object.keys(S.tasks).sort().forEach(d=>{for(const k in S.tasks[d]){const o=S.tasks[d][k];if(!o.r)continue;const pgm=k[0]==='f'||k==='w';R.push([d,WD[pd(d).getDay()],CATS[catOf(k)],(pgm?rlp(o.r[0],o.r[1]):rl(o.r[0],o.r[1])).t,o.done?'مكتملة':'غير مكتملة',o.note,o.diff,o.weak?'نعم':''])}});
+  S=mk(o);fixS();save();render();toast('تم استيراد النسخة الاحتياطية بنجاح.')};r.readAsText(f)}
+function csv(){const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"',R=[['التاريخ','اليوم','الفئة','النطاق','الحالة','ملاحظات','التقييم','']];
+ Object.keys(S.tasks).sort().forEach(d=>{for(const k in S.tasks[d]){const o=S.tasks[d][k];if(!o.r)continue;const c=catOf(k);R.push([d,WD[pd(d).getDay()],ttl(k),c==='c'?'':(isPg(k)?rlp(o.r[0],o.r[1]):rl(o.r[0],o.r[1])).t,o.done?'مكتملة':'غير مكتملة',o.note,o.rv?RL[o.rv]:'',''])}});
  const u=URL.createObjectURL(new Blob(['\ufeff'+R.map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=u;a.download='quran-planner-history-'+today()+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),5000);toast('تم تجهيز ملف السجل (CSV).')}
 function prt(){const ms=memSet(),pg=pagesMem(ms),sv=surahStats(ms),c=counts();
  document.getElementById('print').innerHTML=`<h1>تقرير تقدّم حفظ القرآن</h1><p>${gdate(today())}</p><table><tr><th>الصفحات المحفوظة</th><td>${N(pg)} من ${N(TP())}</td></tr><tr><th>مهام الحفظ المكتملة</th><td>${N(c.nw)}</td></tr><tr><th>مهام المراجعة المكتملة</th><td>${N(c.rv)}</td></tr><tr><th>سور بدأتها / أكملتها</th><td>${N(sv.started)} / ${N(sv.done)}</td></tr><tr><th>أيام متتالية</th><td>${N(streak())}</td></tr></table>`;window.print()}
 
 /* ---------- events ---------- */
-document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;
+function setS(t,rr){const k=t.dataset.s;S.settings[k]=t.type==='checkbox'?t.checked:t.type==='number'?+t.value:t.value;fixS();save();if(rr)render()}
+function setSS(t,rr){const x=S.ss.find(y=>y.id===t.dataset.ss);if(!x)return;const f=t.dataset.f,v=t.type==='checkbox'?t.checked:t.value;
+ if(f==='r0')x.range[0]=Math.max(0,Math.round(+v||0));else if(f==='r1')x.range[1]=Math.max(0,Math.round(+v||0));else if(f==='goal')x.goal=+v;else x[f]=v;fixS();save();if(rr)render()}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b||b.tagName==='SELECT'||b.tagName==='TEXTAREA')return;const a=b.dataset.a;
  if(a==='tab'){tab=b.dataset.t;if(tab==='today')selDate=selDate||today();window.scrollTo(0,0);render()}
  else if(a==='tog')tog(b.dataset.d,b.dataset.k);
  else if(a==='day'){const n=+b.dataset.n;selDate=n?addD(selDate,-n):today();render()}
  else if(a==='goto'){selDate=b.dataset.d;tab='today';window.scrollTo(0,0);render()}
- else if(a==='cal'){const d=new Date(calM.y,calM.m-(+b.dataset.n),1);calM={y:d.getFullYear(),m:d.getMonth()};render()}
- else if(a==='dayT'){const A=S.settings[b.dataset.k],n=+b.dataset.d,i=A.indexOf(n);if(i>=0)A.splice(i,1);else A.push(n);save();render()}
+ else if(a==='cal'){if(!calM){const t=new Date();calM={y:t.getFullYear(),m:t.getMonth()}}const d=new Date(calM.y,calM.m-(+b.dataset.n),1);calM={y:d.getFullYear(),m:d.getMonth()};render()}
+ else if(a==='dayT'){const A=S.settings[b.dataset.k],n=+b.dataset.d,i=A.indexOf(n);if(i>=0)A.splice(i,1);else A.push(n);fixS();save();render()}
+ else if(a==='pri')setPri(b.dataset.d,b.dataset.k,+b.dataset.v);
+ else if(a==='clrpri'){for(let u=+b.dataset.x;u<=+b.dataset.y;u++)delete S.pri[u];save();render()}
+ else if(a==='endrv'){if(S.x.rv)S.x.rv.e=today();save();render();toast('عدتَ إلى خطتك العادية.')}
+ else if(a==='ssadd'){S.ss.push({id:Math.random().toString(36).slice(2,7),name:'جلسة جديدة',kind:'mem',goal:4,days:[6],range:[0,0],text:'',active:true});fixS();save();render()}
+ else if(a==='ssdel'){if(confirm('حذف هذه الجلسة؟ لا يُحذف ما أتممتَه منها من سجلّك.')){S.ss=S.ss.filter(x=>x.id!==b.dataset.i);save();render()}}
+ else if(a==='ssday'){const x=S.ss.find(y=>y.id===b.dataset.i);if(x){const n=+b.dataset.d,i=x.days.indexOf(n);if(i>=0)x.days.splice(i,1);else x.days.push(n);fixS();save();render()}}
  else if(a==='chacc'||a==='chdec'){const d=chList().find(x=>x.id===b.dataset.i);if(d){const c={id:d.id,t:d.t,d:d.d,s:d.s,e:d.e,m:d.m,n:d.n,xp:d.xp,st:a==='chacc'?'acc':'dec'};if(a==='chacc')c.from=today();S.ch[c.id]=c;save();render()}}
  else if(a==='buy'){const i=ITEMS.find(x=>x.id===b.dataset.i);if(i&&!S.owned.includes(i.id)&&xpBal()>=i.p&&(!i.q||i.q())){S.owned.push(i.id);save();render();toast('تم فتح الفائدة.')}}
  else if(a==='buypass'){if(xpBal()>=PASSP){S.x.pb++;save();render();toast('تم شراء تصريح راحة.')}}
@@ -367,14 +481,20 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b
  else if(a==='setpin'){const v=document.getElementById('npw').value;if(v.length<4)return toast('كلمة السر ٤ خانات على الأقل.');if(!(window.crypto&&crypto.subtle))return toast('القفل غير مدعوم في هذا المتصفح.');hp(v).then(x=>{S.settings.pin=x;unlocked=true;save();render();toast('تم تعيين كلمة السر.')})}
  else if(a==='clrpin'){S.settings.pin='';save();render();toast('أُزيل القفل.')}
  else if(a==='unlock'){hp(document.getElementById('pw').value).then(x=>{if(x===S.settings.pin){unlocked=true;render()}else document.getElementById('lm').textContent='كلمة السر غير صحيحة.'})}
- else if(a==='forgot'){if(confirm('سيُحذف كل التقدم على هذا الجهاز ويُزال القفل (يمكنك الاستعادة من نسخة احتياطية). متابعة؟')){S={v:VER,settings:{...DEF},tasks:{},plans:{},ch:{},owned:[],x:{}};save();render()}}
+ else if(a==='forgot'){if(confirm('سيُحذف كل التقدم على هذا الجهاز ويُزال القفل (يمكنك الاستعادة من نسخة احتياطية). متابعة؟')){S=mk({});fixS();save();render()}}
  else if(a==='exp')exp();else if(a==='csv')csv();else if(a==='prt')prt();
- else if(a==='reset'){if(confirm('سيتم حذف كل التقدم والسجل نهائيًا. هل أنت متأكد؟')&&confirm('تأكيد أخير: هل صدّرتَ نسخة احتياطية وتريد الحذف؟')){S={v:VER,settings:{...DEF},tasks:{},plans:{},ch:{},owned:[],x:{}};save();render();toast('تم حذف كل التقدم.')}}});
+ else if(a==='reset'){if(confirm('سيتم حذف كل التقدم والسجل نهائيًا. هل أنت متأكد؟')&&confirm('تأكيد أخير: هل صدّرتَ نسخة احتياطية وتريد الحذف؟')){S=mk({});fixS();save();render();toast('تم حذف كل التقدم.')}}});
+document.addEventListener('input',e=>{const t=e.target;
+ if(t.dataset.a==='f')setDetail(t.dataset.d,t.dataset.k,t.dataset.f,t.value);
+ else if(t.dataset.s&&(t.type==='number'||t.type==='text'))setS(t,false);
+ else if(t.dataset.ss&&(t.type==='text'||t.type==='number'))setSS(t,false)});
 document.addEventListener('change',e=>{const t=e.target;
  if(t.dataset.a==='pickSur'){if(t.value!==''){S.settings.startPage=SP[+t.value];fixS();save();render()}return}
  if(t.dataset.a==='imp'){imp(t.files[0]);t.value='';return}
- if(t.dataset.a==='f'){setDetail(t.dataset.d,t.dataset.k,t.dataset.f,t.type==='checkbox'?t.checked:t.value);return}
- if(t.dataset.s){const k=t.dataset.s;S.settings[k]=t.type==='checkbox'?t.checked:t.type==='number'?+t.value:t.value;fixS();save();render()}});
+ if(t.dataset.a==='f'){setDetail(t.dataset.d,t.dataset.k,t.dataset.f,t.value);return}
+ if(t.dataset.ss){setSS(t,true);return}
+ if(t.dataset.s)setS(t,true)});
+document.addEventListener('toggle',e=>{const t=e.target;if(t.dataset&&t.dataset.dk){if(t.open)OP.add(t.dataset.dk);else OP.delete(t.dataset.dk)}},true);
 load();selDate=today();render();
 try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
 try{if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))navigator.serviceWorker.register('sw.js')}catch(e){}
