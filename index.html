@@ -163,8 +163,8 @@ const shareOf=(x,dow)=>{const ord=[...x.days].sort((a,b)=>((a-S.settings.weekSta
 /* ---------- recovery after a long break ---------- */
 const recActive=()=>!!(S.x.rv&&S.x.rv.s&&!S.x.rv.e);
 function gapTick(){const T=today();let ld='';for(const d in S.tasks)for(const k in S.tasks[d])if(S.tasks[d][k].done&&d<=T&&d>ld)ld=d;
- const F=frInfo('9999-12-31',memSet());
- if(!recActive()){if(S.settings.gapDays>0&&ld&&dn(T)-dn(ld)>=S.settings.gapDays&&F.P.length){S.x.rv={s:T};save()}}
+ const F=frInfo('9999-12-31',memSet()),rf=(S.x.rv&&S.x.rv.e&&S.x.rv.e>ld)?S.x.rv.e:ld; /* a manual or automatic end counts as activity, so recovery doesn't restart at once */
+ if(!recActive()){if(S.settings.gapDays>0&&rf&&dn(T)-dn(rf)>=S.settings.gapDays&&F.P.length){S.x.rv={s:T};save()}}
  else{const s0=S.x.rv.s;if(!F.P.length||F.P.every(p=>{for(let u=U*(p-1);u<U*p;u++)if(F.last[u]&&F.last[u]>=s0)return true;return false})){S.x.rv.e=T;save()}}}
 
 /* ---------- daily tasks ---------- */
