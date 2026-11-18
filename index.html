@@ -52,6 +52,7 @@ nav button.on{color:var(--g);font-weight:700}nav button b{display:block;font-siz
 @media print{body>*:not(#print){display:none!important}#print{display:block;padding:20px;color:#000}#print td,#print th{border:1px solid #999;padding:4px}}
 @media(max-width:380px){body{font-size:15px}main{padding:10px}h1{font-size:20px}.task{padding:8px;gap:8px}.chk{width:42px;height:42px}.stat b{font-size:19px}.card{padding:10px 12px}}
 @media(max-width:340px){.grid{grid-template-columns:1fr}.cal{gap:3px}}
+.sbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;display:flex;justify-content:center;padding:6px 12px;background:var(--bg)}.spill{display:inline-flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;border:1px solid var(--gold);border-radius:20px;padding:4px 16px;background:var(--card);font-size:15px}.spill.fz{border-color:#5B8DB8;color:#3C6E99}:root[data-theme=dark] .spill.fz{border-color:#8DB8DD;color:#8DB8DD}.sic{font-size:20px}.spill small{font-size:12px}
 :focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 </style>
 </head>
@@ -68,8 +69,8 @@ const SN='الفاتحة|البقرة|آل عمران|النساء|المائد�
 const SP=[1,2,50,77,106,128,151,177,187,208,221,235,249,255,262,267,282,293,305,312,322,332,342,350,359,367,377,385,396,404,411,415,418,428,434,440,446,453,458,467,477,483,489,496,499,502,507,511,515,518,520,523,526,528,531,534,537,542,545,549,551,553,554,556,558,560,562,564,566,568,570,572,574,575,577,578,580,582,583,585,586,587,587,589,590,591,591,592,593,594,595,595,596,596,597,597,598,598,599,599,600,600,601,601,601,602,602,602,603,603,603,604,604,604];
 
 const KEY='quranPlannerV1',APP='quran-planner',VER=3,U=4; /* U = planning units per page (quarter pages) */
-const DEF={startPage:1,prior:'',timeMin:60,revCap:16,friMax:20,digits:'ar',theme:'light',motiv:true,friRecent:true,totalPages:604,lastBackup:0,name:'',memDays:[6,0,1,2,3,4],revDays:[5],amt:2,endPage:604,recentN:8,cycleWeeks:8,extraMax:2,weekStart:6,zoom:'md',hijri:true,pin:'',gapDays:14,gapPauseNew:true,autoOld:true,sessOnly:false,tol:2};
-const CATS={new:'حفظ جديد',rec:'مراجعة الحفظ القريب',cur:'مراجعة السورة الحالية',g:'استدراك بعد الانقطاع',f:'مراجعة طويلة المدى',o:'مراجعة من القديم',w:'مراجعة اختيارية لحفظ الأسبوع',z:'جلسة مراجعة',c:'جلسة'};
+const DEF={startPage:1,prior:'',timeMin:60,revCap:16,friMax:20,digits:'ar',theme:'light',motiv:true,friRecent:true,totalPages:604,lastBackup:0,name:'',memDays:[6,0,1,2,3,4],revDays:[5],amt:2,endPage:604,recentN:8,cycleWeeks:8,extraMax:2,weekStart:6,zoom:'md',hijri:true,pin:'',autoOld:true,sessOnly:false,tol:2};
+const CATS={new:'حفظ جديد',rec:'مراجعة الحفظ القريب',cur:'مراجعة السورة الحالية',g:'استدراك بعد الانقطاع',f:'مراجعة طويلة المدى',o:'مراجعة من القديم (تلقائية)',w:'مراجعة اختيارية لحفظ الأسبوع',z:'جلسة مراجعة',c:'جلسة'};
 const ORD=['new','rec','cur','g','f','o','w','z','c'];
 const WD=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
 const PF=[1,.6,1.6,2.5]; /* revision-priority factor by rating: none, easy, medium, hard */
@@ -111,9 +112,9 @@ function fixS(){S.x=S.x&&typeof S.x==='object'?S.x:{};S.x.pd=Array.isArray(S.x.p
  const s=S.settings,c=(v,a,b,d)=>{v=Math.round(+v);return isNaN(v)?d:Math.min(b,Math.max(a,v))},dl=(a,d)=>Array.isArray(a)?[...new Set(a.map(Number).filter(x=>x>=0&&x<=6))]:d;
  s.totalPages=c(s.totalPages,100,700,604);s.startPage=c(s.startPage,1,s.totalPages,1);s.timeMin=c(s.timeMin,15,600,60);s.friMax=c(s.friMax,2,200,20);
  s.memDays=dl(s.memDays,[6,0,1,2,3,4]);s.revDays=dl(s.revDays,[5]);s.amt=c(s.amt,1,80,2);s.revCap=c(s.revCap,1,80,16);s.recentN=c(s.recentN,0,80,8);
- s.endPage=c(s.endPage,s.startPage,s.totalPages,s.totalPages);s.cycleWeeks=c(s.cycleWeeks,1,52,8);s.extraMax=c(s.extraMax,0,10,2);s.gapDays=c(s.gapDays,0,365,14);s.tol=c(s.tol,0,5,2);
+ s.endPage=c(s.endPage,s.startPage,s.totalPages,s.totalPages);s.cycleWeeks=c(s.cycleWeeks,1,52,8);s.extraMax=c(s.extraMax,0,10,2);delete s.gapDays;delete s.gapPauseNew;delete S.x.rv;s.tol=c(s.tol,0,5,2);
  s.weekStart=[6,0,1].includes(+s.weekStart)?+s.weekStart:6;s.zoom=['sm','md','lg'].includes(s.zoom)?s.zoom:'md';s.name=String(s.name||'').slice(0,30);s.pin=typeof s.pin==='string'?s.pin:'';
- s.digits=s.digits==='en'?'en':'ar';s.theme=s.theme==='dark'?'dark':'light';s.prior=String(s.prior||'');s.gapPauseNew=s.gapPauseNew!==false;s.autoOld=s.autoOld!==false;s.sessOnly=!!s.sessOnly}
+ s.digits=s.digits==='en'?'en':'ar';s.theme=s.theme==='dark'?'dark':'light';s.prior=String(s.prior||'');s.autoOld=s.autoOld!==false;s.sessOnly=!!s.sessOnly}
 function load(){let r=null;S=mk({});try{r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);if(valid(o)){if(!o.u)try{localStorage.setItem(KEY+'_pre4',r)}catch(e){}S=mk(o)}}}
  catch(e){try{if(r)localStorage.setItem(KEY+'_corrupt',r)}catch(x){}storageOK=false}fixS();if(migrated)save()}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));storageOK=true}catch(e){storageOK=false}}
@@ -160,17 +161,10 @@ function bestWin(x,sh,ms,D,F){const lo=U*((+x.range[0]||1)-1),hi=Math.min(U*(+x.
  for(let a=lo;a+sh-1<=hi;a+=sh>8?4:1){let ok=true,sc=0;for(let u=a;u<a+sh;u++){if(!ms.has(u)){ok=false;break}sc+=(F.last[u]?Math.min(120,dn(D)-dn(F.last[u])):60)*PF[S.pri[u]||0]}if(ok&&sc/sh>bs){bs=sc/sh;best=[a,a+sh-1]}}return best}
 const shareOf=(x,dow)=>{const ord=[...x.days].sort((a,b)=>((a-S.settings.weekStart+7)%7)-((b-S.settings.weekStart+7)%7)),i=ord.indexOf(dow),n=ord.length;if(i<0||!n)return 0;if(x.kind==='cus')return 1;const g=+x.goal||0;return Math.floor(g/n)+(i<g%n?1:0)};
 
-/* ---------- recovery after a long break ---------- */
-const recActive=()=>!!(S.x.rv&&S.x.rv.s&&!S.x.rv.e);
-function gapTick(){const T=today();let ld='';for(const d in S.tasks)for(const k in S.tasks[d])if(S.tasks[d][k].done&&d<=T&&d>ld)ld=d;
- const F=frInfo('9999-12-31',memSet()),rf=(S.x.rv&&S.x.rv.e&&S.x.rv.e>ld)?S.x.rv.e:ld; /* a manual or automatic end counts as activity, so recovery doesn't restart at once */
- if(!recActive()){if(S.settings.gapDays>0&&rf&&dn(T)-dn(rf)>=S.settings.gapDays&&F.P.length){S.x.rv={s:T};save()}}
- else{const s0=S.x.rv.s;if(!F.P.length||F.P.every(p=>{for(let u=U*(p-1);u<U*p;u++)if(F.last[u]&&F.last[u]>=s0)return true;return false})){S.x.rv.e=T;save()}}}
-
 /* ---------- daily tasks ---------- */
 function dayTasks(D){const s=S.settings,rec=S.tasks[D]||{},L=[],dow=pd(D).getDay(),isM=s.memDays.includes(dow),isR=s.revDays.includes(dow),ms=memSet(D),p=ptr(ms),cap=s.revCap,amt=s.amt;
  for(const k in rec){const o=rec[k];if(o.done&&o.r)L.push({key:k,cat:catOf(k),mand:k!=='w'&&!/^new\d/.test(k),r:o.r,pg:isPg(k),done:true})}
- const has=k=>L.some(t=>t.key===k),add=(key,mand,r,pg)=>L.push({key,cat:catOf(key),mand,r,pg,done:false}),F=frInfo(D,ms),ex=new Set(),rv=recActive()&&D>=S.x.rv.s&&(isM||isR);
+ const has=k=>L.some(t=>t.key===k),add=(key,mand,r,pg)=>L.push({key,cat:catOf(key),mand,r,pg,done:false}),F=frInfo(D,ms),ex=new Set();
  L.forEach(t=>{if(t.done&&t.pg&&'fgo'.includes(t.cat))for(let q=t.r[0];q<=t.r[1];q++)ex.add(q)});
  const surEnd=e=>{if(TP()!==604)return e;const k=surIdx(e);return Math.max(SP[k],(SP[k+1]||605)-1)};
  const fill=(c,pool,n,tol)=>{const rem=n-L.filter(t=>t.cat===c).reduce((a,t)=>a+t.r[1]-t.r[0]+1,0);if(rem<=0)return;const runs=pickRuns(F,pool.filter(q=>!ex.has(q)),rem);
@@ -178,10 +172,10 @@ function dayTasks(D){const s=S.settings,rec=S.tasks[D]||{},L=[],dow=pd(D).getDay
   runs.forEach(q=>{if(!has(c+q[0]))add(c+q[0],true,q,true)})};
  const msAll=memSet();let np=ptr(msAll);const nn=len=>{while(msAll.has(np))np++;if(np>=LIM())return null;const r=[np,Math.min(np+len-1,LIM()-1)];np=r[1]+1;return r};
  const sessMem=s.sessOnly&&S.ss.some(x=>x.active&&x.kind==='mem');
- if(isM&&(!rv||!s.gapPauseNew)&&!sessMem){
+ if(isM&&!sessMem){
   if(!has('new')){const r=nn(amt);if(r)add('new',true,r,false)}
   else if(L.some(t=>t.key==='new'&&t.done)){const nd=L.filter(t=>t.cat==='new'&&t.done).length;let i=nd+1;while(has('new'+i))i++;if(nd<=s.extraMax){const r=nn(amt);if(r)add('new'+i,false,r,false)}}}
- if(isM&&!rv){
+ if(isM){
   let a=p;while(a>0&&ms.has(a-1)&&p-a<s.recentN)a--;
   if(a<p&&!has('rec'))add('rec',true,[a,p-1],false);
   const ssu=TP()===604?U*(SP[surIdx(pgOf(Math.min(p,TH()-1)))]-1):Math.max(0,p-3*cap),c=a-1;
@@ -189,8 +183,7 @@ function dayTasks(D){const s=S.settings,rec=S.tasks[D]||{},L=[],dow=pd(D).getDay
    for(let i=0;i<n;i++){const x=c0+i*cap,y=i===n-1?c:Math.min(c,x+cap-1);let sc=0;for(let u=x;u<=y;u++)sc+=(F.last[u]?Math.min(120,dn(D)-dn(F.last[u])):60)*PF[S.pri[u]||0];sc/=(y-x+1);if(sc>bs){bs=sc;bi=i}}
    add('cur',true,[c0+bi*cap,bi===n-1?c:Math.min(c,c0+(bi+1)*cap-1)],false)}
   if(s.autoOld&&!isR){const n=Math.min(s.friMax,Math.floor(F.P.length/40),4);if(n>0)fill('o',F.P.filter(q=>!F.RP.has(q)),n)}}
- if(rv)fill('g',F.P,Math.min(s.friMax,Math.max(3,Math.ceil(F.target*1.5))),s.tol);
- else if(isR){fill('f',F.P.filter(q=>!F.RP.has(q)),F.target,s.tol);const rp=F.P.filter(x=>F.RP.has(x));if(s.friRecent&&rp.length&&!has('w'))add('w',false,[rp[0],rp[rp.length-1]],true)}
+ if(isR){fill('f',F.P.filter(q=>!F.RP.has(q)),F.target,s.tol);const rp=F.P.filter(x=>F.RP.has(x));if(s.friRecent&&rp.length&&!has('w'))add('w',false,[rp[0],rp[rp.length-1]],true)}
  S.ss.forEach(x=>{if(!x.active||!x.days.includes(dow))return;const sh=shareOf(x,dow);if(sh<=0)return;
   if(x.kind==='mem'){const k='new_'+x.id;if(!has(k)){const r=nn(sh);if(r)add(k,true,r,false)}}
   else if(x.kind==='rev'){const k='z_'+x.id;if(!has(k)){const r=bestWin(x,sh,msAll,D,F);if(r)add(k,true,r,false)}}
@@ -231,9 +224,8 @@ function taskH(D,t){const o=(S.tasks[D]||{})[t.key]||{},cus=t.cat==='c',x=cus?{t
  <div class="tb"><div class="tc">${esc(lab)}${t.mand?'':'<i>اختيارية</i>'}</div><div class="tt">${x.t}</div><div class="ts">${x.s}</div>
  <details data-dk="${esc(dk)}" ${OP.has(dk)?'open':''}><summary>التقييم والملاحظات</summary>${rt?`<small>صعوبة هذا الجزء تحدّد أولوية مراجعته: «صعب» يعود أسرع، «متوسط» أقل، «سهل» أبطأ. اضغط التقييم الحالي مرة أخرى لإزالته.${rt.mixed?' (أجزاؤه مختلفة التقييم؛ التغيير يشمل الكل)':''}</small><div class="chips">${rb}</div>`:''}
  <textarea rows="2" placeholder="ملاحظات أو أخطاء" data-a="f" data-d="${D}" data-k="${t.key}" data-f="note">${esc(o.note||'')}</textarea></details></div></div>`}
-function tasksBlock(D){const L=dayTasks(D),m=L.filter(t=>t.mand),p=m.length?Math.round(m.filter(t=>t.done).length/m.length*100):0,dw=pd(D).getDay(),isM=S.settings.memDays.includes(dw),isR=S.settings.revDays.includes(dw),rvOn=recActive()&&D>=S.x.rv.s&&(isM||isR);
+function tasksBlock(D){const L=dayTasks(D),m=L.filter(t=>t.mand),p=m.length?Math.round(m.filter(t=>t.done).length/m.length*100):0,dw=pd(D).getDay(),isM=S.settings.memDays.includes(dw),isR=S.settings.revDays.includes(dw);
  let h=`<div class="card"><div class="row"><b>إنجاز اليوم</b><span>${N(p)}٪</span></div><div class="bar"><i style="width:${p}%"></i></div><small>${(isM?'يوم حفظ ومراجعة. ':'')+(isR?'يوم مراجعة طويلة المدى. ':'')+(!isM&&!isR?'يوم راحة حسب إعداداتك.':'')}</small></div>`;
- if(rvOn)h+=`<div class="card warn"><b>وضع الاستدراك</b><br><small>انقطعتَ فترة، فاستبدل التطبيق مهام اليوم بمراجعة ما لم تراجعه منذ زمن، ويبدأ بالأقدم ثم الأصعب. ${S.settings.gapPauseNew?'الحفظ الجديد متوقف مؤقتًا. ':''}ينتهي الاستدراك تلقائيًا بعد مراجعة كل محفوظك.</small><br><button class="b o" data-a="endrv">إنهاء الاستدراك والعودة للخطة</button></div>`;
  if(D<today()&&st(D)==='miss')h+=`<div class="card warn">يوم فائت: لم يُسجَّل فيه إنجاز. الحفظ يستمر من آخر موضع أتممتَه، ولا يُعلَّم شيء تلقائيًا. إتمام مهمة هنا يسجّلها في هذا اليوم.</div>`;
  if(!L.length)h+=`<div class="card">${!isM&&!isR?'لا مهام اليوم: يوم راحة.':isM&&ptr(memSet())>=LIM()?'اكتملت صفحات خطتك. بارك الله فيك!':'لا توجد مهام لهذا اليوم الآن؛ ستظهر مراجعة القديم عند تراكم الحفظ.'}</div>`;
  return h+L.map(t=>taskH(D,t)).join('')}
@@ -258,7 +250,7 @@ function reviewView(){const D=today(),ms=memSet(),F=frInfo(D,ms),c=S.settings.re
  const us=Object.keys(S.pri).map(Number).filter(u=>S.pri[u]>=2&&u>=0&&u<TH()).sort((a,b)=>a-b),rs=[];
  us.forEach(u=>{const l=rs[rs.length-1];if(l&&l.v===S.pri[u]&&l.b===u-1)l.b=u;else rs.push({a:u,b:u,v:S.pri[u]})});rs.sort((x,y)=>y.v-x.v||x.a-y.a);
  const pri=rs.map(r=>{const x=rl(r.a,r.b);return `<div class="card"><b>${x.t}</b> — ${RL[r.v]}<br><small>${x.s}</small><br><button class="b o" data-a="clrpri" data-x="${r.a}" data-y="${r.b}">إزالة التقييم</button></div>`}).join('');
- return `<h1>المراجعة</h1><div class="card"><b>كيف تُحسب المراجعة؟</b><p class="mut">اليومية (أيام الحفظ): آخر ${ul(S.settings.recentN)} من محفوظك تُراجع كل يوم، وبقية السورة الحالية تُقسَّم إلى أقسام بحجم ${ul(c)}، ويُختار كل يوم القسم الأقدم مراجعةً مع مراعاة تقييمك (صعب ×٢٫٥، متوسط ×١٫٦، سهل ×٠٫٦).<br>الطويلة: عدد الصفحات = الأصغر بين حدّك الأقصى (${N(S.settings.friMax)}) و(محفوظك ÷ (${N(S.settings.cycleWeeks)} أسابيع × عدد أيام المراجعة) مقرَّبًا لأعلى، بحد أدنى ٢، مع زيادة عند كثرة الصفحات الصعبة؛ ويجوز تجاوز الحدّ بما لا يزيد على ${N(S.settings.tol)} صفحة لإكمال سورة، فلا تُترك سورة ناقصة بصفحة أو صفحتين) = <b>${N(F.target)} صفحة</b> الآن. وكلما حفظتَ أكثر زاد المطلوب تلقائيًا دون تجاوز حدّك، ${S.settings.autoOld?'وتُضاف مراجعة صغيرة من القديم في أيام الحفظ.':''}<br>بعد انقطاع ${N(S.settings.gapDays)} يومًا فأكثر يدخل وضع الاستدراك. هذه قواعد بسيطة وشفافة، وليست «مثالية علميًا».</p></div>
+ return `<h1>المراجعة</h1><div class="card"><b>كيف تُحسب المراجعة؟</b><p class="mut">اليومية (أيام الحفظ): آخر ${ul(S.settings.recentN)} من محفوظك تُراجع كل يوم، وبقية السورة الحالية تُقسَّم إلى أقسام بحجم ${ul(c)}، ويُختار كل يوم القسم الأقدم مراجعةً مع مراعاة تقييمك (صعب ×٢٫٥، متوسط ×١٫٦، سهل ×٠٫٦).<br>الطويلة: عدد الصفحات = الأصغر بين حدّك الأقصى (${N(S.settings.friMax)}) و(محفوظك ÷ (${N(S.settings.cycleWeeks)} أسابيع × عدد أيام المراجعة) مقرَّبًا لأعلى، بحد أدنى ٢، مع زيادة عند كثرة الصفحات الصعبة؛ ويجوز تجاوز الحدّ بما لا يزيد على ${N(S.settings.tol)} صفحة لإكمال سورة، فلا تُترك سورة ناقصة بصفحة أو صفحتين) = <b>${N(F.target)} صفحة</b> الآن. وكلما حفظتَ أكثر زاد المطلوب تلقائيًا دون تجاوز حدّك، ${S.settings.autoOld?'وتُضاف مراجعة صغيرة من القديم في أيام الحفظ.':''}<br>هذه قواعد بسيطة وشفافة، وليست «مثالية علميًا».</p></div>
  <h2>الأولى بالمراجعة الآن</h2>${due||'<div class="card">لا يوجد حفظ قديم يحتاج مراجعة الآن.</div>'}<h2>مواضع ذات أولوية (متوسط/صعب)</h2>${pri||'<div class="card">لم تقيّم مواضع بعد. افتح «التقييم والملاحظات» داخل أي مهمة.</div>'}`}
 function statsView(){const ms=memSet(),pg=pagesMem(ms),sv=surahStats(ms),c=counts(),tp=TP(),D=today();let est='لا تكفي البيانات بعد (تحتاج ٧ أيام على الأقل).';
  if(c.first&&dn(D)-dn(c.first)>=6){let u=0;for(const d in S.tasks)for(const k in S.tasks[d]){const o=S.tasks[d][k];if(/^new/.test(k)&&o.done&&o.r)u+=o.r[1]-o.r[0]+1}const rate=u/U/(dn(D)-dn(c.first)+1),left=tp-pg;
@@ -289,7 +281,6 @@ function settingsView(){const s=S.settings,
  <label>صفحات محفوظة سابقًا (مثال: ١-٢٠، ٥٨٢-٦٠٤)<input data-s="prior" type="text" value="${esc(s.prior)}"></label><small>تُحتسب في المحفوظ وفي المراجعة.</small>${i('totalPages','عدد صفحات المصحف (٦٠٤ لمصحف المدينة؛ أسماء السور تظهر مع ٦٠٤ فقط)')}</div>
  <div class="card"><b>المراجعة</b>${i('timeMin','وقتك اليومي المتاح (دقيقة، للتنظيم الشخصي)')}${unitSel('recentN','الحفظ القريب الذي يُراجع يوميًا',1)}${unitSel('revCap','حجم قسم مراجعة السورة الحالية')}${i('friMax','الحد الأقصى لمراجعة اليوم الطويل (صفحات)')}${i('cycleWeeks','عدد أسابيع دورة المراجعة الطويلة')}${i('tol','تسامح إكمال السورة: إن بقي من السورة هذا العدد من الصفحات أو أقل بعد بلوغ الحد الأقصى، تُضاف إلى مراجعة اليوم (صفحات؛ ٠ للإلغاء)')}
  ${ck('autoOld','مراجعة صغيرة تلقائية من القديم في أيام الحفظ (تزداد مع حفظك، ضمن حدّك الأقصى)')}${ck('friRecent','مراجعة اختيارية لحفظ آخر ٧ أيام في يوم المراجعة')}</div>
- <div class="card"><b>الانقطاع والاستدراك</b>${i('gapDays','عدد أيام الانقطاع التي تُفعّل وضع الاستدراك (٠ للإيقاف)')}${ck('gapPauseNew','إيقاف الحفظ الجديد مؤقتًا أثناء الاستدراك')}<small>أثناء الاستدراك يعرض التطبيق ما لم تراجعه منذ زمن بحسب القِدم وتقييمك، ثم يعود لخطتك تلقائيًا.</small></div>
  <div class="card"><b>المظهر</b>${selH('digits','الأرقام',[['ar','هندية (١٢٣)'],['en','غربية (123)']])}${selH('theme','السمة',[['light','فاتحة'],['dark','داكنة']])}${selH('zoom','حجم الواجهة',[['sm','صغير'],['md','متوسط'],['lg','كبير']])}${ck('motiv','تذكيرات تحفيزية')}${ck('hijri','إظهار التاريخ الهجري')}</div>
  <div class="card"><b>الخصوصية</b><p class="mut">بياناتك على جهازك فقط. ${s.pin?'القفل مفعّل.':''}</p><label>كلمة سر للتطبيق (٤ خانات فأكثر)<input id="npw" type="password" inputmode="numeric" autocomplete="off"></label><button class="b" data-a="setpin">${s.pin?'تغيير':'تعيين'} كلمة السر</button> ${s.pin?'<button class="b o" data-a="clrpin">إزالة القفل</button>':''}<small>القفل يمنع الفتح العارض فقط ولا يشفّر بيانات المتصفح.</small></div>
  <div class="card"><b>النسخ الاحتياطي</b><br><button class="b" data-a="exp">تصدير نسخة احتياطية (JSON)</button><br><label class="b o" style="display:inline-block;text-align:center;border:1px solid var(--g);border-radius:14px;padding:10px 16px;cursor:pointer;color:var(--g)">استيراد نسخة احتياطية<input type="file" accept=".json,application/json" data-a="imp" style="display:none"></label>
@@ -424,13 +415,16 @@ function passBar(D){const X=S.x,avail=X.pb-X.pd.length;if(X.pd.includes(D))retur
 async function hp(x){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('qp:'+x));return[...new Uint8Array(b)].map(c=>c.toString(16).padStart(2,'0')).join('')}
 const lockView=()=>`<main><h1>التطبيق مقفل</h1><div class="card"><label>كلمة السر<input id="pw" type="password" inputmode="numeric" autocomplete="off"></label><button class="b" data-a="unlock">فتح</button><p class="mut" id="lm"></p><button class="b d" data-a="forgot">نسيت كلمة السر (يحذف بيانات هذا الجهاز)</button></div></main>`;
 
+/* ---------- streak bar (top of every page) ---------- */
+function streakTxt(n){return n===0?'ابدأ سلسلتك اليوم':n===1?'سلسلتك: يوم واحد':n===2?'سلسلتك: يومان':n<=10?`سلسلتك: ${N(n)} أيام`:`سلسلتك: ${N(n)} يومًا`}
+function streakBar(){const n=streak(),fz=S.x.pd.includes(today());return `<div class="sbar"><div class="spill ${fz?'fz':''}" aria-label="${esc(streakTxt(n))}"><span class="sic">${fz?'❄':'🔥'}</span><b>${streakTxt(n)}</b>${fz?'<small>مجمّدة بتصريح راحة</small>':''}</div></div>`}
+
 /* ---------- render ---------- */
 function render(){const app=document.getElementById('app');document.documentElement.dataset.theme=S.settings.theme;document.documentElement.dataset.pal=(S.owned.includes(S.x.pal)&&PAL[S.x.pal])?PAL[S.x.pal]:'';if(!selDate)selDate=today();
  if(S.settings.pin&&!unlocked){app.innerHTML=lockView();return}
- gapTick();
  const V={home,today:dayView,cal:calView,rev:reviewView,ss:ssView,ch:chView,shop:shopView,stats:statsView,set:settingsView}[tab]();
  const T=[['home','⌂','الرئيسية'],['today','☑','خطة اليوم'],['cal','▦','التقويم'],['rev','↺','المراجعة'],['ss','☰','الجلسات'],['ch','★','التحديات'],['shop','✦','المتجر'],['stats','▥','الإحصائيات'],['set','⚙','الإعدادات']],o=document.querySelector('nav'),sl=o?o.scrollLeft:0;
- app.innerHTML=`<main style="zoom:${{sm:.88,md:1,lg:1.12}[S.settings.zoom]}">${V}</main><nav>${T.map(x=>`<button class="${tab===x[0]?'on':''}" data-a="tab" data-t="${x[0]}"><b>${x[1]}</b>${x[2]}</button>`).join('')}</nav>`;
+ app.innerHTML=streakBar()+`<main style="zoom:${{sm:.88,md:1,lg:1.12}[S.settings.zoom]}">${V}</main><nav>${T.map(x=>`<button class="${tab===x[0]?'on':''}" data-a="tab" data-t="${x[0]}"><b>${x[1]}</b>${x[2]}</button>`).join('')}</nav>`;
  const n=document.querySelector('nav');if(n)n.scrollLeft=sl}
 
 /* ---------- backup / export ---------- */
@@ -467,7 +461,6 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b
  else if(a==='dayT'){const A=S.settings[b.dataset.k],n=+b.dataset.d,i=A.indexOf(n);if(i>=0)A.splice(i,1);else A.push(n);fixS();save();render()}
  else if(a==='pri')setPri(b.dataset.d,b.dataset.k,+b.dataset.v);
  else if(a==='clrpri'){for(let u=+b.dataset.x;u<=+b.dataset.y;u++)delete S.pri[u];save();render()}
- else if(a==='endrv'){if(S.x.rv)S.x.rv.e=today();save();render();toast('عدتَ إلى خطتك العادية.')}
  else if(a==='ssadd'){S.ss.push({id:Math.random().toString(36).slice(2,7),name:'جلسة جديدة',kind:'mem',goal:4,days:[6],range:[0,0],text:'',active:true});fixS();save();render()}
  else if(a==='ssdel'){if(confirm('حذف هذه الجلسة؟ لا يُحذف ما أتممتَه منها من سجلّك.')){S.ss=S.ss.filter(x=>x.id!==b.dataset.i);save();render()}}
  else if(a==='ssday'){const x=S.ss.find(y=>y.id===b.dataset.i);if(x){const n=+b.dataset.d,i=x.days.indexOf(n);if(i>=0)x.days.splice(i,1);else x.days.push(n);fixS();save();render()}}
