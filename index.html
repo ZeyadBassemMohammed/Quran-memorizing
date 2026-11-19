@@ -69,7 +69,7 @@ const SN='الفاتحة|البقرة|آل عمران|النساء|المائد�
 const SP=[1,2,50,77,106,128,151,177,187,208,221,235,249,255,262,267,282,293,305,312,322,332,342,350,359,367,377,385,396,404,411,415,418,428,434,440,446,453,458,467,477,483,489,496,499,502,507,511,515,518,520,523,526,528,531,534,537,542,545,549,551,553,554,556,558,560,562,564,566,568,570,572,574,575,577,578,580,582,583,585,586,587,587,589,590,591,591,592,593,594,595,595,596,596,597,597,598,598,599,599,600,600,601,601,601,602,602,602,603,603,603,604,604,604];
 
 const KEY='quranPlannerV1',APP='quran-planner',VER=3,U=4; /* U = planning units per page (quarter pages) */
-const DEF={startPage:1,prior:'',timeMin:60,revCap:16,friMax:20,digits:'ar',theme:'light',motiv:true,friRecent:true,totalPages:604,lastBackup:0,name:'',memDays:[6,0,1,2,3,4],revDays:[5],amt:2,endPage:604,recentN:8,cycleWeeks:8,extraMax:2,weekStart:6,zoom:'md',hijri:true,pin:'',autoOld:true,sessOnly:false,tol:2};
+const DEF={startPage:1,prior:'',timeMin:60,revCap:16,friMax:20,digits:'ar',theme:'light',motiv:true,friRecent:true,totalPages:604,lastBackup:0,name:'',memDays:[6,0,1,2,3,4],revDays:[5],amt:2,endPage:604,recentN:8,cycleWeeks:8,extraMax:2,weekStart:6,zoom:'md',hijri:true,pin:'',autoOld:true,sessOnly:false,tol:2,memMin:30,revMin:4};
 const CATS={new:'حفظ جديد',rec:'مراجعة الحفظ القريب',cur:'مراجعة السورة الحالية',g:'استدراك بعد الانقطاع',f:'مراجعة طويلة المدى',o:'مراجعة من القديم (تلقائية)',w:'مراجعة اختيارية لحفظ الأسبوع',z:'جلسة مراجعة',c:'جلسة'};
 const ORD=['new','rec','cur','g','f','o','w','z','c'];
 const WD=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
@@ -108,11 +108,11 @@ function migrate(t,rs){t.pri={};const oldPg=k=>k[0]==='f'||k==='w';
  t.settings.amt=(+rs.amt||1)*2;t.settings.revCap=(+rs.revCap||8)*2;t.settings.recentN=(rs.recentN!=null?+rs.recentN:4)*2}
 function fixS(){S.x=S.x&&typeof S.x==='object'?S.x:{};S.x.pd=Array.isArray(S.x.pd)?S.x.pd:[];S.x.sd=Array.isArray(S.x.sd)?S.x.sd:[];S.x.pb=Math.max(0,+S.x.pb||0);
  if(!S.pri||typeof S.pri!=='object')S.pri={};S.ss=(Array.isArray(S.ss)?S.ss:[]).filter(x=>x&&typeof x.id==='string');
- S.ss.forEach(x=>{x.name=String(x.name||'جلسة').slice(0,40);x.kind=['mem','rev','cus'].includes(x.kind)?x.kind:'mem';x.goal=Math.max(1,Math.min(400,Math.round(+x.goal||4)));x.days=Array.isArray(x.days)?[...new Set(x.days.map(Number).filter(d=>d>=0&&d<=6))]:[6];x.range=Array.isArray(x.range)?[Math.max(0,Math.round(+x.range[0]||0)),Math.max(0,Math.round(+x.range[1]||0))]:[0,0];x.text=String(x.text||'').slice(0,100);x.active=x.active!==false});
+ S.ss.forEach(x=>{x.name=String(x.name||'جلسة').slice(0,40);x.kind=['mem','rev','cus'].includes(x.kind)?x.kind:'mem';x.goal=Math.max(1,Math.min(5000,Math.round(+x.goal||4)));x.period=['day','week','month','year'].includes(x.period)?x.period:'week';x.days=Array.isArray(x.days)?[...new Set(x.days.map(Number).filter(d=>d>=0&&d<=6))]:[6];x.range=Array.isArray(x.range)?[Math.max(0,Math.round(+x.range[0]||0)),Math.max(0,Math.round(+x.range[1]||0))]:[0,0];x.text=String(x.text||'').slice(0,100);x.active=x.active!==false});
  const s=S.settings,c=(v,a,b,d)=>{v=Math.round(+v);return isNaN(v)?d:Math.min(b,Math.max(a,v))},dl=(a,d)=>Array.isArray(a)?[...new Set(a.map(Number).filter(x=>x>=0&&x<=6))]:d;
  s.totalPages=c(s.totalPages,100,700,604);s.startPage=c(s.startPage,1,s.totalPages,1);s.timeMin=c(s.timeMin,15,600,60);s.friMax=c(s.friMax,2,200,20);
  s.memDays=dl(s.memDays,[6,0,1,2,3,4]);s.revDays=dl(s.revDays,[5]);s.amt=c(s.amt,1,80,2);s.revCap=c(s.revCap,1,80,16);s.recentN=c(s.recentN,0,80,8);
- s.endPage=c(s.endPage,s.startPage,s.totalPages,s.totalPages);s.cycleWeeks=c(s.cycleWeeks,1,52,8);s.extraMax=c(s.extraMax,0,10,2);delete s.gapDays;delete s.gapPauseNew;delete S.x.rv;s.tol=c(s.tol,0,5,2);
+ s.endPage=c(s.endPage,s.startPage,s.totalPages,s.totalPages);s.cycleWeeks=c(s.cycleWeeks,1,52,8);s.extraMax=c(s.extraMax,0,10,2);delete s.gapDays;delete s.gapPauseNew;delete S.x.rv;s.tol=c(s.tol,0,5,2);s.memMin=c(s.memMin,5,240,30);s.revMin=c(s.revMin,1,60,4);
  s.weekStart=[6,0,1].includes(+s.weekStart)?+s.weekStart:6;s.zoom=['sm','md','lg'].includes(s.zoom)?s.zoom:'md';s.name=String(s.name||'').slice(0,30);s.pin=typeof s.pin==='string'?s.pin:'';
  s.digits=s.digits==='en'?'en':'ar';s.theme=s.theme==='dark'?'dark':'light';s.prior=String(s.prior||'');s.autoOld=s.autoOld!==false;s.sessOnly=!!s.sessOnly}
 function load(){let r=null;S=mk({});try{r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);if(valid(o)){if(!o.u)try{localStorage.setItem(KEY+'_pre4',r)}catch(e){}S=mk(o)}}}
@@ -159,7 +159,10 @@ function pickRuns(F,pool,rem){const B={};pool.filter(p=>F.sc(p)>=1.5).forEach(p=
  return out}
 function bestWin(x,sh,ms,D,F){const lo=U*((+x.range[0]||1)-1),hi=Math.min(U*(+x.range[1]||TP())-1,TH()-1);let best=null,bs=-1;
  for(let a=lo;a+sh-1<=hi;a+=sh>8?4:1){let ok=true,sc=0;for(let u=a;u<a+sh;u++){if(!ms.has(u)){ok=false;break}sc+=(F.last[u]?Math.min(120,dn(D)-dn(F.last[u])):60)*PF[S.pri[u]||0]}if(ok&&sc/sh>bs){bs=sc/sh;best=[a,a+sh-1]}}return best}
-const shareOf=(x,dow)=>{const ord=[...x.days].sort((a,b)=>((a-S.settings.weekStart+7)%7)-((b-S.settings.weekStart+7)%7)),i=ord.indexOf(dow),n=ord.length;if(i<0||!n)return 0;if(x.kind==='cus')return 1;const g=+x.goal||0;return Math.floor(g/n)+(i<g%n?1:0)};
+function occ(x,D){let s,e;if(x.period==='week'){s=wsOf(D);e=addD(s,6)}else if(x.period==='month'){s=D.slice(0,8)+'01';e=iso(new Date(+D.slice(0,4),+D.slice(5,7),0))}else{s=D.slice(0,4)+'-01-01';e=D.slice(0,4)+'-12-31'}const L=[];for(let d=s;d<=e;d=addD(d,1))if(x.days.includes(pd(d).getDay()))L.push(d);return L}
+/* goal per period (day/week/month/year) split over the chosen weekdays inside that period */
+function shareOf(x,D){if(!x.days.includes(pd(D).getDay()))return 0;if(x.kind==='cus')return 1;const g=+x.goal||0;if(x.period==='day')return g;const L=occ(x,D),i=L.indexOf(D),n=L.length;return n&&i>=0?Math.floor(g/n)+(i<g%n?1:0):0}
+function estMin(L){let m=0;L.forEach(t=>{if(t.cat==='c'){m+=5;return}const pages=(t.pg?(t.r[1]-t.r[0]+1)*U:(t.r[1]-t.r[0]+1))/U;m+=pages*(t.cat==='new'?S.settings.memMin:S.settings.revMin)});return Math.round(m)}
 
 /* ---------- daily tasks ---------- */
 function dayTasks(D){const s=S.settings,rec=S.tasks[D]||{},L=[],dow=pd(D).getDay(),isM=s.memDays.includes(dow),isR=s.revDays.includes(dow),ms=memSet(D),p=ptr(ms),cap=s.revCap,amt=s.amt;
@@ -184,7 +187,7 @@ function dayTasks(D){const s=S.settings,rec=S.tasks[D]||{},L=[],dow=pd(D).getDay
    add('cur',true,[c0+bi*cap,bi===n-1?c:Math.min(c,c0+(bi+1)*cap-1)],false)}
   if(s.autoOld&&!isR){const n=Math.min(s.friMax,Math.floor(F.P.length/40),4);if(n>0)fill('o',F.P.filter(q=>!F.RP.has(q)),n)}}
  if(isR){fill('f',F.P.filter(q=>!F.RP.has(q)),F.target,s.tol);const rp=F.P.filter(x=>F.RP.has(x));if(s.friRecent&&rp.length&&!has('w'))add('w',false,[rp[0],rp[rp.length-1]],true)}
- S.ss.forEach(x=>{if(!x.active||!x.days.includes(dow))return;const sh=shareOf(x,dow);if(sh<=0)return;
+ S.ss.forEach(x=>{if(!x.active||!x.days.includes(dow))return;const sh=shareOf(x,D);if(sh<=0)return;
   if(x.kind==='mem'){const k='new_'+x.id;if(!has(k)){const r=nn(sh);if(r)add(k,true,r,false)}}
   else if(x.kind==='rev'){const k='z_'+x.id;if(!has(k)){const r=bestWin(x,sh,msAll,D,F);if(r)add(k,true,r,false)}}
   else{const k='c_'+x.id;if(!has(k))add(k,true,[0,0],false)}});
@@ -225,7 +228,8 @@ function taskH(D,t){const o=(S.tasks[D]||{})[t.key]||{},cus=t.cat==='c',x=cus?{t
  <details data-dk="${esc(dk)}" ${OP.has(dk)?'open':''}><summary>التقييم والملاحظات</summary>${rt?`<small>صعوبة هذا الجزء تحدّد أولوية مراجعته: «صعب» يعود أسرع، «متوسط» أقل، «سهل» أبطأ. اضغط التقييم الحالي مرة أخرى لإزالته.${rt.mixed?' (أجزاؤه مختلفة التقييم؛ التغيير يشمل الكل)':''}</small><div class="chips">${rb}</div>`:''}
  <textarea rows="2" placeholder="ملاحظات أو أخطاء" data-a="f" data-d="${D}" data-k="${t.key}" data-f="note">${esc(o.note||'')}</textarea></details></div></div>`}
 function tasksBlock(D){const L=dayTasks(D),m=L.filter(t=>t.mand),p=m.length?Math.round(m.filter(t=>t.done).length/m.length*100):0,dw=pd(D).getDay(),isM=S.settings.memDays.includes(dw),isR=S.settings.revDays.includes(dw);
- let h=`<div class="card"><div class="row"><b>إنجاز اليوم</b><span>${N(p)}٪</span></div><div class="bar"><i style="width:${p}%"></i></div><small>${(isM?'يوم حفظ ومراجعة. ':'')+(isR?'يوم مراجعة طويلة المدى. ':'')+(!isM&&!isR?'يوم راحة حسب إعداداتك.':'')}</small></div>`;
+ const rest=estMin(L.filter(t=>t.mand&&!t.done)),over=rest>S.settings.timeMin;
+ let h=`<div class="card"><div class="row"><b>إنجاز اليوم</b><span>${N(p)}٪</span></div><div class="bar"><i style="width:${p}%"></i></div><small>${(isM?'يوم حفظ ومراجعة. ':'')+(isR?'يوم مراجعة طويلة المدى. ':'')+(!isM&&!isR?'يوم راحة حسب إعداداتك.':'')}</small>${rest?`<br><small ${over?'style="color:var(--bad)"':''}>الوقت المقدّر للمتبقي ≈ ${N(rest)} دقيقة من ${N(S.settings.timeMin)} متاحة${over?' — يتجاوز وقتك المتاح، خفّض المقدار أو الحد الأقصى من الإعدادات':''}</small>`:''}</div>`;
  if(D<today()&&st(D)==='miss')h+=`<div class="card warn">يوم فائت: لم يُسجَّل فيه إنجاز. الحفظ يستمر من آخر موضع أتممتَه، ولا يُعلَّم شيء تلقائيًا. إتمام مهمة هنا يسجّلها في هذا اليوم.</div>`;
  if(!L.length)h+=`<div class="card">${!isM&&!isR?'لا مهام اليوم: يوم راحة.':isM&&ptr(memSet())>=LIM()?'اكتملت صفحات خطتك. بارك الله فيك!':'لا توجد مهام لهذا اليوم الآن؛ ستظهر مراجعة القديم عند تراكم الحفظ.'}</div>`;
  return h+L.map(t=>taskH(D,t)).join('')}
@@ -271,15 +275,15 @@ const dayChips=(k,f)=>`<div class="chips">${[6,0,1,2,3,4,5].map(d=>`<button clas
 function settingsView(){const s=S.settings,
  i=(k,l,t='number',x='')=>`<label>${l}<input data-s="${k}" type="${t}" ${t==='number'?'inputmode="numeric"':''} ${x} value="${esc(s[k])}"></label>`,
  ck=(k,l)=>`<label class="ck"><input type="checkbox" data-s="${k}" ${s[k]!==false&&s[k]?'checked':''}> ${l}</label>`;
- return `<h1>الإعدادات</h1><div class="card mut">تُطبَّق كل تغييراتك فورًا على بقية الصفحات، ولا تمسّ سجلّك ولا المهام التي أتممتَها.</div>
+ return `<h1>الإعدادات</h1><div class="card mut">تُطبَّق كل تغييراتك فورًا، ولا تمسّ سجلّك ولا المهام التي أتممتَها. الأرقام تُطبَّق أثناء الكتابة إن كانت ضمن المدى المسموح، وتُصحَّح عند الخروج من الحقل.</div><div class="card" id="liveprev">${previewH()}</div>
  <div class="card"><b>الشخصية</b>${i('name','اسمك (للترحيب فقط، يبقى على جهازك)','text','maxlength="30"')}</div>
  <div class="card"><b>جدول الأسبوع</b><p class="mut">أيام الحفظ الجديد (مع مراجعة السورة الحالية والحفظ القريب):</p>${dayChips('memDays',d=>s.memDays.includes(d))}<p class="mut">أيام المراجعة الطويلة (يوم أو أكثر، ويجوز أن تكون يوم حفظ أيضًا):</p>${dayChips('revDays',d=>s.revDays.includes(d))}<small>الأيام غير المختارة أيام راحة ولا تقطع تتابعك.</small>
  ${unitSel('amt','مقدار الحفظ الجديد يوميًا')}<small>أصغر وحدة ربع صفحة (نحو ٣–٤ أسطر). لا يحوي التطبيق بيانات موثّقة لحدود الآيات، فحدّد الآيات داخل الربع من مصحفك.</small>
- ${i('extraMax','عدد المهام الإضافية المسموحة لتقديم حفظ الأيام القادمة (٠ للإلغاء)')}${selH('weekStart','بداية الأسبوع',[[6,'السبت'],[0,'الأحد'],[1,'الاثنين']])}</div>
+ ${i('extraMax','عدد مرات الحفظ الإضافي المسموحة في اليوم (٠ للإلغاء)')}<small>تظهر المهمة الإضافية في «خطة اليوم» بعد إتمام مهمة الحفظ الأساسية، وتقدّم حفظ الأيام القادمة.</small>${selH('weekStart','بداية الأسبوع',[[6,'السبت'],[0,'الأحد'],[1,'الاثنين']])}</div>
  <div class="card"><b>نقطة البداية والنطاق</b><label>اختر سورة البداية<select data-a="pickSur"><option value="">—</option>${SN.map((n,k)=>`<option value="${k}">${n}</option>`).join('')}</select></label>
  ${i('startPage','صفحة بدء الحفظ الجديد')}${i('endPage','آخر صفحة في الخطة (للحفظ على مراحل، مثل جزء عمّ ٥٨٢–٦٠٤)')}
  <label>صفحات محفوظة سابقًا (مثال: ١-٢٠، ٥٨٢-٦٠٤)<input data-s="prior" type="text" value="${esc(s.prior)}"></label><small>تُحتسب في المحفوظ وفي المراجعة.</small>${i('totalPages','عدد صفحات المصحف (٦٠٤ لمصحف المدينة؛ أسماء السور تظهر مع ٦٠٤ فقط)')}</div>
- <div class="card"><b>المراجعة</b>${i('timeMin','وقتك اليومي المتاح (دقيقة، للتنظيم الشخصي)')}${unitSel('recentN','الحفظ القريب الذي يُراجع يوميًا',1)}${unitSel('revCap','حجم قسم مراجعة السورة الحالية')}${i('friMax','الحد الأقصى لمراجعة اليوم الطويل (صفحات)')}${i('cycleWeeks','عدد أسابيع دورة المراجعة الطويلة')}${i('tol','تسامح إكمال السورة: إن بقي من السورة هذا العدد من الصفحات أو أقل بعد بلوغ الحد الأقصى، تُضاف إلى مراجعة اليوم (صفحات؛ ٠ للإلغاء)')}
+ <div class="card"><b>المراجعة</b>${i('timeMin','وقتك اليومي المتاح (دقيقة)')}${i('memMin','دقائق حفظ الصفحة الواحدة عندك (لتقدير الوقت)')}${i('revMin','دقائق مراجعة الصفحة الواحدة عندك (لتقدير الوقت)')}<small>يستخدم التطبيق هذه الأرقام ليقدّر وقت مهامك ويحذّرك إن تجاوز وقتك المتاح.</small>${unitSel('recentN','الحفظ القريب الذي يُراجع يوميًا',1)}${unitSel('revCap','حجم قسم مراجعة السورة الحالية')}${i('friMax','الحد الأقصى لمراجعة اليوم الطويل (صفحات)')}${i('cycleWeeks','عدد أسابيع دورة المراجعة الطويلة')}${i('tol','تسامح إكمال السورة: إن بقي من السورة هذا العدد من الصفحات أو أقل بعد بلوغ الحد الأقصى، تُضاف إلى مراجعة اليوم (صفحات؛ ٠ للإلغاء)')}
  ${ck('autoOld','مراجعة صغيرة تلقائية من القديم في أيام الحفظ (تزداد مع حفظك، ضمن حدّك الأقصى)')}${ck('friRecent','مراجعة اختيارية لحفظ آخر ٧ أيام في يوم المراجعة')}</div>
  <div class="card"><b>المظهر</b>${selH('digits','الأرقام',[['ar','هندية (١٢٣)'],['en','غربية (123)']])}${selH('theme','السمة',[['light','فاتحة'],['dark','داكنة']])}${selH('zoom','حجم الواجهة',[['sm','صغير'],['md','متوسط'],['lg','كبير']])}${ck('motiv','تذكيرات تحفيزية')}${ck('hijri','إظهار التاريخ الهجري')}</div>
  <div class="card"><b>الخصوصية</b><p class="mut">بياناتك على جهازك فقط. ${s.pin?'القفل مفعّل.':''}</p><label>كلمة سر للتطبيق (٤ خانات فأكثر)<input id="npw" type="password" inputmode="numeric" autocomplete="off"></label><button class="b" data-a="setpin">${s.pin?'تغيير':'تعيين'} كلمة السر</button> ${s.pin?'<button class="b o" data-a="clrpin">إزالة القفل</button>':''}<small>القفل يمنع الفتح العارض فقط ولا يشفّر بيانات المتصفح.</small></div>
@@ -290,18 +294,23 @@ function settingsView(){const s=S.settings,
  <div class="card mut"><b>ملاحظات مهمة</b><br>• تقدّمك محفوظ في هذا المتصفح وعلى هذا الجهاز فقط ولا يُرسَل إلى أي خادم. تغيير المتصفح أو الجهاز أو النطاق يعني بيانات جديدة، فاستخدم النسخ الاحتياطي.<br>• جدول بدايات السور لمصحف المدينة، فتحقق منه من مصحفك. لا يتضمن التطبيق نص القرآن.<br>• لا يقيّم التطبيق التجويد؛ اقرأ على معلّم أو شخص موثوق.</div>`}
 
 /* ---------- sessions page ---------- */
-const GO=[1,2,3,4,6,8,12,16,20,28,40,60,80];
-function ssCard(x){const g=[...GO];if(!g.includes(x.goal)){g.push(x.goal);g.sort((a,b)=>a-b)}
- const ord=[...x.days].sort((a,b)=>((a-S.settings.weekStart+7)%7)-((b-S.settings.weekStart+7)%7)),prev=x.kind==='cus'?'':ord.map(d=>`${WD[d]}: ${shareOf(x,d)?ul(shareOf(x,d)):'—'}`).join(' • '),a=`data-ss="${x.id}"`;
+const PER={day:'يوميًا',week:'أسبوعيًا',month:'شهريًا',year:'سنويًا'};
+function ssCard(x){const a=`data-ss="${x.id}"`,T=today(),L=occ(x,T);let pv='';
+ if(x.kind!=='cus'){if(!x.days.length)pv='اختر يومًا واحدًا على الأقل';else if(x.period==='day')pv=`كل يوم من الأيام المختارة: ${ul(x.goal)}`;
+  else if(x.period==='week')pv=L.map(d=>`${WD[pd(d).getDay()]}: ${shareOf(x,d)?ul(shareOf(x,d)):'—'}`).join(' • ');
+  else{const b=Math.floor(x.goal/Math.max(1,L.length));pv=`عدد أيام التنفيذ في ${x.period==='month'?'هذا الشهر':'هذه السنة'}: ${N(L.length)} — ${b?'نحو '+ul(b)+' في اليوم':'مهمة صغيرة في بعض الأيام فقط'}`}}
  return `<div class="card"><label>اسم الجلسة<input ${a} data-f="name" type="text" maxlength="40" value="${esc(x.name)}"></label>
  <label>النوع<select ${a} data-f="kind"><option value="mem" ${x.kind==='mem'?'selected':''}>حفظ جديد</option><option value="rev" ${x.kind==='rev'?'selected':''}>مراجعة</option><option value="cus" ${x.kind==='cus'?'selected':''}>هدف حر (تعليم فقط)</option></select></label>
- ${x.kind==='cus'?`<label>وصف الهدف<input ${a} data-f="text" type="text" maxlength="100" value="${esc(x.text)}"></label>`:`<label>الهدف الأسبوعي<select ${a} data-f="goal">${g.map(v=>`<option value="${v}" ${x.goal===v?'selected':''}>${ul(v)}</option>`).join('')}</select></label>`}
+ ${x.kind==='cus'?`<label>وصف الهدف<input ${a} data-f="text" type="text" maxlength="100" value="${esc(x.text)}"></label>`:`<div class="grid"><label>المدة<select ${a} data-f="period">${Object.keys(PER).map(k=>`<option value="${k}" ${x.period===k?'selected':''}>${PER[k]}</option>`).join('')}</select></label><label>الهدف ${PER[x.period]} (بالصفحات، يقبل ٠٫٢٥)<input ${a} data-f="goalp" type="number" step="0.25" min="0.25" inputmode="decimal" value="${x.goal/U}"></label></div>`}
  ${x.kind==='rev'?`<div class="grid"><label>من صفحة (٠ = كل المحفوظ)<input ${a} data-f="r0" type="number" inputmode="numeric" value="${x.range[0]}"></label><label>إلى صفحة<input ${a} data-f="r1" type="number" inputmode="numeric" value="${x.range[1]}"></label></div>`:''}
- <p class="mut">أيام الجلسة: يُقسَّم الهدف بين الأيام المختارة فقط، فاختر يومًا واحدًا لإنجازه كله فيه.</p><div class="chips">${[6,0,1,2,3,4,5].map(d=>`<button class="chip ${x.days.includes(d)?'on':''}" data-a="ssday" data-i="${x.id}" data-d="${d}" aria-pressed="${x.days.includes(d)}">${WD[d]}</button>`).join('')}</div>
- ${prev?`<small>التوزيع الأسبوعي: ${prev}</small><br>`:''}<label class="ck"><input type="checkbox" ${a} data-f="active" ${x.active?'checked':''}> مفعّلة</label><button class="b d" data-a="ssdel" data-i="${x.id}">حذف الجلسة</button></div>`}
-function ssView(){return `<h1>الجلسات</h1><div class="card mut">الجلسة هدف أسبوعي تحدّد أنت أيامه وطريقة توزيعه: مثلًا «صفحة أسبوعيًا» في يوم واحد أو يومين أو أكثر. تظهر مهام الجلسة في «خطة اليوم» بجانب خطتك. جلسة الحفظ تتقدّم بمحفوظك. جلسة المراجعة تختار من محفوظك الأقدم مراجعةً (ضمن نطاق صفحات إن حدّدته). الهدف الحر مجرد تعليم لمهمة تضعها بنفسك.</div>
+ <p class="mut">أيام التنفيذ: يُقسَّم الهدف بين الأيام المختارة داخل كل ${x.period==='day'?'يوم':x.period==='week'?'أسبوع':x.period==='month'?'شهر':'سنة'}، فاختر يومًا واحدًا لإنجازه كله فيه.</p><div class="chips">${[6,0,1,2,3,4,5].map(d=>`<button class="chip ${x.days.includes(d)?'on':''}" data-a="ssday" data-i="${x.id}" data-d="${d}" aria-pressed="${x.days.includes(d)}">${WD[d]}</button>`).join('')}</div>
+ ${pv?`<small>التوزيع: ${pv}</small><br>`:''}<label class="ck"><input type="checkbox" ${a} data-f="active" ${x.active?'checked':''}> مفعّلة</label><button class="b d" data-a="ssdel" data-i="${x.id}">حذف الجلسة</button></div>`}
+function ssView(){return `<h1>الجلسات</h1><div class="card mut">الجلسة هدف تحدّد أنت مدته (يوميًا أو أسبوعيًا أو شهريًا أو سنويًا) وأيامه وطريقة توزيعه: مثلًا «صفحة أسبوعيًا» في يوم واحد أو يومين، أو «١٠ صفحات شهريًا» موزّعة على أيام تختارها. تظهر مهام الجلسة في «خطة اليوم» بجانب خطتك. جلسة الحفظ تتقدّم بمحفوظك. جلسة المراجعة تختار من محفوظك الأقدم مراجعةً (ضمن نطاق صفحات إن حدّدته). الهدف الحر مجرد تعليم لمهمة تضعها بنفسك.</div>
  <label class="ck card"><input type="checkbox" data-s="sessOnly" ${S.settings.sessOnly?'checked':''}> استبدال الحفظ اليومي الافتراضي بجلسات الحفظ المفعّلة</label>`+
  (S.ss.map(ssCard).join('')||'<div class="card mut">لا توجد جلسات بعد.</div>')+`<button class="b" data-a="ssadd">+ إضافة جلسة</button>`}
+
+function previewH(){const D=today(),L=dayTasks(D),rest=estMin(L.filter(t=>t.mand&&!t.done));
+ return `<b>معاينة مهام اليوم بحسب إعداداتك</b><br>`+(L.length?L.map(t=>`• ${esc(/^new\d/.test(t.key)?'حفظ إضافي':ttl(t.key))}${t.cat==='c'?'':': '+(t.pg?rlp(t.r[0],t.r[1]):rl(t.r[0],t.r[1])).t}${t.mand?'':' (اختيارية)'}`).join('<br>'):'لا مهام اليوم')+`<br><small>الوقت المقدّر للمتبقي ≈ ${N(rest)} دقيقة من ${N(S.settings.timeMin)} متاحة${rest>S.settings.timeMin?' — يتجاوز وقتك المتاح':''}</small>`}
 
 /* ---------- XP, challenges ---------- */
 const XPV={new:10,rec:4,cur:6,f:6,w:3,g:6,o:5,z:5,c:3};
@@ -449,9 +458,18 @@ function prt(){const ms=memSet(),pg=pagesMem(ms),sv=surahStats(ms),c=counts();
  document.getElementById('print').innerHTML=`<h1>تقرير تقدّم حفظ القرآن</h1><p>${gdate(today())}</p><table><tr><th>الصفحات المحفوظة</th><td>${N(pg)} من ${N(TP())}</td></tr><tr><th>مهام الحفظ المكتملة</th><td>${N(c.nw)}</td></tr><tr><th>مهام المراجعة المكتملة</th><td>${N(c.rv)}</td></tr><tr><th>سور بدأتها / أكملتها</th><td>${N(sv.started)} / ${N(sv.done)}</td></tr><tr><th>أيام متتالية</th><td>${N(streak())}</td></tr></table>`;window.print()}
 
 /* ---------- events ---------- */
-function setS(t,rr){const k=t.dataset.s;S.settings[k]=t.type==='checkbox'?t.checked:t.type==='number'?+t.value:t.value;fixS();save();if(rr)render()}
+const RNG={startPage:[1,()=>TP()],endPage:[()=>S.settings.startPage,()=>TP()],totalPages:[100,700],timeMin:[15,600],memMin:[5,240],revMin:[1,60],friMax:[2,200],cycleWeeks:[1,52],extraMax:[0,10],tol:[0,5]};
+const rv_=x=>typeof x==='function'?x():x;
+function updPrev(){const e=document.getElementById('liveprev');if(e&&tab==='set')e.innerHTML=previewH()}
+/* commit=false while typing: apply only valid in-range numbers; commit=true (blur/select/checkbox): clamp, save, re-render */
+function setS(t,commit){const k=t.dataset.s,s=S.settings;let v=t.type==='checkbox'?t.checked:t.value;
+ if(t.type==='number'){if(v===''||isNaN(+v)){if(!commit)return;v=s[k]}else{v=Math.round(+v);const r=RNG[k];if(r){const lo=rv_(r[0]),hi=rv_(r[1]);if(!commit&&(v<lo||v>hi))return;v=Math.min(hi,Math.max(lo,v))}}}
+ if(k==='totalPages'){const wasEnd=s.endPage>=s.totalPages;s[k]=v;if(wasEnd)s.endPage=v}else s[k]=v;
+ fixS();save();updPrev();if(commit)render()}
 function setSS(t,rr){const x=S.ss.find(y=>y.id===t.dataset.ss);if(!x)return;const f=t.dataset.f,v=t.type==='checkbox'?t.checked:t.value;
- if(f==='r0')x.range[0]=Math.max(0,Math.round(+v||0));else if(f==='r1')x.range[1]=Math.max(0,Math.round(+v||0));else if(f==='goal')x.goal=+v;else x[f]=v;fixS();save();if(rr)render()}
+ if(f==='goalp'){const n=parseFloat(v);if(isNaN(n)||n<=0){if(rr)render();return}x.goal=Math.max(1,Math.round(n*U))}
+ else if(f==='r0'||f==='r1'){const n=Math.round(+v);if(isNaN(n)){if(rr)render();return}x.range[f==='r0'?0:1]=Math.max(0,n)}
+ else x[f]=v;fixS();save();if(rr)render()}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b||b.tagName==='SELECT'||b.tagName==='TEXTAREA')return;const a=b.dataset.a;
  if(a==='tab'){tab=b.dataset.t;if(tab==='today')selDate=selDate||today();window.scrollTo(0,0);render()}
  else if(a==='tog')tog(b.dataset.d,b.dataset.k);
@@ -461,7 +479,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b
  else if(a==='dayT'){const A=S.settings[b.dataset.k],n=+b.dataset.d,i=A.indexOf(n);if(i>=0)A.splice(i,1);else A.push(n);fixS();save();render()}
  else if(a==='pri')setPri(b.dataset.d,b.dataset.k,+b.dataset.v);
  else if(a==='clrpri'){for(let u=+b.dataset.x;u<=+b.dataset.y;u++)delete S.pri[u];save();render()}
- else if(a==='ssadd'){S.ss.push({id:Math.random().toString(36).slice(2,7),name:'جلسة جديدة',kind:'mem',goal:4,days:[6],range:[0,0],text:'',active:true});fixS();save();render()}
+ else if(a==='ssadd'){S.ss.push({id:Math.random().toString(36).slice(2,7),name:'جلسة جديدة',kind:'mem',goal:4,period:'week',days:[6],range:[0,0],text:'',active:true});fixS();save();render()}
  else if(a==='ssdel'){if(confirm('حذف هذه الجلسة؟ لا يُحذف ما أتممتَه منها من سجلّك.')){S.ss=S.ss.filter(x=>x.id!==b.dataset.i);save();render()}}
  else if(a==='ssday'){const x=S.ss.find(y=>y.id===b.dataset.i);if(x){const n=+b.dataset.d,i=x.days.indexOf(n);if(i>=0)x.days.splice(i,1);else x.days.push(n);fixS();save();render()}}
  else if(a==='chacc'||a==='chdec'){const d=chList().find(x=>x.id===b.dataset.i);if(d){const c={id:d.id,t:d.t,d:d.d,s:d.s,e:d.e,m:d.m,n:d.n,xp:d.xp,st:a==='chacc'?'acc':'dec'};if(a==='chacc')c.from=today();S.ch[c.id]=c;save();render()}}
