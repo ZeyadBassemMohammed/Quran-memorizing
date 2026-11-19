@@ -175,9 +175,7 @@ function dayTasks(D){const s=S.settings,rec=S.tasks[D]||{},L=[],dow=pd(D).getDay
   runs.forEach(q=>{if(!has(c+q[0]))add(c+q[0],true,q,true)})};
  const msAll=memSet();let np=ptr(msAll);const nn=len=>{while(msAll.has(np))np++;if(np>=LIM())return null;const r=[np,Math.min(np+len-1,LIM()-1)];np=r[1]+1;return r};
  const sessMem=s.sessOnly&&S.ss.some(x=>x.active&&x.kind==='mem');
- if(isM&&!sessMem){
-  if(!has('new')){const r=nn(amt);if(r)add('new',true,r,false)}
-  else if(L.some(t=>t.key==='new'&&t.done)){const nd=L.filter(t=>t.cat==='new'&&t.done).length;let i=nd+1;while(has('new'+i))i++;if(nd<=s.extraMax){const r=nn(amt);if(r)add('new'+i,false,r,false)}}}
+ if(isM&&!sessMem&&!has('new')){const r=nn(amt);if(r)add('new',true,r,false)}
  if(isM){
   let a=p;while(a>0&&ms.has(a-1)&&p-a<s.recentN)a--;
   if(a<p&&!has('rec'))add('rec',true,[a,p-1],false);
@@ -191,6 +189,9 @@ function dayTasks(D){const s=S.settings,rec=S.tasks[D]||{},L=[],dow=pd(D).getDay
   if(x.kind==='mem'){const k='new_'+x.id;if(!has(k)){const r=nn(sh);if(r)add(k,true,r,false)}}
   else if(x.kind==='rev'){const k='z_'+x.id;if(!has(k)){const r=bestWin(x,sh,msAll,D,F);if(r)add(k,true,r,false)}}
   else{const k='c_'+x.id;if(!has(k))add(k,true,[0,0],false)}});
+ /* extra memorization: offered once EVERY required memorization task of the day (default or session) is done; extras are counted separately */
+ const mandNew=L.filter(t=>t.cat==='new'&&!/^new\d/.test(t.key));
+ if(s.extraMax>0&&mandNew.length&&mandNew.every(t=>t.done)){const ed=L.filter(t=>/^new\d/.test(t.key)&&t.done).length;let i=ed+2;while(has('new'+i))i++;if(ed<s.extraMax){const r=nn(amt);if(r)add('new'+i,false,r,false)}}
  return L.sort((x,y)=>ORD.indexOf(x.cat)-ORD.indexOf(y.cat)||x.r[0]-y.r[0])}
 
 function tog(D,k){const L=dayTasks(D),t=L.find(x=>x.key===k);if(!t)return;
