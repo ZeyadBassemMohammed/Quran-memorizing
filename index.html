@@ -69,7 +69,7 @@ const SN='الفاتحة|البقرة|آل عمران|النساء|المائد�
 const SP=[1,2,50,77,106,128,151,177,187,208,221,235,249,255,262,267,282,293,305,312,322,332,342,350,359,367,377,385,396,404,411,415,418,428,434,440,446,453,458,467,477,483,489,496,499,502,507,511,515,518,520,523,526,528,531,534,537,542,545,549,551,553,554,556,558,560,562,564,566,568,570,572,574,575,577,578,580,582,583,585,586,587,587,589,590,591,591,592,593,594,595,595,596,596,597,597,598,598,599,599,600,600,601,601,601,602,602,602,603,603,603,604,604,604];
 
 const KEY='quranPlannerV1',APP='quran-planner',VER=3,U=4; /* U = planning units per page (quarter pages) */
-const DEF={startPage:1,prior:'',timeMin:60,revCap:16,friMax:20,digits:'ar',theme:'light',motiv:true,friRecent:true,totalPages:604,lastBackup:0,name:'',memDays:[6,0,1,2,3,4],revDays:[5],amt:2,endPage:604,recentN:8,cycleWeeks:8,extraMax:2,weekStart:6,zoom:'md',hijri:true,pin:'',autoOld:true,sessOnly:false,tol:2,memMin:30,revMin:4};
+const DEF={startPage:1,prior:'',timeMin:60,revCap:16,friMax:20,digits:'ar',theme:'light',motiv:true,friRecent:true,totalPages:604,lastBackup:0,name:'',memDays:[6,0,1,2,3,4],revDays:[5],amt:2,endPage:604,recentN:8,cycleWeeks:8,extraMax:2,weekStart:6,zoom:'md',hijri:true,pin:'',autoOld:true,sessOnly:false,tol:2,memMin:30,revMin:4,order:'fwd',wrap:true};
 const CATS={new:'حفظ جديد',rec:'مراجعة الحفظ القريب',cur:'مراجعة السورة الحالية',g:'استدراك بعد الانقطاع',f:'مراجعة طويلة المدى',o:'مراجعة من القديم (تلقائية)',w:'مراجعة اختيارية لحفظ الأسبوع',z:'جلسة مراجعة',c:'جلسة'};
 const ORD=['new','rec','cur','g','f','o','w','z','c'];
 const WD=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
@@ -112,7 +112,7 @@ function fixS(){S.x=S.x&&typeof S.x==='object'?S.x:{};S.x.pd=Array.isArray(S.x.p
  const s=S.settings,c=(v,a,b,d)=>{v=Math.round(+v);return isNaN(v)?d:Math.min(b,Math.max(a,v))},dl=(a,d)=>Array.isArray(a)?[...new Set(a.map(Number).filter(x=>x>=0&&x<=6))]:d;
  s.totalPages=c(s.totalPages,100,700,604);s.startPage=c(s.startPage,1,s.totalPages,1);s.timeMin=c(s.timeMin,15,600,60);s.friMax=c(s.friMax,2,200,20);
  s.memDays=dl(s.memDays,[6,0,1,2,3,4]);s.revDays=dl(s.revDays,[5]);s.amt=c(s.amt,1,80,2);s.revCap=c(s.revCap,1,80,16);s.recentN=c(s.recentN,0,80,8);
- s.endPage=c(s.endPage,s.startPage,s.totalPages,s.totalPages);s.cycleWeeks=c(s.cycleWeeks,1,52,8);s.extraMax=c(s.extraMax,0,10,2);delete s.gapDays;delete s.gapPauseNew;delete S.x.rv;s.tol=c(s.tol,0,5,2);s.memMin=c(s.memMin,5,240,30);s.revMin=c(s.revMin,1,60,4);
+ s.endPage=c(s.endPage,s.startPage,s.totalPages,s.totalPages);s.cycleWeeks=c(s.cycleWeeks,1,52,8);s.extraMax=c(s.extraMax,0,10,2);delete s.gapDays;delete s.gapPauseNew;delete S.x.rv;s.tol=c(s.tol,0,5,2);s.order=['fwd','rsur'].includes(s.order)?s.order:'fwd';s.wrap=s.wrap!==false;s.memMin=c(s.memMin,5,240,30);s.revMin=c(s.revMin,1,60,4);
  s.weekStart=[6,0,1].includes(+s.weekStart)?+s.weekStart:6;s.zoom=['sm','md','lg'].includes(s.zoom)?s.zoom:'md';s.name=String(s.name||'').slice(0,30);s.pin=typeof s.pin==='string'?s.pin:'';
  s.digits=s.digits==='en'?'en':'ar';s.theme=s.theme==='dark'?'dark':'light';s.prior=String(s.prior||'');s.autoOld=s.autoOld!==false;s.sessOnly=!!s.sessOnly}
 function load(){let r=null;S=mk({});try{r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);if(valid(o)){if(!o.u)try{localStorage.setItem(KEY+'_pre4',r)}catch(e){}S=mk(o)}}}
@@ -124,7 +124,20 @@ function toast(t){const e=document.getElementById('toast');e.textContent=t;e.sty
 const TP=()=>S.settings.totalPages,TH=()=>U*TP(),LIM=()=>U*S.settings.endPage,pgOf=u=>Math.floor(u/U)+1,pu=(a,b)=>[U*(a-1),U*b-1];
 function priorUnits(){const s=new Set(),tp=TP();S.settings.prior.replace(/[٠-٩]/g,d=>d.charCodeAt(0)-1632).split(/[,،\n]+/).forEach(t=>{const m=t.trim().match(/^(\d+)(?:\s*[-–]\s*(\d+))?$/);if(!m)return;let a=+m[1],b=+(m[2]||m[1]);if(a>b)[a,b]=[b,a];a=Math.max(a,1);b=Math.min(b,tp);for(let u=U*(a-1);u<=U*b-1;u++)s.add(u)});return s}
 function memSet(ex){const s=priorUnits();for(const d in S.tasks){if(d===ex)continue;for(const k in S.tasks[d]){const t=S.tasks[d][k];if(/^new/.test(k)&&t.done&&t.r)for(let u=t.r[0];u<=t.r[1];u++)s.add(u)}}return s}
-const ptr=ms=>{let u=U*(S.settings.startPage-1);while(ms.has(u))u++;return u};
+/* where the next new memorization starts. 'fwd': from the start page forward (then, if the plan covers the whole Quran and wrap is on, from the first unmemorized unit);
+   'rsur': surah by surah from the last to the first (each surah read forward), wrapping to the top when the bottom is done */
+function nextInfo(ms){const s=S.settings;
+ if(s.order==='rsur'&&TP()===604){const k0=surIdx(Math.max(1,s.startPage));
+  for(let n=0;n<114;n++){let k=k0-n;if(k<0){if(!s.wrap)break;k+=114}
+   const lo=U*(SP[k]-1),hi=Math.min(TH()-1,U*Math.max(SP[k],(SP[k+1]||605)-1)-1);for(let u=lo;u<=hi;u++)if(!ms.has(u))return{u,max:hi}}
+  return null}
+ let u=U*(s.startPage-1);while(ms.has(u))u++;
+ if(u<LIM())return{u,max:LIM()-1};
+ if(s.wrap&&s.endPage>=s.totalPages){u=0;while(ms.has(u))u++;if(u<TH())return{u,max:TH()-1}}
+ return null}
+const ptr=ms=>{const i=nextInfo(ms);return i?i.u:-1};
+/* the most recent finished memorization before day D: revision of "recent" and "current surah" follows it, whatever the order */
+function anchorOf(D){let best=null,bd='';for(const d in S.tasks){if(d>=D)continue;for(const k in S.tasks[d]){const o=S.tasks[d][k];if(/^new/.test(k)&&o.done&&o.r&&(d>bd||(d===bd&&o.r[1]>best[1]))){best=o.r;bd=d}}}return best}
 const fullPage=(ms,p)=>{for(let u=U*(p-1);u<U*p;u++)if(!ms.has(u))return false;return true};
 const pagesMem=ms=>{let n=0;ms.forEach(u=>{if(u>=0&&u<TH())n++});return Math.round(n/U*100)/100};
 const surIdx=p=>{let k=0;SP.forEach((s,i)=>{if(s<=p)k=i});return k};
@@ -165,7 +178,7 @@ function shareOf(x,D){if(!x.days.includes(pd(D).getDay()))return 0;if(x.kind==='
 function estMin(L){let m=0;L.forEach(t=>{if(t.cat==='c'){m+=5;return}const pages=(t.pg?(t.r[1]-t.r[0]+1)*U:(t.r[1]-t.r[0]+1))/U;m+=pages*(t.cat==='new'?S.settings.memMin:S.settings.revMin)});return Math.round(m)}
 
 /* ---------- daily tasks ---------- */
-function dayTasks(D){const s=S.settings,rec=S.tasks[D]||{},L=[],dow=pd(D).getDay(),isM=s.memDays.includes(dow),isR=s.revDays.includes(dow),ms=memSet(D),p=ptr(ms),cap=s.revCap,amt=s.amt;
+function dayTasks(D){const s=S.settings,rec=S.tasks[D]||{},L=[],dow=pd(D).getDay(),isM=s.memDays.includes(dow),isR=s.revDays.includes(dow),ms=memSet(D),cap=s.revCap,amt=s.amt;
  for(const k in rec){const o=rec[k];if(o.done&&o.r)L.push({key:k,cat:catOf(k),mand:k!=='w'&&!/^new\d/.test(k),r:o.r,pg:isPg(k),done:true})}
  const has=k=>L.some(t=>t.key===k),add=(key,mand,r,pg)=>L.push({key,cat:catOf(key),mand,r,pg,done:false}),F=frInfo(D,ms),ex=new Set();
  L.forEach(t=>{if(t.done&&t.pg&&'fgo'.includes(t.cat))for(let q=t.r[0];q<=t.r[1];q++)ex.add(q)});
@@ -173,13 +186,14 @@ function dayTasks(D){const s=S.settings,rec=S.tasks[D]||{},L=[],dow=pd(D).getDay
  const fill=(c,pool,n,tol)=>{const rem=n-L.filter(t=>t.cat===c).reduce((a,t)=>a+t.r[1]-t.r[0]+1,0);if(rem<=0)return;const runs=pickRuns(F,pool.filter(q=>!ex.has(q)),rem);
   if(tol){const pp=new Set(pool);let left=tol;runs.forEach(r=>{if(left<=0)return;const se=surEnd(r[1]),add_=[];let q=r[1]+1;while(q<=se&&pp.has(q)&&!ex.has(q)&&!runs.some(o=>o!==r&&q>=o[0]&&q<=o[1])){add_.push(q);q++}if(q>se&&add_.length&&add_.length<=left){r[1]=add_[add_.length-1];left-=add_.length}})}
   runs.forEach(q=>{if(!has(c+q[0]))add(c+q[0],true,q,true)})};
- const msAll=memSet();let np=ptr(msAll);const nn=len=>{while(msAll.has(np))np++;if(np>=LIM())return null;const r=[np,Math.min(np+len-1,LIM()-1)];np=r[1]+1;return r};
+ const msAll=memSet(),loc=new Set(msAll);const nn=len=>{const ni=nextInfo(loc);if(!ni)return null;let e=ni.u;while(e+1<=ni.max&&e+1-ni.u<len&&!loc.has(e+1))e++;for(let q=ni.u;q<=e;q++)loc.add(q);return[ni.u,e]};
  const sessMem=s.sessOnly&&S.ss.some(x=>x.active&&x.kind==='mem');
  if(isM&&!sessMem&&!has('new')){const r=nn(amt);if(r)add('new',true,r,false)}
+ const an=anchorOf(D)||(()=>{const ni=nextInfo(ms);return ni&&ni.u>0&&ms.has(ni.u-1)?[ni.u-1,ni.u-1]:null})();
  if(isM){
-  let a=p;while(a>0&&ms.has(a-1)&&p-a<s.recentN)a--;
-  if(a<p&&!has('rec'))add('rec',true,[a,p-1],false);
-  const ssu=TP()===604?U*(SP[surIdx(pgOf(Math.min(p,TH()-1)))]-1):Math.max(0,p-3*cap),c=a-1;
+  const hi=an?an[1]:-1;let a=hi+1;while(a>0&&ms.has(a-1)&&hi+1-a<s.recentN)a--;
+  if(a<=hi&&!has('rec'))add('rec',true,[a,hi],false);
+  const ssu=TP()===604?U*(SP[surIdx(pgOf(Math.max(0,Math.min(hi,TH()-1))))]-1):Math.max(0,hi-3*cap),c=a-1;
   if(c>=ssu&&ms.has(c)&&!has('cur')){let c0=c;while(c0-1>=ssu&&ms.has(c0-1))c0--;let n=Math.ceil((c-c0+1)/cap);if(n>1&&(c-c0+1)-(n-1)*cap<=s.tol*U)n--;let bi=0,bs=-1;
    for(let i=0;i<n;i++){const x=c0+i*cap,y=i===n-1?c:Math.min(c,x+cap-1);let sc=0;for(let u=x;u<=y;u++)sc+=(F.last[u]?Math.min(120,dn(D)-dn(F.last[u])):60)*PF[S.pri[u]||0];sc/=(y-x+1);if(sc>bs){bs=sc;bi=i}}
    add('cur',true,[c0+bi*cap,bi===n-1?c:Math.min(c,c0+(bi+1)*cap-1)],false)}
@@ -232,7 +246,7 @@ function tasksBlock(D){const L=dayTasks(D),m=L.filter(t=>t.mand),p=m.length?Math
  const rest=estMin(L.filter(t=>t.mand&&!t.done)),over=rest>S.settings.timeMin;
  let h=`<div class="card"><div class="row"><b>إنجاز اليوم</b><span>${N(p)}٪</span></div><div class="bar"><i style="width:${p}%"></i></div><small>${(isM?'يوم حفظ ومراجعة. ':'')+(isR?'يوم مراجعة طويلة المدى. ':'')+(!isM&&!isR?'يوم راحة حسب إعداداتك.':'')}</small>${rest?`<br><small ${over?'style="color:var(--bad)"':''}>الوقت المقدّر للمتبقي ≈ ${N(rest)} دقيقة من ${N(S.settings.timeMin)} متاحة${over?' — يتجاوز وقتك المتاح، خفّض المقدار أو الحد الأقصى من الإعدادات':''}</small>`:''}</div>`;
  if(D<today()&&st(D)==='miss')h+=`<div class="card warn">يوم فائت: لم يُسجَّل فيه إنجاز. الحفظ يستمر من آخر موضع أتممتَه، ولا يُعلَّم شيء تلقائيًا. إتمام مهمة هنا يسجّلها في هذا اليوم.</div>`;
- if(!L.length)h+=`<div class="card">${!isM&&!isR?'لا مهام اليوم: يوم راحة.':isM&&ptr(memSet())>=LIM()?'اكتملت صفحات خطتك. بارك الله فيك!':'لا توجد مهام لهذا اليوم الآن؛ ستظهر مراجعة القديم عند تراكم الحفظ.'}</div>`;
+ if(!L.length)h+=`<div class="card">${!isM&&!isR?'لا مهام اليوم: يوم راحة.':isM&&!nextInfo(memSet())?'اكتملت صفحات خطتك. بارك الله فيك!':'لا توجد مهام لهذا اليوم الآن؛ ستظهر مراجعة القديم عند تراكم الحفظ.'}</div>`;
  return h+L.map(t=>taskH(D,t)).join('')}
 const MOT=['القليل كل يوم مع الاستمرار خير من جهد كبير ثم انقطاع.','اقرأ على معلّم أو شخص موثوق ليصحّح لك التلاوة والتجويد.','ثبّت وقتًا ثابتًا للحفظ كل يوم.'];
 function home(){const D=today(),ms=memSet(),pg=pagesMem(ms),tp=TP(),pc=Math.round(pg/tp*1000)/10;
@@ -282,7 +296,7 @@ function settingsView(){const s=S.settings,
  ${unitSel('amt','مقدار الحفظ الجديد يوميًا')}<small>أصغر وحدة ربع صفحة (نحو ٣–٤ أسطر). لا يحوي التطبيق بيانات موثّقة لحدود الآيات، فحدّد الآيات داخل الربع من مصحفك.</small>
  ${i('extraMax','عدد مرات الحفظ الإضافي المسموحة في اليوم (٠ للإلغاء)')}<small>تظهر المهمة الإضافية في «خطة اليوم» بعد إتمام مهمة الحفظ الأساسية، وتقدّم حفظ الأيام القادمة.</small>${selH('weekStart','بداية الأسبوع',[[6,'السبت'],[0,'الأحد'],[1,'الاثنين']])}</div>
  <div class="card"><b>نقطة البداية والنطاق</b><label>اختر سورة البداية<select data-a="pickSur"><option value="">—</option>${SN.map((n,k)=>`<option value="${k}">${n}</option>`).join('')}</select></label>
- ${i('startPage','صفحة بدء الحفظ الجديد')}${i('endPage','آخر صفحة في الخطة (للحفظ على مراحل، مثل جزء عمّ ٥٨٢–٦٠٤)')}
+ ${selH('order','ترتيب الحفظ',[['fwd','من صفحة البدء إلى آخر الخطة'],['rsur','سورة بسورة من آخر المصحف إلى أوله (كل سورة تُحفظ من أولها)']])}${ck('wrap','عند انتهاء ما أمامي تابع تلقائيًا من أول جزء غير محفوظ (في الترتيب الأول يعمل إن كانت الخطة تمتد إلى آخر المصحف)')}<small>حدّد المحفوظ سابقًا في الحقل أدناه ليتجاوزه التطبيق. في الترتيب الثاني تُحسب «صفحة البدء» لتحديد السورة التي يبدأ منها النزول.</small>${i('startPage','صفحة بدء الحفظ الجديد')}${i('endPage','آخر صفحة في الخطة (للحفظ على مراحل، مثل جزء عمّ ٥٨٢–٦٠٤)')}
  <label>صفحات محفوظة سابقًا (مثال: ١-٢٠، ٥٨٢-٦٠٤)<input data-s="prior" type="text" value="${esc(s.prior)}"></label><small>تُحتسب في المحفوظ وفي المراجعة.</small>${i('totalPages','عدد صفحات المصحف (٦٠٤ لمصحف المدينة؛ أسماء السور تظهر مع ٦٠٤ فقط)')}</div>
  <div class="card"><b>المراجعة</b>${i('timeMin','وقتك اليومي المتاح (دقيقة)')}${i('memMin','دقائق حفظ الصفحة الواحدة عندك (لتقدير الوقت)')}${i('revMin','دقائق مراجعة الصفحة الواحدة عندك (لتقدير الوقت)')}<small>يستخدم التطبيق هذه الأرقام ليقدّر وقت مهامك ويحذّرك إن تجاوز وقتك المتاح.</small>${unitSel('recentN','الحفظ القريب الذي يُراجع يوميًا',1)}${unitSel('revCap','حجم قسم مراجعة السورة الحالية')}${i('friMax','الحد الأقصى لمراجعة اليوم الطويل (صفحات)')}${i('cycleWeeks','عدد أسابيع دورة المراجعة الطويلة')}${i('tol','تسامح إكمال السورة: إن بقي من السورة هذا العدد من الصفحات أو أقل بعد بلوغ الحد الأقصى، تُضاف إلى مراجعة اليوم (صفحات؛ ٠ للإلغاء)')}
  ${ck('autoOld','مراجعة صغيرة تلقائية من القديم في أيام الحفظ (تزداد مع حفظك، ضمن حدّك الأقصى)')}${ck('friRecent','مراجعة اختيارية لحفظ آخر ٧ أيام في يوم المراجعة')}</div>
